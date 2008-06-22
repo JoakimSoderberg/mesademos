@@ -20,26 +20,28 @@
  */
 
 /*
- * This is a port of the infamous "glxgears" demo to straight EGL
- * Port by Dane Rushton 10 July 2005
- * 
- * No command line options.
- * Program runs for 5 seconds then exits, outputing framerate to console
+ * Ported to X/EGL/GLES.   XXX Actually, uses full OpenGL ATM.
+ * Brian Paul
+ * 30 May 2008
  */
 
-#define EGL_EGLEXT_PROTOTYPES
+/*
+ * Command line options:
+ *    -info      print GL implementation information
+ *
+ */
 
-#include <assert.h>
+
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/keysym.h>
 #include <GL/gl.h>
 #include <EGL/egl.h>
-#include <EGL/eglext.h>
 
-#define MAX_CONFIGS 10
-#define MAX_MODES 100
 
 #define BENCHMARK
 
@@ -83,6 +85,7 @@ current_time(void)
 #endif /*BENCHMARK*/
 
 
+
 #ifndef M_PI
 #define M_PI 3.14159265
 #endif
@@ -92,11 +95,7 @@ static GLfloat view_rotx = 20.0, view_roty = 30.0, view_rotz = 0.0;
 static GLint gear1, gear2, gear3;
 static GLfloat angle = 0.0;
 
-#if 0
-static GLfloat eyesep = 5.0;		/* Eye separation. */
-static GLfloat fix_point = 40.0;	/* Fixation point distance.  */
-static GLfloat left, right, asp;	/* Stereo frustum params.  */
-#endif
+static GLboolean fullscreen = GL_FALSE;	/* Create a single fullscreen window */
 
 
 /*
@@ -274,13 +273,13 @@ draw(void)
 static void
 reshape(int width, int height)
 {
-   glViewport(0, 0, (GLint) width, (GLint) height);
+   GLfloat ar = (GLfloat) width / (GLfloat) height;
 
-   GLfloat h = (GLfloat) height / (GLfloat) width;
+   glViewport(0, 0, (GLint) width, (GLint) height);
 
    glMatrixMode(GL_PROJECTION);
    glLoadIdentity();
-   glFrustum(-1.0, 1.0, -h, h, 5.0, 60.0);
+   glFrustum(-ar, ar, -1, 1, 5.0, 60.0);
    
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
@@ -323,156 +322,287 @@ init(void)
    glEndList();
 
    glEnable(GL_NORMALIZE);
+
+   glClearColor(0.2, 0.2, 0.2, 0.0);
 }
 
 
-
-
-static void run_gears(EGLDisplay dpy, EGLSurface surf, int ttr)
+/*
+ * Create an RGB, double-buffered X window.
+ * Return the window and context handles.
+ */
+static void
+make_x_window(Display *x_dpy, EGLDisplay egl_dpy,
+              const char *name,
+              int x, int y, int width, int height,
+              Window *winRet,
+              EGLContext *ctxRet,
+              EGLSurface *surfRet)
 {
-	double st = current_time();
-	double ct = st;
-	int frames = 0;
-	while (ct - st < ttr)
-	{
-		double tt = current_time();
-		double dt = tt - ct;
-		ct = tt;
-		
-		/* advance rotation for next frame */
-		angle += 70.0 * dt;  /* 70 degrees per second */
-		if (angle > 3600.0)
-			angle -= 3600.0;
-		
-		draw();
-		
-		eglSwapBuffers(dpy, surf);
-	
-		
-		frames++;
-	}
-	
-	GLfloat seconds = ct - st;
-	GLfloat fps = frames / seconds;
-	printf("%d frames in %3.1f seconds = %6.3f FPS\n", frames, seconds, fps);
-	
+   static const EGLint attribs[] = {
+      EGL_RED_SIZE, 1,
+      EGL_GREEN_SIZE, 1,
+      EGL_BLUE_SIZE, 1,
+      /*EGL_DOUBLEBUFFER,*/
+      EGL_DEPTH_SIZE, 1,
+      EGL_NONE
+   };
+
+   int scrnum;
+   XSetWindowAttributes attr;
+   unsigned long mask;
+   Window root;
+   Window win;
+   XVisualInfo *visInfo, visTemplate;
+   int num_visuals;
+   EGLContext ctx;
+   EGLConfig config;
+   EGLint num_configs, vid;
+
+   scrnum = DefaultScreen( x_dpy );
+   root = RootWindow( x_dpy, scrnum );
+
+   if (fullscreen) {
+      x = 0; y = 0;
+      width = DisplayWidth( x_dpy, scrnum );
+      height = DisplayHeight( x_dpy, scrnum );
+   }
+
+   if (!eglChooseConfig( egl_dpy, attribs, &config, 1, &num_configs)) {
+      printf("Error: couldn't get an EGL visual config\n");
+      exit(1);
+   }
+
+   if (!eglGetConfigAttrib(egl_dpy, config, EGL_NATIVE_VISUAL_ID, &vid)) {
+      printf("Error: eglGetConfigAttrib() failed\n");
+      exit(1);
+   }
+
+   /* The X window visual must match the EGL config */
+   visTemplate.visualid = vid;
+   visInfo = XGetVisualInfo(x_dpy, VisualIDMask, &visTemplate, &num_visuals);
+   if (!visInfo) {
+      printf("Error: couldn't get X visual\n");
+      exit(1);
+   }
+
+   /* window attributes */
+   attr.background_pixel = 0;
+   attr.border_pixel = 0;
+   attr.colormap = XCreateColormap( x_dpy, root, visInfo->visual, AllocNone);
+   attr.event_mask = StructureNotifyMask | ExposureMask | KeyPressMask;
+   attr.override_redirect = fullscreen;
+   mask = CWBackPixel | CWBorderPixel | CWColormap | CWEventMask | CWOverrideRedirect;
+
+   win = XCreateWindow( x_dpy, root, 0, 0, width, height,
+		        0, visInfo->depth, InputOutput,
+		        visInfo->visual, mask, &attr );
+
+   /* set hints and properties */
+   {
+      XSizeHints sizehints;
+      sizehints.x = x;
+      sizehints.y = y;
+      sizehints.width  = width;
+      sizehints.height = height;
+      sizehints.flags = USSize | USPosition;
+      XSetNormalHints(x_dpy, win, &sizehints);
+      XSetStandardProperties(x_dpy, win, name, name,
+                              None, (char **)NULL, 0, &sizehints);
+   }
+
+   eglBindAPI(EGL_OPENGL_API);
+
+   ctx = eglCreateContext(egl_dpy, config, EGL_NO_CONTEXT, NULL );
+   if (!ctx) {
+      printf("Error: glXCreateContext failed\n");
+      exit(1);
+   }
+
+   *surfRet = eglCreateWindowSurface(egl_dpy, config, win, NULL);
+
+   XFree(visInfo);
+
+   *winRet = win;
+   *ctxRet = ctx;
 }
 
+
+static void
+event_loop(Display *dpy, Window win,
+           EGLDisplay egl_dpy, EGLSurface egl_surf)
+{
+   while (1) {
+      while (XPending(dpy) > 0) {
+         XEvent event;
+         XNextEvent(dpy, &event);
+         switch (event.type) {
+	 case Expose:
+            /* we'll redraw below */
+	    break;
+	 case ConfigureNotify:
+	    reshape(event.xconfigure.width, event.xconfigure.height);
+	    break;
+         case KeyPress:
+            {
+               char buffer[10];
+               int r, code;
+               code = XLookupKeysym(&event.xkey, 0);
+               if (code == XK_Left) {
+                  view_roty += 5.0;
+               }
+               else if (code == XK_Right) {
+                  view_roty -= 5.0;
+               }
+               else if (code == XK_Up) {
+                  view_rotx += 5.0;
+               }
+               else if (code == XK_Down) {
+                  view_rotx -= 5.0;
+               }
+               else {
+                  r = XLookupString(&event.xkey, buffer, sizeof(buffer),
+                                    NULL, NULL);
+                  if (buffer[0] == 27) {
+                     /* escape */
+                     return;
+                  }
+               }
+            }
+         }
+      }
+
+      {
+         static int frames = 0;
+         static double tRot0 = -1.0, tRate0 = -1.0;
+         double dt, t = current_time();
+         if (tRot0 < 0.0)
+            tRot0 = t;
+         dt = t - tRot0;
+         tRot0 = t;
+
+         /* advance rotation for next frame */
+         angle += 70.0 * dt;  /* 70 degrees per second */
+         if (angle > 3600.0)
+             angle -= 3600.0;
+
+         draw();
+         eglSwapBuffers(egl_dpy, egl_surf);
+
+         frames++;
+
+         if (tRate0 < 0.0)
+            tRate0 = t;
+         if (t - tRate0 >= 5.0) {
+            GLfloat seconds = t - tRate0;
+            GLfloat fps = frames / seconds;
+            printf("%d frames in %3.1f seconds = %6.3f FPS\n", frames, seconds,
+                   fps);
+            tRate0 = t;
+            frames = 0;
+         }
+      }
+   }
+}
+
+
+static void
+usage(void)
+{
+   printf("Usage:\n");
+   printf("  -display <displayname>  set the display to run on\n");
+   printf("  -fullscreen             run in fullscreen mode\n");
+   printf("  -info                   display OpenGL renderer info\n");
+}
+ 
 
 int
 main(int argc, char *argv[])
 {
-	int maj, min;
-	EGLContext ctx;
-	EGLSurface screen_surf;
-	EGLConfig configs[MAX_CONFIGS];
-	EGLint numConfigs, i;
-	EGLBoolean b;
-	EGLDisplay d;
-	EGLint screenAttribs[10];
-	EGLModeMESA mode[MAX_MODES];
-	EGLScreenMESA screen;
-	EGLint count, chosenMode;
-	GLboolean printInfo = GL_FALSE;
-	EGLint width = 0, height = 0;
-	
-        /* parse cmd line args */
-	for (i = 1; i < argc; i++)
-	{
-		if (strcmp(argv[i], "-info") == 0)
-		{
-			printInfo = GL_TRUE;
-		}
-		else
-			printf("Warning: unknown parameter: %s\n", argv[i]);
-	}
-	
-	/* DBR : Create EGL context/surface etc */
-	d = eglGetDisplay((EGLNativeDisplayType)"!EGL_i915");
-	assert(d);
+   const int winWidth = 300, winHeight = 300;
+   Display *x_dpy;
+   Window win;
+   EGLSurface egl_surf;
+   EGLContext egl_ctx;
+   EGLDisplay egl_dpy;
+   char *dpyName = NULL;
+   GLboolean printInfo = GL_FALSE;
+   EGLint egl_major, egl_minor;
+   int i;
+   const char *s;
 
-	if (!eglInitialize(d, &maj, &min)) {
-		printf("eglgears: eglInitialize failed\n");
-		exit(1);
-	}
-	
-	printf("eglgears: EGL version = %d.%d\n", maj, min);
-	printf("eglgears: EGL_VENDOR = %s\n", eglQueryString(d, EGL_VENDOR));
-	
-        /* XXX use ChooseConfig */
-	eglGetConfigs(d, configs, MAX_CONFIGS, &numConfigs);
-	eglGetScreensMESA(d, &screen, 1, &count);
+   for (i = 1; i < argc; i++) {
+      if (strcmp(argv[i], "-display") == 0) {
+         dpyName = argv[i+1];
+         i++;
+      }
+      else if (strcmp(argv[i], "-info") == 0) {
+         printInfo = GL_TRUE;
+      }
+      else if (strcmp(argv[i], "-fullscreen") == 0) {
+         fullscreen = GL_TRUE;
+      }
+      else {
+         usage();
+         return -1;
+      }
+   }
 
-	if (!eglGetModesMESA(d, screen, mode, MAX_MODES, &count) || count == 0) {
-		printf("eglgears: eglGetModesMESA failed!\n");
-		return 0;
-	}
+   x_dpy = XOpenDisplay(dpyName);
+   if (!x_dpy) {
+      printf("Error: couldn't open display %s\n",
+	     dpyName ? dpyName : getenv("DISPLAY"));
+      return -1;
+   }
 
-        /* Print list of modes, and find the one to use */
-	printf("eglgears: Found %d modes:\n", count);
-	for (i = 0; i < count; i++) {
-		EGLint w, h;
-		eglGetModeAttribMESA(d, mode[i], EGL_WIDTH, &w);
-		eglGetModeAttribMESA(d, mode[i], EGL_HEIGHT, &h);
-		printf("%3d: %d x %d\n", i, w, h);
-		if (w > width && h > height && w <= 1280 && h <= 1024) {
-			width = w;
-			height = h;
-                        chosenMode = i;
-		}
-	}
-	printf("eglgears: Using screen mode/size %d: %d x %d\n", chosenMode, width, height);
+   egl_dpy = eglGetDisplay(x_dpy);
+   if (!egl_dpy) {
+      printf("Error: eglGetDisplay() failed\n");
+      return -1;
+   }
 
-	ctx = eglCreateContext(d, configs[0], EGL_NO_CONTEXT, NULL);
-	if (ctx == EGL_NO_CONTEXT) {
-		printf("eglgears: failed to create context\n");
-		return 0;
-	}
-	
-	/* build up screenAttribs array */
-	i = 0;
-	screenAttribs[i++] = EGL_WIDTH;
-	screenAttribs[i++] = width;
-	screenAttribs[i++] = EGL_HEIGHT;
-	screenAttribs[i++] = height;
-	screenAttribs[i++] = EGL_NONE;
+   if (!eglInitialize(egl_dpy, &egl_major, &egl_minor)) {
+      printf("Error: eglInitialize() failed\n");
+      return -1;
+   }
 
-	screen_surf = eglCreateScreenSurfaceMESA(d, configs[0], screenAttribs);
-	if (screen_surf == EGL_NO_SURFACE) {
-		printf("eglgears: failed to create screen surface\n");
-		return 0;
-	}
-	
-	b = eglShowScreenSurfaceMESA(d, screen, screen_surf, mode[chosenMode]);
-	if (!b) {
-		printf("eglgears: show surface failed\n");
-		return 0;
-	}
+   s = eglQueryString(egl_dpy, EGL_VERSION);
+   printf("EGL_VERSION = %s\n", s);
 
-	b = eglMakeCurrent(d, screen_surf, screen_surf, ctx);
-	if (!b) {
-		printf("eglgears: make current failed\n");
-		return 0;
-	}
-	
-	if (printInfo)
-	{
-		printf("GL_RENDERER   = %s\n", (char *) glGetString(GL_RENDERER));
-		printf("GL_VERSION    = %s\n", (char *) glGetString(GL_VERSION));
-		printf("GL_VENDOR     = %s\n", (char *) glGetString(GL_VENDOR));
-		printf("GL_EXTENSIONS = %s\n", (char *) glGetString(GL_EXTENSIONS));
-	}
-	
-	init();
-	reshape(width, height);
+   make_x_window(x_dpy, egl_dpy,
+                 "glxgears", 0, 0, winWidth, winHeight,
+                 &win, &egl_ctx, &egl_surf);
 
-        glDrawBuffer( GL_BACK );
+   XMapWindow(x_dpy, win);
+   eglMakeCurrent(egl_dpy, egl_surf, egl_surf, egl_ctx);
 
-	run_gears(d, screen_surf, 5.0);
-	
-	eglDestroySurface(d, screen_surf);
-	eglDestroyContext(d, ctx);
-	eglTerminate(d);
-	
-	return 0;
+   if (printInfo) {
+      printf("GL_RENDERER   = %s\n", (char *) glGetString(GL_RENDERER));
+      printf("GL_VERSION    = %s\n", (char *) glGetString(GL_VERSION));
+      printf("GL_VENDOR     = %s\n", (char *) glGetString(GL_VENDOR));
+   }
+
+   init();
+
+   /* Set initial projection/viewing transformation.
+    * We can't be sure we'll get a ConfigureNotify event when the window
+    * first appears.
+    */
+   reshape(winWidth, winHeight);
+
+   event_loop(x_dpy, win, egl_dpy, egl_surf);
+
+   glDeleteLists(gear1, 1);
+   glDeleteLists(gear2, 1);
+   glDeleteLists(gear3, 1);
+
+   eglDestroyContext(egl_dpy, egl_ctx);
+   eglDestroySurface(egl_dpy, egl_surf);
+   eglTerminate(egl_dpy);
+
+
+   XDestroyWindow(x_dpy, win);
+   XCloseDisplay(x_dpy);
+
+   return 0;
 }

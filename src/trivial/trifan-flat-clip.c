@@ -73,7 +73,7 @@ static void Draw(void)
    glShadeModel(GL_FLAT);
    
 
-   glBegin(GL_POLYGON);
+   glBegin(GL_TRIANGLE_FAN);
    glColor3f(1,0,0); 
    glVertex3f( 0, 0, -30.0);
    glColor3f(1,1,0); 

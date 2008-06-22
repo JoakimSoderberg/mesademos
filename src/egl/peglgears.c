@@ -362,19 +362,16 @@ static void run_gears(EGLDisplay dpy, EGLSurface surf, int ttr)
 int
 main(int argc, char *argv[])
 {
-	int maj, min;
+	int major, minor;
 	EGLContext ctx;
-	EGLSurface screen_surf;
+	EGLSurface surface;
 	EGLConfig configs[MAX_CONFIGS];
 	EGLint numConfigs, i;
 	EGLBoolean b;
 	EGLDisplay d;
 	EGLint screenAttribs[10];
-	EGLModeMESA mode[MAX_MODES];
-	EGLScreenMESA screen;
-	EGLint count, chosenMode;
 	GLboolean printInfo = GL_FALSE;
-	EGLint width = 0, height = 0;
+	EGLint width = 300, height = 300;
 	
         /* parse cmd line args */
 	for (i = 1; i < argc; i++)
@@ -391,41 +388,21 @@ main(int argc, char *argv[])
 	d = eglGetDisplay((EGLNativeDisplayType)"!EGL_i915");
 	assert(d);
 
-	if (!eglInitialize(d, &maj, &min)) {
-		printf("eglgears: eglInitialize failed\n");
-		exit(1);
-	}
-	
-	printf("eglgears: EGL version = %d.%d\n", maj, min);
-	printf("eglgears: EGL_VENDOR = %s\n", eglQueryString(d, EGL_VENDOR));
-	
-        /* XXX use ChooseConfig */
-	eglGetConfigs(d, configs, MAX_CONFIGS, &numConfigs);
-	eglGetScreensMESA(d, &screen, 1, &count);
-
-	if (!eglGetModesMESA(d, screen, mode, MAX_MODES, &count) || count == 0) {
-		printf("eglgears: eglGetModesMESA failed!\n");
+	if (!eglInitialize(d, &major, &minor)) {
+		printf("peglgears: eglInitialize failed\n");
 		return 0;
 	}
 
-        /* Print list of modes, and find the one to use */
-	printf("eglgears: Found %d modes:\n", count);
-	for (i = 0; i < count; i++) {
-		EGLint w, h;
-		eglGetModeAttribMESA(d, mode[i], EGL_WIDTH, &w);
-		eglGetModeAttribMESA(d, mode[i], EGL_HEIGHT, &h);
-		printf("%3d: %d x %d\n", i, w, h);
-		if (w > width && h > height && w <= 1280 && h <= 1024) {
-			width = w;
-			height = h;
-                        chosenMode = i;
-		}
-	}
-	printf("eglgears: Using screen mode/size %d: %d x %d\n", chosenMode, width, height);
+	printf("peglgears: EGL version = %d.%d\n", major, minor);
+	printf("peglgears: EGL_VENDOR = %s\n", eglQueryString(d, EGL_VENDOR));
+
+	eglGetConfigs(d, configs, MAX_CONFIGS, &numConfigs);
+
+	eglBindAPI(EGL_OPENGL_API);
 
 	ctx = eglCreateContext(d, configs[0], EGL_NO_CONTEXT, NULL);
 	if (ctx == EGL_NO_CONTEXT) {
-		printf("eglgears: failed to create context\n");
+		printf("peglgears: failed to create context\n");
 		return 0;
 	}
 	
@@ -437,21 +414,15 @@ main(int argc, char *argv[])
 	screenAttribs[i++] = height;
 	screenAttribs[i++] = EGL_NONE;
 
-	screen_surf = eglCreateScreenSurfaceMESA(d, configs[0], screenAttribs);
-	if (screen_surf == EGL_NO_SURFACE) {
-		printf("eglgears: failed to create screen surface\n");
+	surface = eglCreatePbufferSurface(d, configs[0], screenAttribs);
+	if (surface == EGL_NO_SURFACE) {
+		printf("peglgears: failed to create pbuffer surface\n");
 		return 0;
 	}
 	
-	b = eglShowScreenSurfaceMESA(d, screen, screen_surf, mode[chosenMode]);
+	b = eglMakeCurrent(d, surface, surface, ctx);
 	if (!b) {
-		printf("eglgears: show surface failed\n");
-		return 0;
-	}
-
-	b = eglMakeCurrent(d, screen_surf, screen_surf, ctx);
-	if (!b) {
-		printf("eglgears: make current failed\n");
+		printf("peglgears: make current failed\n");
 		return 0;
 	}
 	
@@ -466,11 +437,11 @@ main(int argc, char *argv[])
 	init();
 	reshape(width, height);
 
-        glDrawBuffer( GL_BACK );
+	glDrawBuffer( GL_BACK );
 
-	run_gears(d, screen_surf, 5.0);
+	run_gears(d, surface, 5.0);
 	
-	eglDestroySurface(d, screen_surf);
+	eglDestroySurface(d, surface);
 	eglDestroyContext(d, ctx);
 	eglTerminate(d);
 	

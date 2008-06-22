@@ -70,18 +70,16 @@ static void Key(unsigned char key, int x, int y)
 static void Draw(void)
 {
    glClear(GL_COLOR_BUFFER_BIT); 
-   glShadeModel(GL_FLAT);
-   
 
-   glBegin(GL_POLYGON);
+   glBegin(GL_TRIANGLE_FAN);
    glColor3f(1,0,0); 
-   glVertex3f( 0, 0, -30.0);
+   glVertex3f( 0.9, -0.9, -30.0);
    glColor3f(1,1,0); 
-   glVertex3f( 1.3,  1.1, -30.0);
+   glVertex3f( 0.9,  0.9, -30.0);
    glColor3f(1,0,1); 
-   glVertex3f(-.9,  .9, -30.0);
+   glVertex3f(-0.9,  0.9, -30.0);
    glColor3f(0,1,1); 
-   glVertex3f(-1.1,  -1.3, -30.0);
+   glVertex3f(-0.9,  -0.9, -30.0);
    glEnd();
 
    glFlush();
@@ -122,7 +120,7 @@ int main(int argc, char **argv)
 
     glutInitWindowPosition(0, 0); glutInitWindowSize( 250, 250);
 
-    type = GLUT_RGB;
+    type = GLUT_RGB | GLUT_ALPHA;
     type |= (doubleBuffer) ? GLUT_DOUBLE : GLUT_SINGLE;
     glutInitDisplayMode(type);
 

@@ -27,11 +27,6 @@
 #include <stdlib.h>
 #include <GL/glut.h>
 
-
-#define CI_OFFSET_1 16
-#define CI_OFFSET_2 32
-
-
 GLenum doubleBuffer = 1;
 int win;
 
@@ -46,13 +41,13 @@ static void Init(void)
 
 static void Reshape(int width, int height)
 {
-
-   glViewport(0, 0, (GLint)width, (GLint)height);
+   glViewport(width / -2.0, height / -2.0, width, height);
 
    glMatrixMode(GL_PROJECTION);
    glLoadIdentity();
    glOrtho(-1.0, 1.0, -1.0, 1.0, -0.5, 1000.0);
    glMatrixMode(GL_MODELVIEW);
+   glLoadIdentity();
 }
 
 static void Key(unsigned char key, int x, int y)
@@ -72,11 +67,11 @@ static void Draw(void)
 
    glBegin(GL_TRIANGLES);
    glColor3f(.8,0,0); 
-   glVertex3f(-0.9, -0.9, -30.0);
+   glVertex3f(-0.9,  0.9, -30.0);
    glColor3f(0,.9,0); 
-   glVertex3f( 0.9, -0.9, -30.0);
+   glVertex3f( 0.9,  0.9, -30.0);
    glColor3f(0,0,.7); 
-   glVertex3f( 0.0,  0.9, -30.0);
+   glVertex3f( 0.0, -0.9, -30.0);
    glEnd();
 
    glFlush();

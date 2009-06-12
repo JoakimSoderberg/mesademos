@@ -165,7 +165,7 @@ enum {
 };
 
 /* Create a matrix that will project the desired shadow. */
-void
+static void
 shadowMatrix(GLfloat shadowMat[4][4],
   GLfloat groundplane[4],
   GLfloat lightpos[4])
@@ -201,7 +201,7 @@ shadowMatrix(GLfloat shadowMat[4][4],
 }
 
 /* Find the plane equation given 3 points. */
-void
+static void
 findPlane(GLfloat plane[4],
   GLfloat v0[3], GLfloat v1[3], GLfloat v2[3])
 {
@@ -224,7 +224,7 @@ findPlane(GLfloat plane[4],
   plane[D] = -(plane[A] * v0[X] + plane[B] * v0[Y] + plane[C] * v0[Z]);
 }
 
-void
+static void
 extrudeSolidFromPolygon(GLfloat data[][2], unsigned int dataSize,
   GLdouble thickness, GLuint side, GLuint edge, GLuint whole)
 {
@@ -382,7 +382,7 @@ static GLfloat floorShadow[4][4];
 static void
 redraw(void)
 {
-  int start, end;
+  int start = 0, end = 0;
 
   if (reportSpeed) {
     start = glutGet(GLUT_ELAPSED_TIME);
@@ -624,6 +624,7 @@ redraw(void)
     glFinish();
     end = glutGet(GLUT_ELAPSED_TIME);
     printf("Speed %.3g frames/sec (%d ms)\n", 1000.0/(end-start), end-start);
+    fflush(stdout);
   }
 
   glutSwapBuffers();
@@ -878,6 +879,7 @@ main(int argc, char **argv)
       polygonOffsetVersion = MISSING;
       printf("\ndinoshine: Missing polygon offset.\n");
       printf("           Expect shadow depth aliasing artifacts.\n\n");
+      fflush(stdout);
     }
   }
 

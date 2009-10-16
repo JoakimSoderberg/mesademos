@@ -1,4 +1,4 @@
-# Copyright © 2009 Intel Corporation
+# Copyright © 2010 Intel Corporation
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -22,21 +22,44 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	util \
-	demos \
-	fp \
-	glsl \
-	perf \
-	rbug \
-	redbook \
-	samples \
-	slang \
-	tests \
-	tools \
-	trivial \
-	vp \
-	vpglsl \
-	wgl \
-	windml \
-	xdemos
+if HAVE_GLUT
+noinst_LTLIBRARIES = libperf.la
+
+libperf_la_SOURCES = \
+	common.c \
+	common.h \
+	glmain.c \
+	glmain.h
+
+AM_CFLAGS = \
+	$(DEMO_CFLAGS) \
+	$(GLUT_CFLAGS) \
+	-I$(top_srcdir)/src/util
+
+AM_LDFLAGS = \
+	$(DEMO_LIBS) \
+	$(GLUT_LIBS)
+
+bin_PROGRAMS = \
+	copytex \
+	drawoverhead \
+	fbobind \
+	fill \
+	genmipmap \
+	readpixels \
+	swapbuffers \
+	teximage \
+	vbo \
+	vertexrate
+endif
+
+copytex_LDADD = libperf.la
+drawoverhead_LDADD = libperf.la
+fbobind_LDADD = libperf.la
+fill_LDADD = libperf.la
+genmipmap_LDADD = libperf.la
+readpixels_LDADD = libperf.la
+swapbuffers_LDADD = libperf.la
+teximage_LDADD = libperf.la
+vbo_LDADD = libperf.la
+vertexrate_LDADD = libperf.la

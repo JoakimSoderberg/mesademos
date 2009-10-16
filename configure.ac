@@ -177,6 +177,7 @@ AC_OUTPUT([
 	src/demos/Makefile
 	src/fp/Makefile
 	src/glsl/Makefile
+	src/perf/Makefile
 	src/rbug/Makefile
 	src/redbook/Makefile
 	src/samples/Makefile

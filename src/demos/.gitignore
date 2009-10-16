@@ -37,13 +37,9 @@ projtex
 rain
 ray
 readpix
-readtex.c
-readtex.h
 reflect
 renormal
 shadowtex
-showbuffer.c
-showbuffer.h
 singlebuffer
 spectex
 spriteblast
@@ -57,8 +53,6 @@ texdown
 texenv
 texobj
 textures
-trackball.c
-trackball.h
 trispd
 tunnel
 tunnel2

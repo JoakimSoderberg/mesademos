@@ -22,19 +22,72 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	util \
-	demos \
-	fp \
-	glsl \
-	redbook \
-	samples \
-	slang \
-	tests \
-	tools \
-	trivial \
-	vp \
-	vpglsl \
-	wgl \
-	windml \
-	xdemos
+if HAVE_GLUT
+noinst_PROGRAMS = \
+	aaindex \
+	aapoly \
+	aargb \
+	accanti \
+	accpersp \
+	alpha \
+	alpha3D \
+	anti \
+	bezcurve \
+	bezmesh \
+	checker \
+	clip \
+	colormat \
+	cube \
+	depthcue \
+	dof \
+	double \
+	drawf \
+	feedback \
+	fog \
+	fogindex \
+	font \
+	hello \
+	image \
+	light \
+	lines \
+	list \
+	material \
+	mipmap \
+	model \
+	movelight \
+	nurbs \
+	pickdepth \
+	picksquare \
+	plane \
+	planet \
+	polyoff \
+	polys \
+	quadric \
+	robot \
+	sccolorlight \
+	scene \
+	scenebamb \
+	sceneflat \
+	select \
+	smooth \
+	stencil \
+	stroke \
+	surface \
+	teaambient \
+	teapots \
+	tess \
+	tesswind \
+	texbind \
+	texgen \
+	texprox \
+	texsub \
+	texturesurf \
+	torus \
+	trim \
+	unproject \
+	varray \
+	wrap
+endif
+
+EXTRA_DIST = \
+	README

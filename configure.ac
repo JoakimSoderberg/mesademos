@@ -169,6 +169,7 @@ AC_SUBST([X11_LIBS])
 
 AM_CONDITIONAL(HAVE_GLUT, test "x$glut_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_X11, test "x$x11_enabled" = "xyes")
+AM_CONDITIONAL(BUILD_GLTRACE, false)
 
 AC_OUTPUT([
 	Makefile
@@ -176,6 +177,8 @@ AC_OUTPUT([
 	src/demos/Makefile
 	src/fp/Makefile
 	src/glsl/Makefile
+	src/tools/Makefile
+	src/tools/trace/Makefile
 	src/trivial/Makefile
 	src/util/Makefile
 	src/vp/Makefile

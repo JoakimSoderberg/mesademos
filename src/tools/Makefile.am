@@ -22,15 +22,10 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	util \
-	demos \
-	fp \
-	glsl \
-	tools \
-	trivial \
-	vp \
-	vpglsl \
-	wgl \
-	windml \
-	xdemos
+if BUILD_GLTRACE
+GLTRACE = trace
+endif
+
+DIST_SUBDIRS = trace
+
+SUBDIRS = $(GLTRACE)

@@ -22,15 +22,25 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	util \
-	demos \
-	fp \
-	glsl \
-	tools \
-	trivial \
-	vp \
-	vpglsl \
-	wgl \
-	windml \
-	xdemos
+lib_LTLIBRARIES = libgltrace.la
+
+libgltrace_la_SOURCES = \
+	gltrace_support.cc \
+	gltrace_support.h
+nodist_libgltrace_la_SOURCES = \
+	gltrace.cc
+
+gltrace.cc: gltrace.py
+	PYTHONPATH=$(MESADIR)/src/mesa/glapi python gltrace.py \
+		-f $(MESADIR)/src/mesa/glapi/gl_API.xml > gltrace.cc
+
+BUILT_SOURCES = \
+	gltrace.cc
+CLEANFILES = \
+	$(BUILT_SOURCES)
+
+MESADIR = $(HOME)/src/mesa
+
+EXTRA_DIST = \
+	gltrace.py \
+	README

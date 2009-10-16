@@ -22,10 +22,78 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	util \
-	demos \
-	fp \
-	glsl \
-	trivial
+# These programs aren't intended to be included with the normal distro.
+# They're not too interesting but they're good for testing.
 
+AM_CFLAGS = \
+	$(DEMO_CFLAGS) \
+	$(GLUT_CFLAGS) \
+	-I$(top_srcdir)/src/util
+AM_LDFLAGS = \
+	$(DEMO_LIBS) \
+	$(GLUT_LIBS)
+
+if HAVE_GLUT
+noinst_PROGRAMS = \
+	tri-tex \
+	point-position \
+	tri-depth \
+	tri-depth2 \
+	tri-depthwrite \
+	tri-depthwrite2 \
+	tri-param \
+	fp-tri
+endif
+
+EXTRA_DIST = \
+	tri-txb.c \
+	tri-txp.c \
+	tri-depthwrite.c \
+	tri-fogoption.c \
+	abs.txt \
+	add-sat.txt \
+	add-swz.txt \
+	add.txt \
+	cmp.txt \
+	cos.txt \
+	dp3.txt \
+	dp4.txt \
+	dph.txt \
+	dst.txt \
+	ex2.txt \
+	flr.txt \
+	frc.txt \
+	kil-pos.txt \
+	kil-texcoord-sgt.txt \
+	kil.txt \
+	lg2.txt \
+	lit.txt \
+	local.txt \
+	lrp.txt \
+	mad.txt \
+	max.txt \
+	min.txt \
+	mov-alias.txt \
+	mov.txt \
+	mul-alias.txt \
+	mul-swz.txt \
+	mul.txt \
+	negate.txt \
+	position.txt \
+	pow.txt \
+	rcp.txt \
+	rsq.txt \
+	scs.txt \
+	sge2.txt \
+	sge.txt \
+	sin.txt \
+	slt.txt \
+	sub.txt \
+	swz2.txt \
+	swz3.txt \
+	swz.txt \
+	tex-pos-kil-1.txt \
+	tex-pos-kil.txt \
+	tex-pos.txt \
+	tex.txt \
+	xpd.txt

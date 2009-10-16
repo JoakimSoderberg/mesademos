@@ -34,7 +34,6 @@ drawbuffers
 drawbuffers2
 exactrast
 ext422square
-extfuncs.h
 fbotest1
 fbotest2
 fbotest3
@@ -73,15 +72,11 @@ prog_parameter
 quads
 random
 readrate
-readtex.c
-readtex.h
 rubberband
 scissor
 scissor-viewport
 seccolor
 shader_api
-shaderutil.c
-shaderutil.h
 sharedtex
 stencilreaddraw
 stencil_twoside
@@ -94,6 +89,7 @@ tex1d
 texcmp
 texcompress2
 texcompsub
+texcmp
 texdown
 texfilt
 texgenmix

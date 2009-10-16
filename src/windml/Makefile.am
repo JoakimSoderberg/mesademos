@@ -22,12 +22,22 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	util \
-	demos \
-	fp \
-	glsl \
-	trivial \
-	vp \
-	windml \
-	xdemos
+EXTRA_DIST = \
+	Makefile.ugl \
+	readtex.c \
+	uglaccum.c \
+	uglalldemos.c \
+	uglbounce.c \
+	uglcube.c \
+	ugldrawpix.c \
+	uglflip.c \
+	uglgears.c \
+	uglicotorus.c \
+	uglline.c \
+	uglolympic.c \
+	uglpoint.c \
+	uglstencil.c \
+	uglteapot.c \
+	ugltexcube.c \
+	ugltexcyl.c \
+	wrs_logo.bmp

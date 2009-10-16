@@ -31,8 +31,8 @@ nodist_libgltrace_la_SOURCES = \
 	gltrace.cc
 
 gltrace.cc: gltrace.py
-	PYTHONPATH=$(MESADIR)/src/mesa/glapi python gltrace.py \
-		-f $(MESADIR)/src/mesa/glapi/gl_API.xml > gltrace.cc
+	PYTHONPATH=$(MESA_GLAPI) python gltrace.py \
+		-f $(MESA_GLAPI)/gl_API.xml > gltrace.cc
 
 BUILT_SOURCES = \
 	gltrace.cc

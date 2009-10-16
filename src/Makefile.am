@@ -27,6 +27,7 @@ SUBDIRS = \
 	demos \
 	fp \
 	glsl \
+	tests \
 	tools \
 	trivial \
 	vp \

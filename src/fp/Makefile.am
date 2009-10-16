@@ -46,10 +46,6 @@ noinst_PROGRAMS = \
 endif
 
 EXTRA_DIST = \
-	tri-txb.c \
-	tri-txp.c \
-	tri-depthwrite.c \
-	tri-fogoption.c \
 	abs.txt \
 	add-sat.txt \
 	add-swz.txt \

@@ -28,6 +28,7 @@ AM_CFLAGS = \
 noinst_LTLIBRARIES = libutil.la
 
 libutil_la_SOURCES = \
+	extfuncs.h \
 	readtex.c \
 	readtex.h \
 	shaderutil.c \

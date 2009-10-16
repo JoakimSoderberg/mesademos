@@ -22,13 +22,8 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	util \
-	demos \
-	fp \
-	glsl \
-	trivial \
-	vp \
-	wgl \
-	windml \
-	xdemos
+EXTRA_DIST = \
+	wglinfo.c \
+	wglthreads/wglthreads.c \
+	sharedtex_mt/sharedtex_mt.c
+

@@ -22,14 +22,32 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	util \
-	demos \
-	fp \
-	glsl \
-	trivial \
-	vp \
-	vpglsl \
-	wgl \
-	windml \
-	xdemos
+# These programs aren't intended to be included with the normal distro.
+# They're not too interesting but they're good for testing.
+
+AM_CFLAGS = \
+	$(DEMO_CFLAGS) \
+	$(GLUT_CFLAGS) \
+	-I$(top_srcdir)/src/util
+AM_LDFLAGS = \
+	$(DEMO_LIBS) \
+	$(GLUT_LIBS)
+
+if HAVE_GLUT
+noinst_PROGRAMS = \
+	vp-tris
+endif
+
+EXTRA_DIST = \
+	for.glsl \
+	ifelse.glsl \
+	if.glsl \
+	mov.glsl \
+	nestedifs.glsl \
+	nestedswizzle.glsl \
+	off2f.glsl \
+	psiz-imm.glsl \
+	psiz-mul.glsl \
+	varfor1f.glsl \
+	varfor2f.glsl \
+	varfor4f.glsl

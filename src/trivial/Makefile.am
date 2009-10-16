@@ -192,6 +192,3 @@ bin_PROGRAMS = \
 	vp-tri-tex \
 	vp-unfilled
 endif
-
-EXTRA_DIST = \
-	README

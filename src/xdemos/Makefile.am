@@ -32,7 +32,6 @@ AM_LDFLAGS = \
 
 if HAVE_X11
 bin_PROGRAMS = \
-	corender.c \
 	corender \
 	glsync \
 	glthreads \

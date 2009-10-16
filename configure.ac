@@ -174,4 +174,7 @@ AC_OUTPUT([
 	Makefile
 	src/Makefile
 	src/demos/Makefile
+	src/glsl/Makefile
+	src/trivial/Makefile
+	src/util/Makefile
 ])

@@ -30,6 +30,8 @@ noinst_LTLIBRARIES = libutil.la
 libutil_la_SOURCES = \
 	readtex.c \
 	readtex.h \
+	shaderutil.c \
+	shaderutil.h \
 	showbuffer.c \
 	showbuffer.h \
 	trackball.c \

@@ -16,12 +16,8 @@ noise
 noise2
 pointcoord
 points
-readtex.c
-readtex.h
 samplers
 samplers_array
-shaderutil.c
-shaderutil.h
 shadow_sampler
 shtest
 skinning

@@ -24,4 +24,7 @@
 
 SUBDIRS = \
 	util \
-	demos
+	demos \
+	glsl \
+	trivial
+

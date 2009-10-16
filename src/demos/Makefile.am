@@ -85,6 +85,10 @@ bin_PROGRAMS = \
 	winpos
 endif
 
+tunnel_SOURCES = \
+	tunnel.c \
+	tunneldat.h
+
 copypix_LDADD = ../util/libutil.la
 cubemap_LDADD = ../util/libutil.la
 drawpix_LDADD = ../util/libutil.la

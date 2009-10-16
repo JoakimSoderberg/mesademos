@@ -22,20 +22,19 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	util \
-	demos \
-	fp \
-	glsl \
-	rbug \
-	redbook \
-	samples \
-	slang \
-	tests \
-	tools \
-	trivial \
-	vp \
-	vpglsl \
-	wgl \
-	windml \
-	xdemos
+if HAVE_MESA_SOURCE
+noinst_PROGRAMS = \
+	bin_to_bmp \
+	simple_client \
+	simple_server \
+	shdr_info \
+	shdr_dump \
+	shdr_disable \
+	ctx_info \
+	ctx_rule \
+	tex_info \
+	tex_dump
+endif
+
+EXTRA_DIST = \
+	README

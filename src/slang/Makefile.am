@@ -22,17 +22,34 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	util \
-	demos \
-	fp \
-	glsl \
-	slang \
-	tests \
-	tools \
-	trivial \
-	vp \
-	vpglsl \
-	wgl \
-	windml \
-	xdemos
+if HAVE_GLUT
+noinst_PROGRAMS = \
+	cltest \
+	sotest \
+	vstest
+endif
+
+cltest_SOURCES = \
+	cltest.c \
+	framework.c \
+	framework.h
+
+sotest_SOURCES = \
+	sotest.c \
+	framework.c \
+	framework.h
+
+vstest_SOURCES = \
+	vstest.c \
+	framework.c \
+	framework.h
+
+tests: cltest sotest vstest
+	! ./sotest 2> /dev/null | (grep -e ^[*][*][*])
+	! ./vstest 2> /dev/null | (grep -e ^[*][*][*])
+	! ./cltest 2> /dev/null | (grep -e ^[*][*][*])
+
+EXTRA_DIST = \
+	README \
+	cltest.txt \
+	vstest.txt

@@ -22,10 +22,59 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	util \
-	demos \
-	fp \
-	glsl \
-	trivial \
-	vp
+# These programs aren't intended to be included with the normal distro.
+# They're not too interesting but they're good for testing.
+
+AM_CFLAGS = \
+	$(DEMO_CFLAGS) \
+	$(GLUT_CFLAGS) \
+	-I$(top_srcdir)/src/util
+AM_LDFLAGS = \
+	$(DEMO_LIBS) \
+	$(GLUT_LIBS)
+
+if HAVE_GLUT
+noinst_PROGRAMS = \
+	vp-tris
+endif
+
+EXTRA_DIST = \
+	abs.txt \
+	addimm.txt \
+	add.txt \
+	arl-static.txt \
+	arl.txt \
+	arl-unused.txt \
+	dp3.txt \
+	dp4.txt \
+	dph.txt \
+	dst.txt \
+	ex2.txt \
+	exp-no-w.txt \
+	exp.txt \
+	flr.txt \
+	frc.txt \
+	lg2.txt \
+	lit.txt \
+	log.txt \
+	mad.txt \
+	max.txt \
+	min.txt \
+	mov.txt \
+	msk.txt \
+	mul.txt \
+	pow.txt \
+	psiz-imm.txt \
+	psiz-mul-clamp.txt \
+	psiz-mul.txt \
+	psiz-param-clamp.txt \
+	rcp.txt \
+	rsq.txt \
+	run.sh \
+	sge.txt \
+	slt.txt \
+	sub.txt \
+	swz2.txt \
+	swz.txt \
+	xform.txt \
+	xpd.txt

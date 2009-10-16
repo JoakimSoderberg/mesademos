@@ -127,6 +127,7 @@ fi
 DEMO_CFLAGS="$DEMO_CFLAGS $CWARNFLAGS"
 
 PKG_CHECK_MODULES(XLIB, [x11 xshape], [enable_x11=no], [enable_x11=yes])
+<<<<<<< HEAD
 
 mesa_source_enabled=no
 AC_ARG_WITH([mesa-source],
@@ -136,6 +137,8 @@ AC_ARG_WITH([mesa-source],
 	 mesa_source_dir="$withval"],
 	[mesa_source_enabled="no"])
 MESA_GLAPI="$mesa_source_dir/src/mesa/glapi"
+=======
+>>>>>>> Convert xdemos Makefile.
 
 dnl
 dnl Program library dependencies
@@ -163,12 +166,9 @@ AC_SUBST([GLUT_CFLAGS])
 AC_SUBST([GLUT_LIBS])
 AC_SUBST([X11_CFLAGS])
 AC_SUBST([X11_LIBS])
-AC_SUBST([MESA_GLAPI])
 
 AM_CONDITIONAL(HAVE_GLUT, test "x$glut_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_X11, test "x$x11_enabled" = "xyes")
-AM_CONDITIONAL(BUILD_GLTRACE, false)
-AM_CONDITIONAL(HAVE_MESA_SOURCE, test "x$mesa_source_enabled" = "xyes")
 
 AC_OUTPUT([
 	Makefile
@@ -179,4 +179,5 @@ AC_OUTPUT([
 	src/trivial/Makefile
 	src/util/Makefile
 	src/vp/Makefile
+	src/xdemos/Makefile
 ])

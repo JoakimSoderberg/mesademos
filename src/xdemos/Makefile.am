@@ -22,11 +22,46 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	util \
-	demos \
-	fp \
-	glsl \
-	trivial \
-	vp \
-	xdemos
+AM_CFLAGS = \
+	$(DEMO_CFLAGS) \
+	$(X11_CFLAGS) \
+	-I$(top_srcdir)/src/util
+AM_LDFLAGS = \
+	$(DEMO_LIBS) \
+	$(X11_LIBS)
+
+if HAVE_X11
+bin_PROGRAMS = \
+	corender.c \
+	corender \
+	glsync \
+	glthreads \
+	glxdemo \
+	glxgears \
+	glxgears_fbconfig \
+	glxgears_pixmap \
+	glxcontexts \
+	glxheads \
+	glxinfo \
+	glxpixmap \
+	glxpbdemo \
+	glxsnoop \
+	glxswapcontrol \
+	manywin \
+	multictx \
+	offset \
+	overlay \
+	pbinfo \
+	pbdemo \
+	shape \
+	sharedtex \
+        sharedtex_mt \
+	texture_from_pixmap \
+	wincopy \
+	xfont \
+	xrotfontdemo
+endif
+
+EXTRA_DIST = \
+	yuvrect_client.c \
+	xdemo.c

@@ -22,18 +22,39 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	util \
-	demos \
-	fp \
-	glsl \
-	samples \
-	slang \
-	tests \
-	tools \
-	trivial \
-	vp \
-	vpglsl \
-	wgl \
-	windml \
-	xdemos
+if HAVE_GLUT
+noinst_PROGRAMS = \
+	accum \
+	bitmap1 \
+	bitmap2 \
+	blendeq \
+	blendxor \
+	copy \
+	cursor \
+	depth \
+	eval \
+	fog \
+	font \
+	line \
+	logo \
+	nurb \
+	olympic \
+	overlay \
+	point \
+	prim \
+	quad \
+	select \
+	shape \
+	sphere \
+	star \
+	stencil \
+	stretch \
+	texture \
+	tri \
+	wave
+endif
+
+sphere_LDADD = ../util/libutil.la
+
+EXTRA_DIST = \
+	README

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2007 Intel Corporation
+ * Copyright © 2007-2010 Intel Corporation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -25,7 +25,7 @@
  *
  */
 
-/** @file glsync.c
+/** @file omlsync.c
  * The program is simple:  it paints a window alternating colors (red &
  * white) either as fast as possible or synchronized to vblank events
  *
@@ -42,7 +42,7 @@
  * portion on the other screen may show some tearing (like the
  * waterfall effect above).
  *
- * Other options include '-w <width>' and '-h <height' to set the
+ * Other options include '-w <width>' and '-h <height>' to set the
  * window size.
  */
 #include <stdio.h>
@@ -57,9 +57,19 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 
-void (*video_sync_get)();
-void (*video_sync)();
-void (*swap_interval)();
+Bool (*glXGetSyncValuesOML)(Display *dpy, GLXDrawable drawable,
+			    int64_t *ust, int64_t *msc, int64_t *sbc);
+Bool (*glXGetMscRateOML)(Display *dpy, GLXDrawable drawable, int32_t *numerator,
+			 int32_t *denominator);
+int64_t (*glXSwapBuffersMscOML)(Display *dpy, GLXDrawable drawable,
+				int64_t target_msc, int64_t divisor,
+				int64_t remainder);
+Bool (*glXWaitForMscOML)(Display *dpy, GLXDrawable drawable, int64_t target_msc,
+			 int64_t divisor, int64_t remainder, int64_t *ust,
+			 int64_t *msc, int64_t *sbc);
+Bool (*glXWaitForSbcOML)(Display *dpy, GLXDrawable drawable, int64_t target_sbc,
+			 int64_t *ust, int64_t *msc, int64_t *sbc);
+int (*glXSwapInterval)(int interval);
 
 static int GLXExtensionSupported(Display *dpy, const char *extension)
 {
@@ -78,23 +88,15 @@ static int GLXExtensionSupported(Display *dpy, const char *extension)
 
 extern char *optarg;
 extern int optind, opterr, optopt;
-static char optstr[] = "w:h:s:vi:";
-
-enum sync_type {
-	none = 0,
-	sgi_video_sync,
-	buffer_swap
-};
+static char optstr[] = "w:h:vd:r:n:i:";
 
 static void usage(char *name)
 {
-	printf("usage: %s [-w <width>] [-h <height>] [-s<sync method>] "
-	       "[-v]\n", name);
-	printf("\t-s<sync method>:\n");
-	printf("\t\tn: none\n");
-	printf("\t\ts: SGI video sync extension\n");
-	printf("\t\tb: buffer swap\n");
-	printf("\t-i<swap interval>\n");
+	printf("usage: %s [-w <width>] [-h <height>] ...\n", name);
+	printf("\t-d<divisor> - divisor for OML swap\n");
+	printf("\t-r<remainder> - remainder for OML swap\n");
+	printf("\t-n<interval> - wait interval for OML WaitMSC\n");
+	printf("\t-i<swap interval> - swap at most once every n frames\n");
 	printf("\t-v: verbose (print count)\n");
 	exit(-1);
 }
@@ -104,20 +106,15 @@ int main(int argc, char *argv[])
 	Display *disp;
 	XVisualInfo *pvi;
 	XSetWindowAttributes swa;
-	GLint last_val = -1, count = 0;
 	Window winGL;
 	GLXContext context;
 	int dummy;
 	Atom wmDelete;
-	enum sync_type waitforsync = none;
-	int width = 500, height = 500, verbose = 0, interval = 1;
+	int64_t ust, msc, sbc;
+	int width = 500, height = 500, verbose = 0, divisor = 0, remainder = 0,
+		wait_interval = 0, swap_interval = 1;
 	int c, i = 1;
 	int ret;
-	int attribs[] = { GLX_RGBA,
-                     GLX_RED_SIZE, 1,
-                     GLX_GREEN_SIZE, 1,
-                     GLX_BLUE_SIZE, 1,
-                     None };
 	int db_attribs[] = { GLX_RGBA,
                      GLX_RED_SIZE, 1,
                      GLX_GREEN_SIZE, 1,
@@ -136,27 +133,20 @@ int main(int argc, char *argv[])
 		case 'h':
 			height = atoi(optarg);
 			break;
-		case 's':
-			switch (optarg[0]) {
-			case 'n':
-				waitforsync = none;
-				break;
-			case 's':
-				waitforsync = sgi_video_sync;
-				break;
-			case 'b':
-				waitforsync = buffer_swap;
-				break;
-			default:
-				usage(argv[0]);
-				break;
-			}
-			break;
 		case 'v':
 			verbose = 1;
 			break;
+		case 'd':
+			divisor = atoi(optarg);
+			break;
+		case 'r':
+			remainder = atoi(optarg);
+			break;
+		case 'n':
+			wait_interval = atoi(optarg);
+			break;
 		case 'i':
-			interval = atoi(optarg);
+			swap_interval = atoi(optarg);
 			break;
 		default:
 			usage(argv[0]);
@@ -175,16 +165,17 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
-	if (!GLXExtensionSupported(disp, "GLX_SGI_video_sync")) {
-		fprintf(stderr, "GLX_SGI_video_sync not supported, exiting\n");
+	if (!GLXExtensionSupported(disp, "GLX_OML_sync_control")) {
+		fprintf(stderr, "GLX_OML_sync_control not supported\n");
 		return -1;
 	}
 
-	if (waitforsync != buffer_swap) {
-		pvi = glXChooseVisual(disp, DefaultScreen(disp), attribs);
-	} else {
-		pvi = glXChooseVisual(disp, DefaultScreen(disp), db_attribs);
+	if (!GLXExtensionSupported(disp, "GLX_MESA_swap_control")) {
+		fprintf(stderr, "GLX_MESA_swap_control not supported\n");
+		return -1;
 	}
+
+	pvi = glXChooseVisual(disp, DefaultScreen(disp), db_attribs);
 
 	if (!pvi) {
 		fprintf(stderr, "failed to choose visual, exiting\n");
@@ -232,23 +223,19 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "failed to make context current: %d\n", ret);
 	}
 
-	video_sync_get = glXGetProcAddress((unsigned char *)"glXGetVideoSyncSGI");
-	video_sync = glXGetProcAddress((unsigned char *)"glXWaitVideoSyncSGI");
+	glXGetSyncValuesOML = (void *)glXGetProcAddress((unsigned char *)"glXGetSyncValuesOML");
+	glXGetMscRateOML = (void *)glXGetProcAddress((unsigned char *)"glXGetMscRateOML");
+	glXSwapBuffersMscOML = (void *)glXGetProcAddress((unsigned char *)"glXSwapBuffersMscOML");
+	glXWaitForMscOML = (void *)glXGetProcAddress((unsigned char *)"glXWaitForMscOML");
+	glXWaitForSbcOML = (void *)glXGetProcAddress((unsigned char *)"glXWaitForSbcOML");
+	glXSwapInterval = (void *)glXGetProcAddress((unsigned char *)"glXSwapIntervalMESA");
 
-	swap_interval = glXGetProcAddress((unsigned char *)"glXSwapIntervalSGI");
-
-	if (!video_sync_get || !video_sync || !swap_interval) {
-		fprintf(stderr, "failed to get sync functions\n");
-		return -1;
-	}
-
-	if (waitforsync == buffer_swap) {
-		swap_interval(interval);
-		fprintf(stderr, "set swap interval to %d\n", interval);
-	}
-	video_sync_get(&count);
-	count++;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glXSwapInterval(swap_interval);
+	fprintf(stderr, "set swap interval to %d\n", swap_interval);
+
+	glXGetSyncValuesOML(disp, winGL, &ust, &msc, &sbc);
 	while (i++) {
 		/* Alternate colors to make tearing obvious */
 		if (i & 1) {
@@ -262,28 +249,13 @@ int main(int argc, char *argv[])
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glRectf(0, 0, width, height);
 
-		/* Wait for vsync */
-		if (waitforsync == sgi_video_sync) {
-			if (verbose)
-				fprintf(stderr, "waiting on count %d\n", count);
-			video_sync(2, (count + 1) % 2, &count);
-			if (count < last_val)
-				fprintf(stderr, "error:  vblank count went backwards: %d -> %d\n", last_val, count);
-			if (count == last_val)
-				fprintf(stderr, "error:  count didn't change: %d\n", count);
-			last_val = count;
-			glFlush();
-		} else if (waitforsync == buffer_swap) {
-			glXSwapBuffers(disp, winGL);
-		} else {
-			video_sync_get(&count);
-			sleep(1);
-			glFinish();
-		}
-
-		if (verbose) {
-			video_sync_get(&count);
-			fprintf(stderr, "current count: %d\n", count);
+		if (!wait_interval)
+			glXSwapBuffersMscOML(disp, winGL, 0, divisor,
+					     remainder);
+		else {
+			glXWaitForMscOML(disp, winGL, msc + wait_interval,
+					 divisor, remainder, &ust, &msc, &sbc);
+			glXSwapBuffersMscOML(disp, winGL, 0, 0, 0);
 		}
 	}
 

@@ -32,12 +32,10 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 
-#define NUM_OCC 10
-
 static GLboolean Anim = GL_TRUE;
-static GLfloat Xpos[NUM_OCC], Ypos[NUM_OCC];
-static GLfloat Sign[NUM_OCC];
-static GLuint OccQuery[NUM_OCC];
+static GLfloat Xpos = 0;
+static GLuint OccQuery1;
+static GLuint OccQuery2;
 static GLint Win = 0;
 
 
@@ -55,43 +53,38 @@ PrintString(const char *s)
 static void Idle(void)
 {
    static int lastTime = 0;
+   static int sign = +1;
    int time = glutGet(GLUT_ELAPSED_TIME);
    float step;
-   int i;
 
    if (lastTime == 0)
       lastTime = time;
    else if (time - lastTime < 20)  /* 50Hz update */
       return;
 
-   for (i = 0; i < NUM_OCC; i++) {
-
-      step = (time - lastTime) / 1000.0 * Sign[i];
-
-      Xpos[i] += step;
-
-      if (Xpos[i] > 2.5) {
-         Xpos[i] = 2.5;
-         Sign[i] = -1;
-      }
-      else if (Xpos[i] < -2.5) {
-         Xpos[i] = -2.5;
-         Sign[i] = +1;
-      }
-
-   }
-
+   step = (time - lastTime) / 1000.0 * sign;
    lastTime = time;
 
+   Xpos += step;
+
+   if (Xpos > 2.5) {
+      Xpos = 2.5;
+      sign = -1;
+   }
+   else if (Xpos < -2.5) {
+      Xpos = -2.5;
+      sign = +1;
+   }
    glutPostRedisplay();
 }
 
 
 static void Display( void )
 {
-   int i;
+   GLuint passed1, passed2;
+   GLint ready;
+   char s[100];
 
-   glClearColor(0.25, 0.25, 0.25, 0.0);
    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
    glMatrixMode( GL_PROJECTION );
@@ -102,84 +95,126 @@ static void Display( void )
    glTranslatef( 0.0, 0.0, -15.0 );
 
    /* draw the occluding polygons */
-   glColor3f(0, 0.4, 0.6);
+   glColor3f(0, 0.6, 0.8);
    glBegin(GL_QUADS);
-   glVertex2f(-1.6, -2.5);
-   glVertex2f(-0.4, -2.5);
-   glVertex2f(-0.4,  2.5);
-   glVertex2f(-1.6,  2.5);
-   glVertex2f( 0.4, -2.5);
-   glVertex2f( 1.6, -2.5);
-   glVertex2f( 1.6,  2.5);
-   glVertex2f( 0.4,  2.5);
+   glVertex2f(-1.6, -1.5);
+   glVertex2f(-0.4, -1.5);
+   glVertex2f(-0.4,  1.5);
+   glVertex2f(-1.6,  1.5);
+
+   glVertex2f( 0.4, -1.5);
+   glVertex2f( 1.6, -1.5);
+   glVertex2f( 1.6,  1.5);
+   glVertex2f( 0.4,  1.5);
    glEnd();
 
-
+#if defined(GL_ARB_occlusion_query)
    glColorMask(0, 0, 0, 0);
    glDepthMask(GL_FALSE);
 
-   /* draw the test polygons with occlusion testing */
-   for (i = 0; i < NUM_OCC; i++) {
-      glPushMatrix();
-         glTranslatef(Xpos[i], Ypos[i], -0.5);
-         glScalef(0.2, 0.2, 1.0);
-         glRotatef(-90.0 * Xpos[i], 0, 0, 1);
+   /* draw the first polygon with occlusion testing */
+   glPushMatrix();
+   glTranslatef(Xpos, 0.4, -0.5);
+   glScalef(0.3, 0.3, 1.0);
+   glRotatef(-90.0 * Xpos, 0, 0, 1);
 
-         glBeginQueryARB(GL_SAMPLES_PASSED_ARB, OccQuery[i]);
-         glBegin(GL_POLYGON);
-         glVertex3f(-1, -1, 0);
-         glVertex3f( 1, -1, 0);
-         glVertex3f( 1,  1, 0);
-         glVertex3f(-1,  1, 0);
-         glEnd();
-         glEndQueryARB(GL_SAMPLES_PASSED_ARB);
+   glBeginQueryARB(GL_SAMPLES_PASSED_ARB, OccQuery1);
 
-      glPopMatrix();
-   }
+   glBegin(GL_POLYGON);
+   glVertex3f(-1, -1, 0);
+   glVertex3f( 1, -1, 0);
+   glVertex3f( 1,  1, 0);
+   glVertex3f(-1,  1, 0);
+   glEnd();
 
+   glEndQueryARB(GL_SAMPLES_PASSED_ARB);
+
+   /* draw the second polygon with occlusion testing */
+   glPopMatrix();
+   glPushMatrix();
+   glTranslatef(Xpos, -0.4, -0.5);
+   glScalef(0.3, 0.3, 1.0);
+
+   glBeginQueryARB(GL_SAMPLES_PASSED_ARB, OccQuery2);
+
+   glBegin(GL_POLYGON);
+   glVertex3f(-1, -1, 0);
+   glVertex3f( 1, -1, 0);
+   glVertex3f( 1,  1, 0);
+   glVertex3f(-1,  1, 0);
+   glEnd();
+
+   glEndQueryARB(GL_SAMPLES_PASSED_ARB);
+
+   /* turn off occlusion testing */
    glColorMask(1, 1, 1, 1);
    glDepthMask(GL_TRUE);
 
-   /* Draw the rectangles now.
-    * Draw orange if result was ready
-    * Draw red if result was not ready.
-    */
-   for (i = 0; i < NUM_OCC; i++) {
-      GLuint passed;
-      GLint ready;
+   do {
+      /* do useful work here, if any */
+      glGetQueryObjectivARB(OccQuery1, GL_QUERY_RESULT_AVAILABLE_ARB, &ready);
+   } while (!ready);
+   glGetQueryObjectuivARB(OccQuery1, GL_QUERY_RESULT_ARB, &passed1);
 
-      glGetQueryObjectivARB(OccQuery[i], GL_QUERY_RESULT_AVAILABLE_ARB, &ready);
+   do {
+      /* do useful work here, if any */
+      glGetQueryObjectivARB(OccQuery2, GL_QUERY_RESULT_AVAILABLE_ARB, &ready);
+   } while (!ready);
+   glGetQueryObjectuivARB(OccQuery2, GL_QUERY_RESULT_ARB, &passed2);
+#endif /* GL_ARB_occlusion_query */
 
-      glGetQueryObjectuivARB(OccQuery[i], GL_QUERY_RESULT_ARB, &passed);
+   /* draw the second rect, so we can see what's going on */
+   glColor3f(0.8, 0.5, 0);
+   glBegin(GL_POLYGON);
+   glVertex3f(-1, -1, 0);
+   glVertex3f( 1, -1, 0);
+   glVertex3f( 1,  1, 0);
+   glVertex3f(-1,  1, 0);
+   glEnd();
 
-      if (!ready)
-         glColor3f(1, 0, 0);
-      else
-         glColor3f(0.8, 0.5, 0);
+   glPopMatrix();
+   glPushMatrix();
+   glTranslatef(Xpos, 0.4, -0.5);
+   glScalef(0.3, 0.3, 1.0);
+   glRotatef(-90.0 * Xpos, 0, 0, 1);
 
-      if (!ready || passed) {
-         glPushMatrix();
-            glTranslatef(Xpos[i], Ypos[i], -0.5);
-            glScalef(0.2, 0.2, 1.0);
-            glRotatef(-90.0 * Xpos[i], 0, 0, 1);
+   /* draw the first rect, so we can see what's going on */
+   glBegin(GL_POLYGON);
+   glVertex3f(-1, -1, 0);
+   glVertex3f( 1, -1, 0);
+   glVertex3f( 1,  1, 0);
+   glVertex3f(-1,  1, 0);
+   glEnd();
 
-            glBegin(GL_POLYGON);
-            glVertex3f(-1, -1, 0);
-            glVertex3f( 1, -1, 0);
-            glVertex3f( 1,  1, 0);
-            glVertex3f(-1,  1, 0);
-            glEnd();
+   glPopMatrix();
 
-         glPopMatrix();
-      }
+   /* Print result message */
+   glMatrixMode( GL_PROJECTION );
+   glLoadIdentity();
+   glOrtho( -1.0, 1.0, -1.0, 1.0, -1.0, 1.0 );
+   glMatrixMode( GL_MODELVIEW );
+   glLoadIdentity();
 
-      {
-         char s[10];
-         glRasterPos3f(0.45, Ypos[i], 1.0);
-         sprintf(s, "%4d", passed);
-         PrintString(s);
-      }
+   glColor3f(1, 1, 1);
+#if defined(GL_ARB_occlusion_query)
+   sprintf(s, " %4d Fragments Visible", passed1);
+   glRasterPos3f(-0.50, -0.6, 0);
+   PrintString(s);
+   if (!passed1) {
+      glRasterPos3f(-0.25, -0.7, 0);
+      PrintString("Fully Occluded");
    }
+   sprintf(s, " %4d Fragments Visible", passed2);
+   glRasterPos3f(-0.50, -0.8, 0);
+   PrintString(s);
+   if (!passed2) {
+      glRasterPos3f(-0.25, -0.9, 0);
+      PrintString("Fully Occluded");
+   }
+#else
+   glRasterPos3f(-0.25, -0.8, 0);
+   PrintString("GL_ARB_occlusion_query not available at compile time");
+#endif /* GL_ARB_occlusion_query */
 
    glutSwapBuffers();
 }
@@ -215,17 +250,14 @@ static void Key( unsigned char key, int x, int y )
 static void SpecialKey( int key, int x, int y )
 {
    const GLfloat step = 0.1;
-   int i;
    (void) x;
    (void) y;
    switch (key) {
       case GLUT_KEY_LEFT:
-         for (i = 0; i < NUM_OCC; i++)
-            Xpos[i] -= step;
+         Xpos -= step;
          break;
       case GLUT_KEY_RIGHT:
-         for (i = 0; i < NUM_OCC; i++)
-            Xpos[i] += step;
+         Xpos += step;
          break;
    }
    glutPostRedisplay();
@@ -236,33 +268,31 @@ static void Init( void )
 {
    const char *ext = (const char *) glGetString(GL_EXTENSIONS);
    GLint bits;
-   int i;
 
    if (!strstr(ext, "GL_ARB_occlusion_query")) {
       printf("Sorry, this demo requires the GL_ARB_occlusion_query extension\n");
       exit(-1);
    }
 
+#if defined(GL_ARB_occlusion_query)
    glGetQueryivARB(GL_SAMPLES_PASSED_ARB, GL_QUERY_COUNTER_BITS_ARB, &bits);
    if (!bits) {
       printf("Hmmm, GL_QUERY_COUNTER_BITS_ARB is zero!\n");
       exit(-1);
    }
+#endif /* GL_ARB_occlusion_query */
 
    glGetIntegerv(GL_DEPTH_BITS, &bits);
    printf("Depthbits: %d\n", bits);
 
-   glGenQueriesARB(NUM_OCC, OccQuery);
+#if defined(GL_ARB_occlusion_query)
+   glGenQueriesARB(1, &OccQuery1);
+   assert(OccQuery1 > 0);
+   glGenQueriesARB(1, &OccQuery2);
+   assert(OccQuery2 > 0);
+#endif /* GL_ARB_occlusion_query */
 
    glEnable(GL_DEPTH_TEST);
-
-   for (i = 0; i < NUM_OCC; i++) {
-      float t = (float) i / (NUM_OCC - 1);
-      Xpos[i] = 2.5 * t;
-      Ypos[i] = 4.0 * (t - 0.5);
-      Sign[i] = 1.0;
-   }
-
 }
 
 
@@ -276,10 +306,7 @@ int main( int argc, char *argv[] )
    glutReshapeFunc( Reshape );
    glutKeyboardFunc( Key );
    glutSpecialFunc( SpecialKey );
-   if (Anim)
-      glutIdleFunc(Idle);
-   else
-      glutIdleFunc(NULL);
+   glutIdleFunc( Idle );
    glutDisplayFunc( Display );
    Init();
    glutMainLoop();

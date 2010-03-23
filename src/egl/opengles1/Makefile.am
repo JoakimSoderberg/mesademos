@@ -1,4 +1,4 @@
-# Copyright © 2009 Intel Corporation
+# Copyright © 2010 Intel Corporation
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -22,22 +22,30 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	util \
-	demos \
-	egl \
-	fp \
-	fpglsl \
-	glsl \
-	perf \
-	rbug \
-	redbook \
-	samples \
-	slang \
-	tests \
-	tools \
-	trivial \
-	vp \
-	vpglsl \
-	wgl \
-	xdemos
+# These programs aren't intended to be included with the normal distro.
+# They're not too interesting but they're good for testing.
+
+AM_CFLAGS = \
+	$(DEMO_CFLAGS) \
+	$(EGL_CFLAGS) \
+	$(GLESV1_CFLAGS) \
+	-I$(top_srcdir)/src/util
+AM_LDFLAGS = \
+	$(DEMO_LIBS) \
+	$(EGL_LIBS) \
+	$(GLESV1_LIBS)
+
+if HAVE_EGL
+if HAVE_GLESV1
+noinst_PROGRAMS = \
+	bindtex \
+	drawtex \
+	es1_info \
+	msaa \
+	pbuffer\
+	render_tex \
+	torus \
+	tri \
+	two_win
+endif
+endif

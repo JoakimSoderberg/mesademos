@@ -22,22 +22,6 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	util \
-	demos \
-	egl \
-	fp \
-	fpglsl \
-	glsl \
-	perf \
-	rbug \
-	redbook \
-	samples \
-	slang \
-	tests \
-	tools \
-	trivial \
-	vp \
-	vpglsl \
-	wgl \
-	xdemos
+AUTOMAKE_OPTIONS = foreign
+
+SUBDIRS = opengles1 opengles2

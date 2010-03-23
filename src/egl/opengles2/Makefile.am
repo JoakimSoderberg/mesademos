@@ -22,22 +22,24 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	util \
-	demos \
-	egl \
-	fp \
-	fpglsl \
-	glsl \
-	perf \
-	rbug \
-	redbook \
-	samples \
-	slang \
-	tests \
-	tools \
-	trivial \
-	vp \
-	vpglsl \
-	wgl \
-	xdemos
+# These programs aren't intended to be included with the normal distro.
+# They're not too interesting but they're good for testing.
+
+AM_CFLAGS = \
+	$(DEMO_CFLAGS) \
+	$(EGL_CFLAGS) \
+	$(GLESV2_CFLAGS) \
+	-I$(top_srcdir)/src/util
+AM_LDFLAGS = \
+	$(DEMO_LIBS) \
+	$(EGL_LIBS) \
+	$(GLESV2_LIBS)
+
+if HAVE_EGL
+if HAVE_GLESV2
+noinst_PROGRAMS = \
+	es2_info \
+	es2gears \
+	tri
+endif
+endif

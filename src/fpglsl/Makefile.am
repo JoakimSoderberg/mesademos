@@ -22,21 +22,31 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	util \
-	demos \
-	fp \
-	fpglsl \
-	glsl \
-	perf \
-	rbug \
-	redbook \
-	samples \
-	slang \
-	tests \
-	tools \
-	trivial \
-	vp \
-	vpglsl \
-	wgl \
-	xdemos
+# These programs aren't intended to be included with the normal distro.
+# They're not too interesting but they're good for testing.
+
+AM_CFLAGS = \
+	$(DEMO_CFLAGS) \
+	$(GLUT_CFLAGS) \
+	-I$(top_srcdir)/src/util
+AM_LDFLAGS = \
+	$(DEMO_LIBS) \
+	$(GLUT_LIBS)
+
+if HAVE_GLUT
+noinst_PROGRAMS = \
+	fp-tri
+endif
+
+EXTRA_DIST = \
+	dowhile2.glsl \
+	dowhile.glsl \
+	forbreak.glsl \
+	for.glsl \
+	mov.glsl \
+	mov-imm.glsl \
+	simpleif.glsl \
+	tex.glsl \
+	tex-multi.glsl \
+	while2.glsl \
+	while.glsl

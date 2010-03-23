@@ -190,6 +190,5 @@ AC_OUTPUT([
 	src/vp/Makefile
 	src/vpglsl/Makefile
 	src/wgl/Makefile
-	src/windml/Makefile
 	src/xdemos/Makefile
 ])

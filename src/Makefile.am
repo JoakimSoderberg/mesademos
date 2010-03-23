@@ -38,5 +38,4 @@ SUBDIRS = \
 	vp \
 	vpglsl \
 	wgl \
-	windml \
 	xdemos

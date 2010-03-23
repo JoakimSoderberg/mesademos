@@ -65,4 +65,6 @@ endif
 sphere_LDADD = ../util/libutil.la
 
 EXTRA_DIST = \
-	README
+	README \
+	loadppm.c \
+	tkmap.c

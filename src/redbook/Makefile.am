@@ -90,4 +90,5 @@ noinst_PROGRAMS = \
 endif
 
 EXTRA_DIST = \
-	README
+	README \
+	jitter.h

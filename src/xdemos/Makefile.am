@@ -31,6 +31,8 @@ AM_LDFLAGS = \
 	$(X11_LIBS)
 
 if HAVE_X11
+noinst_LTLIBRARIES = libpbutil.la
+
 bin_PROGRAMS = \
 	corender \
 	glsync \
@@ -60,6 +62,24 @@ bin_PROGRAMS = \
 	xfont \
 	xrotfontdemo
 endif
+
+libpbutil_la_SOURCES = \
+	pbutil.c \
+	pbutil.h
+
+corender_SOURCES = \
+	corender.c \
+	ipc.c \
+	ipc.h
+
+xrotfontdemo_SOURCES = \
+	xrotfontdemo.c \
+	xuserotfont.c \
+	xuserotfont.h
+
+glxgears_fbconfig_LDADD = libpbutil.la
+pbdemo_LDADD = libpbutil.la
+pbinfo_LDADD = libpbutil.la
 
 EXTRA_DIST = \
 	yuvrect_client.c \

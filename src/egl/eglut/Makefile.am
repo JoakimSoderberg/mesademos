@@ -22,27 +22,15 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-# These programs aren't intended to be included with the normal distro.
-# They're not too interesting but they're good for testing.
-
 AM_CFLAGS = \
-	$(DEMO_CFLAGS) \
-	$(EGL_CFLAGS) \
-	$(GLESV2_CFLAGS) \
-	-I$(top_srcdir)/src/egl/eglut \
-	-I$(top_srcdir)/src/util
-AM_LDFLAGS = \
-	$(DEMO_LIBS) \
-	$(EGL_LIBS) \
-	$(GLESV2_LIBS)
+	$(DEMO_CFLAGS)
 
 if HAVE_EGL
-if HAVE_GLESV2
-noinst_PROGRAMS = \
-	es2_info \
-	es2gears \
-	tri
-endif
+noinst_LTLIBRARIES = libeglut.la
 endif
 
-es2gears_LDADD = ../eglut/libeglut.la
+libeglut_la_SOURCES = \
+	eglut.c \
+	eglutint.h \
+	eglut_screen.c \
+	eglut_x11.c

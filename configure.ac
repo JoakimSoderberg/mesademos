@@ -189,6 +189,7 @@ AC_OUTPUT([
 	src/Makefile
 	src/demos/Makefile
 	src/egl/Makefile
+	src/egl/eglut/Makefile
 	src/egl/opengles1/Makefile
 	src/egl/opengles2/Makefile
 	src/fp/Makefile

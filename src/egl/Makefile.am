@@ -22,6 +22,7 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-AUTOMAKE_OPTIONS = foreign
-
-SUBDIRS = opengles1 opengles2
+SUBDIRS = \
+	eglut \
+	opengles1 \
+	opengles2

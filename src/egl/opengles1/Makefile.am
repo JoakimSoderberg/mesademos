@@ -29,6 +29,7 @@ AM_CFLAGS = \
 	$(DEMO_CFLAGS) \
 	$(EGL_CFLAGS) \
 	$(GLESV1_CFLAGS) \
+	-I$(top_srcdir)/src/egl/eglut \
 	-I$(top_srcdir)/src/util
 AM_LDFLAGS = \
 	$(DEMO_LIBS) \
@@ -41,6 +42,7 @@ noinst_PROGRAMS = \
 	bindtex \
 	drawtex \
 	es1_info \
+	gears \
 	msaa \
 	pbuffer\
 	render_tex \
@@ -49,3 +51,8 @@ noinst_PROGRAMS = \
 	two_win
 endif
 endif
+
+drawtex_LDADD = ../eglut/libeglut.la
+gears_LDADD = ../eglut/libeglut.la
+torus_LDADD = ../eglut/libeglut.la
+tri_LDADD = ../eglut/libeglut.la

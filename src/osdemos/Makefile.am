@@ -22,23 +22,19 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	util \
-	demos \
-	egl \
-	fp \
-	fpglsl \
-	glsl \
-	osdemos \
-	perf \
-	rbug \
-	redbook \
-	samples \
-	slang \
-	tests \
-	tools \
-	trivial \
-	vp \
-	vpglsl \
-	wgl \
-	xdemos
+AM_CFLAGS = \
+	$(OSMESA_CFLAGS) \
+	-I$(top_srcdir)/src/util
+
+if HAVE_OSMESA
+bin_PROGRAMS = \
+	osdemo \
+	osdemo16 \
+	osdemo32
+endif
+
+osdemo16_SOURCES = osdemo.c
+osdemo32_SOURCES = osdemo.c
+osdemo_LDADD = $(OSMESA_LIBS) ../util/libutil.la
+osdemo16_LDADD = $(OSMESA_LIBS) $(OSMESA16_LIBS) ../util/libutil.la
+osdemo32_LDADD = $(OSMESA32_LIBS) ../util/libutil.la

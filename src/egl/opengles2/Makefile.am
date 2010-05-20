@@ -45,4 +45,4 @@ noinst_PROGRAMS = \
 endif
 endif
 
-es2gears_LDADD = ../eglut/libeglut.la
+es2gears_LDADD = ../eglut/libeglut_x11.la

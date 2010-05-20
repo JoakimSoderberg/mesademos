@@ -26,11 +26,18 @@ AM_CFLAGS = \
 	$(DEMO_CFLAGS)
 
 if HAVE_EGL
-noinst_LTLIBRARIES = libeglut.la
+if HAVE_X11
+eglut_x11 = libeglut_x11.la
+endif
+noinst_LTLIBRARIES = libeglut_screen.la $(eglut_x11)
 endif
 
-libeglut_la_SOURCES = \
+libeglut_screen_la_SOURCES = \
 	eglut.c \
 	eglutint.h \
-	eglut_screen.c \
+	eglut_screen.c
+
+libeglut_x11_la_SOURCES = \
+	eglut.c \
+	eglutint.h \
 	eglut_x11.c

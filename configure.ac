@@ -88,30 +88,9 @@ AC_CHECK_LIB([GLEW],
 DEMO_CFLAGS="$DEMO_CFLAGS $GLEW_CFLAGS"
 DEMO_LIBS="$DEMO_CFLAGS $GLEW_LIBS"
 
-dnl Check for EGL
-EGL_CFLAGS=""
-EGL_LIBS=-lEGL
-egl_enabled=yes
-AC_ARG_WITH([egl],
-	[AS_HELP_STRING([--with-egl=DIR],
-			[EGL install directory])],
-	[EGL_CFLAGS="-I$withval/include"
-	 EGL_LIBS="-L$withval/lib -lEGL"])
-AC_CHECK_HEADER([EGL/egl.h],
-		[],
-		[egl_enabled=no])
-AC_CHECK_LIB([EGL],
-		[eglGetDisplay],
-		[],
-		[egl_enabled=no])
-
-dnl Finish adding detection for GLES.
-glesv1_enabled=no
-GLESV1_CFLAGS=""
-GLESV1_LIBS=""
-glesv2_enabled=no
-GLESV2_CFLAGS=""
-GLESV2_LIBS=""
+PKG_CHECK_MODULES(EGL, [egl], [egl_enabled=yes], [egl_enabled=no])
+PKG_CHECK_MODULES(GLESV1, [glesv1_cm], [glesv1_enabled=yes], [glesv1_enabled=no])
+PKG_CHECK_MODULES(GLESV2, [glesv2], [glesv2_enabled=yes], [glesv2_enabled=no])
 
 dnl Compiler macros
 case "$host_os" in
@@ -152,7 +131,7 @@ else
 fi
 DEMO_CFLAGS="$DEMO_CFLAGS $CWARNFLAGS"
 
-PKG_CHECK_MODULES(XLIB, [x11 xshape], [enable_x11=no], [enable_x11=yes])
+PKG_CHECK_MODULES(X11, [x11 xext], [x11_enabled=yes], [enable_x11=no])
 
 mesa_source_enabled=no
 AC_ARG_WITH([mesa-source],

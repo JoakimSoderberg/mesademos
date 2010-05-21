@@ -147,13 +147,13 @@ dnl    be pulled in by the linker
 dnl
 case "$host_os" in
 solaris*)
-    DEMO_LIBS="-lX11 -lsocket -lnsl -lm"
+    DEMO_LIBS="$(DEMO_LIBS) -lX11 -lsocket -lnsl -lm"
     ;;
 cygwin*)
-    DEMO_LIBS="-lX11"
+    DEMO_LIBS="$(DEMO_LIBS) -lX11"
     ;;
 *)
-    DEMO_LIBS="-lm"
+    DEMO_LIBS="$(DEMO_LIBS) -lm"
     ;;
 esac
 

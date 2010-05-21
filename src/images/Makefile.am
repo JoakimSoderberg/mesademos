@@ -1,4 +1,4 @@
-# Copyright © 2009 Intel Corporation
+# Copyright © 2010 Intel Corporation
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -22,25 +22,14 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	util \
-	demos \
-	egl \
-	fp \
-	fpglsl \
-	glsl \
-	images \
-	objviewer \
-	osdemos \
-	perf \
-	rbug \
-	redbook \
-	samples \
-	slang \
-	tests \
-	tools \
-	trivial \
-	vp \
-	vpglsl \
-	wgl \
-	xdemos
+EXTRA_DIST = \
+	arch.rgb \
+	bw.rgb \
+	girl2.rgb \
+	girl.rgb \
+	reflect.rgb \
+	s128.rgb \
+	tile.rgb \
+	tree2.rgba \
+	tree3.rgb \
+	wrs_logo.rgb

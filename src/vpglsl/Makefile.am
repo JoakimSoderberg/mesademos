@@ -40,6 +40,8 @@ endif
 
 EXTRA_DIST = \
 	for.glsl \
+	func.glsl \
+	func2.glsl \
 	ifelse.glsl \
 	if.glsl \
 	mov.glsl \

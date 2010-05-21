@@ -70,21 +70,17 @@ AC_CHECK_LIB([glut],
 		[],
 		[glut_enabled=no])
 
-dnl Check for GLEW.
-GLEW_CFLAGS=""
-GLEW_LIB=-lGLEW
-AC_ARG_WITH([glew],
-	[AS_HELP_STRING([--with-glew=DIR],
-			[glew install directory])],
-	[GLEW_CFLAGS="-I$withval/include"
-	 GLEW_LIB="-L$withval/lib -lGLEW"])
-AC_CHECK_HEADER([GL/glew.h],
-		[],
-		AC_MSG_ERROR([GLEW required]))
-AC_CHECK_LIB([GLEW],
-		[glewInit],
-		[],
-		AC_MSG_ERROR([GLEW required]))
+dnl Include a fallback path for GLEW for the moment while not all distros
+dnl have picked up the .pc file.
+PKG_CHECK_MODULES(GLEW, [glew], [], [
+		  AC_CHECK_HEADER([GL/glew.h],
+		  [],
+		  AC_MSG_ERROR([GLEW required]))
+		  AC_CHECK_LIB([GLEW],
+			       [glewInit],
+			       [],
+			       AC_MSG_ERROR([GLEW required]))
+		  ])
 DEMO_CFLAGS="$DEMO_CFLAGS $GLEW_CFLAGS"
 DEMO_LIBS="$DEMO_LIBS $GLEW_LIBS"
 

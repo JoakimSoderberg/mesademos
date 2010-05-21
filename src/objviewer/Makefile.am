@@ -1,4 +1,4 @@
-# Copyright © 2009 Intel Corporation
+# Copyright © 2010 Intel Corporation
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -22,24 +22,32 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	util \
-	demos \
-	egl \
-	fp \
-	fpglsl \
-	glsl \
-	objviewer \
-	osdemos \
-	perf \
-	rbug \
-	redbook \
-	samples \
-	slang \
-	tests \
-	tools \
-	trivial \
-	vp \
-	vpglsl \
-	wgl \
-	xdemos
+AM_CFLAGS = \
+	$(DEMO_CFLAGS) \
+	$(GLUT_CFLAGS) \
+	-I$(top_srcdir)/src/util
+AM_LDFLAGS = \
+	$(DEMO_LIBS) \
+	$(GLUT_LIBS)
+
+if HAVE_GLUT
+noinst_PROGRAMS = \
+	objview
+endif
+objview_SOURCES = \
+	glm.c \
+	glm.h \
+	glmdraw.c \
+	objview.c \
+	skybox.c \
+	skybox.h
+
+objview_LDADD = ../util/libutil.la
+
+EXTRA_DIST = \
+	bobcat.obj \
+	buddha.obj \
+	bunny.obj \
+	GreatLakesBiplaneHP.obj \
+	README.txt
+

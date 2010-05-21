@@ -88,6 +88,10 @@ AC_CHECK_LIB([GLEW],
 DEMO_CFLAGS="$DEMO_CFLAGS $GLEW_CFLAGS"
 DEMO_LIBS="$DEMO_LIBS $GLEW_LIBS"
 
+PKG_CHECK_MODULES(GLU, [glu])
+DEMO_CFLAGS="$DEMO_CFLAGS $GLU_CFLAGS"
+DEMO_LIBS="$DEMO_LIBS $GLU_LIBS"
+
 PKG_CHECK_MODULES(EGL, [egl], [egl_enabled=yes], [egl_enabled=no])
 PKG_CHECK_MODULES(GLESV1, [glesv1_cm], [glesv1_enabled=yes], [glesv1_enabled=no])
 PKG_CHECK_MODULES(GLESV2, [glesv2], [glesv2_enabled=yes], [glesv2_enabled=no])

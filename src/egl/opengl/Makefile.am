@@ -1,4 +1,4 @@
-# Copyright © 2009 Intel Corporation
+# Copyright © 2010 Intel Corporation
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -22,8 +22,48 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	eglut \
-	opengl \
-	opengles1 \
-	opengles2
+# These programs aren't intended to be included with the normal distro.
+# They're not too interesting but they're good for testing.
+
+AM_CFLAGS = \
+	$(DEMO_CFLAGS) \
+	$(EGL_CFLAGS) \
+	-I$(top_srcdir)/src/egl/eglut \
+	-I$(top_srcdir)/src/util
+AM_LDFLAGS = \
+	$(DEMO_LIBS) \
+	$(EGL_LIBS)
+
+if HAVE_X11
+EGL_X11_DEMOS = \
+	eglgears_x11 \
+	egltri_x11 \
+	xeglgears \
+	xeglthreads
+endif
+
+if HAVE_EGL
+noinst_PROGRAMS = \
+	demo1 \
+	demo2 \
+	demo3 \
+	eglinfo \
+	eglgears_screen \
+	egltri_screen \
+	peglgears \
+	xeglgears \
+	xeglthreads \
+	$(EGL_X11_DEMOS)
+endif
+
+egltri_screen_SOURCES = egltri.c
+eglgears_screen_SOURCES = eglgears.c
+
+egltri_x11_SOURCES = egltri.c
+eglgears_x11_SOURCES = eglgears.c
+
+eglgears_screen_LDADD = ../eglut/libeglut_screen.la
+egltri_screen_LDADD = ../eglut/libeglut_screen.la
+
+eglgears_x11_LDADD = ../eglut/libeglut_x11.la
+egltri_x11_LDADD = ../eglut/libeglut_x11.la

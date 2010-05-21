@@ -95,8 +95,8 @@ PKG_CHECK_MODULES(OSMESA, [osmesa], [osmesa_enabled=yes], [osmesa_enabled=no])
 dnl The OSMesa .pc uses OSMesa32, while we want to build with other versions
 dnl too.
 OSMESA32_LIBS=$OSMESA_LIBS
-OSMESA16_LIBS=`echo $OSMESA_LIBS | sed 's|32|16|g'
-OSMESA_LIBS=`echo $OSMESA_LIBS | sed 's|32||g'
+OSMESA16_LIBS=`echo $OSMESA_LIBS | sed 's|32|16|g'`
+OSMESA_LIBS=`echo $OSMESA_LIBS | sed 's|32||g'`
 
 dnl Compiler macros
 case "$host_os" in

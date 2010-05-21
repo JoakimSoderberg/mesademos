@@ -14,6 +14,7 @@
 .libs
 depend
 depend.bak
+compile
 configure
 autom4te.cache
 aclocal.m4
@@ -21,6 +22,7 @@ config.guess
 config.log
 config.status
 config.sub
+configure.lineno
 cscope*
 config.py
 depcomp

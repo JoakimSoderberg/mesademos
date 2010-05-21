@@ -24,6 +24,8 @@
 
 AM_CFLAGS = \
 	$(DEMO_CFLAGS)
+AM_LDFLAGS = \
+	$(DEMO_LIBS)
 
 noinst_LTLIBRARIES = libutil.la
 

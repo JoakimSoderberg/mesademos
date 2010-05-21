@@ -34,6 +34,7 @@ endif
 
 libeglut_screen_la_SOURCES = \
 	eglut.c \
+	eglut.h \
 	eglutint.h \
 	eglut_screen.c
 

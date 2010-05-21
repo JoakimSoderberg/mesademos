@@ -111,14 +111,6 @@ cygwin*)
     ;;
 esac
 
-dnl These should be unnecessary, but let the user set them if they want
-AC_ARG_VAR([OPT_FLAGS], [Additional optimization flags for the compiler.
-    Default is to use CFLAGS.])
-AC_ARG_VAR([ARCH_FLAGS], [Additional architecture specific flags for the
-    compiler. Default is to use CFLAGS.])
-AC_SUBST([OPT_FLAGS])
-AC_SUBST([ARCH_FLAGS])
-
 dnl Set up C warning flags.  Copy of XORG_CWARNFLAGS.
 if  test "x$GCC" = xyes ; then
     CWARNFLAGS="-Wall -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes \
@@ -153,20 +145,17 @@ dnl Program library dependencies
 dnl    Only libm is added here if necessary as the libraries should
 dnl    be pulled in by the linker
 dnl
-if test "x$APP_LIB_DEPS" = x; then
-    case "$host_os" in
-    solaris*)
-	APP_LIB_DEPS="-lX11 -lsocket -lnsl -lm"
-	;;
-    cygwin*)
-	APP_LIB_DEPS="-lX11"
-	;;
-    *)
-	APP_LIB_DEPS="-lm"
-        ;;
-    esac
-fi
-AC_SUBST([APP_LIB_DEPS])
+case "$host_os" in
+solaris*)
+    DEMO_LIBS="-lX11 -lsocket -lnsl -lm"
+    ;;
+cygwin*)
+    DEMO_LIBS="-lX11"
+    ;;
+*)
+    DEMO_LIBS="-lm"
+    ;;
+esac
 
 AC_SUBST([DEMO_CFLAGS])
 AC_SUBST([DEMO_LIBS])

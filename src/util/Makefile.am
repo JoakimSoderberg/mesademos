@@ -29,16 +29,21 @@ AM_LDFLAGS = \
 
 noinst_LTLIBRARIES = libutil.la
 
+if HAVE_GLUT
+SHADERUTIL_SRC = \
+	shaderutil.c \
+	shaderutil.h
+endif
+
 libutil_la_SOURCES = \
 	extfuncs.h \
 	readtex.c \
 	readtex.h \
-	shaderutil.c \
-	shaderutil.h \
 	showbuffer.c \
 	showbuffer.h \
 	trackball.c \
-	trackball.h
+	trackball.h \
+	$(SHADERUTIL_SRC)
 
 EXTRA_DIST = \
 	README

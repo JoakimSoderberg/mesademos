@@ -39,24 +39,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
-#ifdef __darwin__
-#include <GLUT/glut.h>
-
-typedef void (* PFNGLBINDVERTEXARRAYAPPLEPROC) (GLuint array);
-typedef void (* PFNGLDELETEVERTEXARRAYSAPPLEPROC) (GLsizei n, const GLuint *arrays);
-typedef void (* PFNGLGENVERTEXARRAYSAPPLEPROC) (GLsizei n, GLuint *arrays);
-typedef GLboolean (* PFNGLISVERTEXARRAYAPPLEPROC) (GLuint array);
-
-#else
 #include <GL/glew.h>
 #include <GL/glut.h>
-#endif
-
-static PFNGLBINDVERTEXARRAYAPPLEPROC bind_vertex_array = NULL;
-static PFNGLGENVERTEXARRAYSAPPLEPROC gen_vertex_arrays = NULL;
-static PFNGLDELETEVERTEXARRAYSAPPLEPROC delete_vertex_arrays = NULL;
-static PFNGLISVERTEXARRAYAPPLEPROC is_vertex_array = NULL;
 
 static int Width = 400;
 static int Height = 200;
@@ -125,20 +109,14 @@ static void Init( void )
       exit(2);
    }
 
-   bind_vertex_array = (PFNGLBINDVERTEXARRAYAPPLEPROC) glutGetProcAddress( "glBindVertexArrayAPPLE" );
-   gen_vertex_arrays = (PFNGLGENVERTEXARRAYSAPPLEPROC) glutGetProcAddress( "glGenVertexArraysAPPLE" );
-   delete_vertex_arrays = (PFNGLDELETEVERTEXARRAYSAPPLEPROC) glutGetProcAddress( "glDeleteVertexArraysAPPLE" );
-   is_vertex_array = (PFNGLISVERTEXARRAYAPPLEPROC) glutGetProcAddress( "glIsVertexArrayAPPLE" );
-
-
-   (*gen_vertex_arrays)( 1, & obj );
-   (*bind_vertex_array)( obj );
+   glGenVertexArraysAPPLE( 1, & obj );
+   glBindVertexArrayAPPLE( obj );
    glVertexPointer( 4, GL_FLOAT, sizeof(GLfloat) * 4, (void *) 0xDEADBEEF);
    glEnableClientState( GL_VERTEX_ARRAY );
 
    glPushClientAttrib( GL_CLIENT_VERTEX_ARRAY_BIT );
 
-   (*delete_vertex_arrays)( 1, & obj );
+   glDeleteVertexArraysAPPLE( 1, & obj );
    
    err = glGetError();
    if (err) {
@@ -146,7 +124,7 @@ static void Init( void )
       pass = 0;
    }
 
-   if ( (*is_vertex_array)( obj ) ) {
+   if ( (*glIsVertexArrayAPPLE)( obj ) ) {
       printf( "Array object is incorrectly still valid.\n" );
       pass = 0;
    }
@@ -165,7 +143,7 @@ static void Init( void )
       pass = 0;
    }
 
-   if ( ! (*is_vertex_array)( obj ) ) {
+   if ( ! glIsVertexArrayAPPLE( obj ) ) {
       printf( "Array object is incorrectly invalid.\n" );
       pass = 0;
    }

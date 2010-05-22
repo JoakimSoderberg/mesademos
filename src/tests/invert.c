@@ -52,7 +52,6 @@ static GLuint img_width = 0;
 static GLuint img_height = 0;
 static GLuint img_format = 0;
 
-PFNGLWINDOWPOS2IPROC win_pos_2i = NULL;
 
 
 static void Display( void )
@@ -67,7 +66,7 @@ static void Display( void )
    /* This is the "reference" square.
     */
 
-   (*win_pos_2i)( 5, 5 );
+   glWindowPos2i( 5, 5 );
    glDrawPixels( img_width, img_height, img_format, GL_UNSIGNED_BYTE, image );
 
    glPixelStorei( GL_PACK_INVERT_MESA, GL_FALSE );
@@ -78,7 +77,7 @@ static void Display( void )
    }
 
    glReadPixels( 5, 5, img_width, img_height, img_format, GL_UNSIGNED_BYTE, temp_image );
-   (*win_pos_2i)( 5 + 1 * (10 + img_width), 5 );
+   glWindowPos2i( 5 + 1 * (10 + img_width), 5 );
    glDrawPixels( img_width, img_height, img_format, GL_UNSIGNED_BYTE, temp_image );
 
    glPixelStorei( GL_PACK_INVERT_MESA, GL_TRUE );
@@ -89,7 +88,7 @@ static void Display( void )
    }
 
    glReadPixels( 5, 5, img_width, img_height, img_format, GL_UNSIGNED_BYTE, temp_image );
-   (*win_pos_2i)( 5 + 2 * (10 + img_width), 5 );
+   glWindowPos2i( 5 + 2 * (10 + img_width), 5 );
    glDrawPixels( img_width, img_height, img_format, GL_UNSIGNED_BYTE, temp_image );
 
    glutSwapBuffers();
@@ -126,40 +125,23 @@ static void Key( unsigned char key, int x, int y )
 
 static void Init( void )
 {
-   const char * const ver_string = (const char *)
-       glGetString( GL_VERSION );
-   const float ver = strtod( ver_string, NULL );
-
-
    printf("GL_RENDERER = %s\n", (char *) glGetString(GL_RENDERER));
-   printf("GL_VERSION = %s\n", ver_string);
+   printf("GL_VERSION = %s\n", (char *) glGetString(GL_VERSION));
 
    if ( !glutExtensionSupported("GL_MESA_pack_invert") ) {
       printf("\nSorry, this program requires GL_MESA_pack_invert.\n");
       exit(1);
    }
 
-   if ( ver >= 1.4 ) {
-      win_pos_2i = (PFNGLWINDOWPOS2IPROC) glutGetProcAddress( "glWindowPos2i" );
+   if ( !glutExtensionSupported("GL_ARB_window_pos") ) {
+      printf("\nSorry, this program requires GL_ARB_window_pos.\n");
+      exit(1);
    }
-   else if ( glutExtensionSupported("GL_ARB_window_pos") ) {
-      win_pos_2i = (PFNGLWINDOWPOS2IPROC) glutGetProcAddress( "glWindowPos2iARB" );
-   }
-   else if ( glutExtensionSupported("GL_MESA_window_pos") ) {
-      win_pos_2i = (PFNGLWINDOWPOS2IPROC) glutGetProcAddress( "glWindowPos2iMESA" );
-   }
-   
 
    /* Do this check as a separate if-statement instead of as an else in case
     * one of the required extensions is supported but glutGetProcAddress
     * returns NULL.
     */
-
-   if ( win_pos_2i == NULL ) {
-      printf("\nSorry, this program requires either GL 1.4 (or higher),\n"
-	     "GL_ARB_window_pos, or GL_MESA_window_pos.\n");
-      exit(1);
-   }
 
    printf("\nThe left 2 squares should be the same color, and the right\n"
 	  "square should look upside-down.\n");

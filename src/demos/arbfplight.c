@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <GL/glew.h>
 #include <GL/glut.h>
 
 
@@ -31,14 +32,6 @@ static GLint Frames = 0;
 
 static GLfloat Xrot = 0, Yrot = 0;
 
-static PFNGLPROGRAMLOCALPARAMETER4FVARBPROC glProgramLocalParameter4fvARB_func;
-static PFNGLPROGRAMLOCALPARAMETER4DARBPROC glProgramLocalParameter4dARB_func;
-static PFNGLGETPROGRAMLOCALPARAMETERDVARBPROC glGetProgramLocalParameterdvARB_func;
-static PFNGLGENPROGRAMSARBPROC glGenProgramsARB_func;
-static PFNGLPROGRAMSTRINGARBPROC glProgramStringARB_func;
-static PFNGLBINDPROGRAMARBPROC glBindProgramARB_func;
-static PFNGLISPROGRAMARBPROC glIsProgramARB_func;
-static PFNGLDELETEPROGRAMSARBPROC glDeleteProgramsARB_func;
 
 /* These must match the indexes used in the fragment program */
 #define LIGHTPOS 3
@@ -63,7 +56,7 @@ static void Redisplay( void )
 
       normalize( pos, LightPos );
       pos[3] = LightPos[3];
-      glProgramLocalParameter4fvARB_func(GL_FRAGMENT_PROGRAM_ARB,
+      glProgramLocalParameter4fvARB(GL_FRAGMENT_PROGRAM_ARB,
                                          LIGHTPOS, pos);
       glEnable(GL_FRAGMENT_PROGRAM_ARB);
       glEnable(GL_VERTEX_PROGRAM_ARB);
@@ -159,8 +152,8 @@ static void Key( unsigned char key, int x, int y )
          }
          break;
       case 27:
-         glDeleteProgramsARB_func(1, &VertProg);
-         glDeleteProgramsARB_func(1, &FragProg);
+         glDeleteProgramsARB(1, &VertProg);
+         glDeleteProgramsARB(1, &FragProg);
          glutDestroyWindow(Win);
          exit(0);
          break;
@@ -282,39 +275,12 @@ static void Init( void )
    }
          
    /*
-    * Get extension function pointers.
-    */
-   glProgramLocalParameter4fvARB_func = (PFNGLPROGRAMLOCALPARAMETER4FVARBPROC) glutGetProcAddress("glProgramLocalParameter4fvARB");
-   assert(glProgramLocalParameter4fvARB_func);
-
-   glProgramLocalParameter4dARB_func = (PFNGLPROGRAMLOCALPARAMETER4DARBPROC) glutGetProcAddress("glProgramLocalParameter4dARB");
-   assert(glProgramLocalParameter4dARB_func);
-
-   glGetProgramLocalParameterdvARB_func = (PFNGLGETPROGRAMLOCALPARAMETERDVARBPROC) glutGetProcAddress("glGetProgramLocalParameterdvARB");
-   assert(glGetProgramLocalParameterdvARB_func);
-
-   glGenProgramsARB_func = (PFNGLGENPROGRAMSARBPROC) glutGetProcAddress("glGenProgramsARB");
-   assert(glGenProgramsARB_func);
-
-   glProgramStringARB_func = (PFNGLPROGRAMSTRINGARBPROC) glutGetProcAddress("glProgramStringARB");
-   assert(glProgramStringARB_func);
-
-   glBindProgramARB_func = (PFNGLBINDPROGRAMARBPROC) glutGetProcAddress("glBindProgramARB");
-   assert(glBindProgramARB_func);
-
-   glIsProgramARB_func = (PFNGLISPROGRAMARBPROC) glutGetProcAddress("glIsProgramARB");
-   assert(glIsProgramARB_func);
-
-   glDeleteProgramsARB_func = (PFNGLDELETEPROGRAMSARBPROC) glutGetProcAddress("glDeleteProgramsARB");
-   assert(glDeleteProgramsARB_func);
-
-   /*
     * Fragment program
     */
-   glGenProgramsARB_func(1, &FragProg);
+   glGenProgramsARB(1, &FragProg);
    assert(FragProg > 0);
-   glBindProgramARB_func(GL_FRAGMENT_PROGRAM_ARB, FragProg);
-   glProgramStringARB_func(GL_FRAGMENT_PROGRAM_ARB,
+   glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, FragProg);
+   glProgramStringARB(GL_FRAGMENT_PROGRAM_ARB,
                            GL_PROGRAM_FORMAT_ASCII_ARB,
                            strlen(fragProgramText),
                            (const GLubyte *) fragProgramText);
@@ -325,16 +291,16 @@ static void Init( void )
              (char *) glGetString(GL_PROGRAM_ERROR_STRING_ARB));
       exit(0);
    }
-   assert(glIsProgramARB_func(FragProg));
+   assert(glIsProgramARB(FragProg));
 
    /*
     * Do some sanity tests
     */
    {
       GLdouble v[4];
-      glProgramLocalParameter4dARB_func(GL_FRAGMENT_PROGRAM_ARB, 8,
+      glProgramLocalParameter4dARB(GL_FRAGMENT_PROGRAM_ARB, 8,
                                    10.0, 20.0, 30.0, 40.0);
-      glGetProgramLocalParameterdvARB_func(GL_FRAGMENT_PROGRAM_ARB, 8, v);
+      glGetProgramLocalParameterdvARB(GL_FRAGMENT_PROGRAM_ARB, 8, v);
       assert(v[0] == 10.0);
       assert(v[1] == 20.0);
       assert(v[2] == 30.0);
@@ -344,10 +310,10 @@ static void Init( void )
    /*
     * Vertex program
     */
-   glGenProgramsARB_func(1, &VertProg);
+   glGenProgramsARB(1, &VertProg);
    assert(VertProg > 0);
-   glBindProgramARB_func(GL_VERTEX_PROGRAM_ARB, VertProg);
-   glProgramStringARB_func(GL_VERTEX_PROGRAM_ARB,
+   glBindProgramARB(GL_VERTEX_PROGRAM_ARB, VertProg);
+   glProgramStringARB(GL_VERTEX_PROGRAM_ARB,
                            GL_PROGRAM_FORMAT_ASCII_ARB,
                            strlen(vertProgramText),
                            (const GLubyte *) vertProgramText);
@@ -358,7 +324,7 @@ static void Init( void )
              (char *) glGetString(GL_PROGRAM_ERROR_STRING_ARB));
       exit(0);
    }
-   assert(glIsProgramARB_func(VertProg));
+   assert(glIsProgramARB(VertProg));
 
    /*
     * Misc init
@@ -392,6 +358,7 @@ int main( int argc, char *argv[] )
    glutInit( &argc, argv );
    glutInitDisplayMode( GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH );
    Win = glutCreateWindow(argv[0]);
+   glewInit();
    glutReshapeFunc( Reshape );
    glutKeyboardFunc( Key );
    glutSpecialFunc( SpecialKey );

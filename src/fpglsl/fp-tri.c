@@ -105,7 +105,7 @@ static void check_link(GLuint prog)
    }
 }
 
-static void setup_uniforms()
+static void setup_uniforms(void)
 {
    {
       GLint loc1f = glGetUniformLocationARB(program, "Offset1f");
@@ -158,7 +158,7 @@ static void setup_uniforms()
    }
 }
 
-static void prepare_shaders()
+static void prepare_shaders(void)
 {
    static const char *fragShaderText =
       "void main() {\n"

@@ -13,7 +13,7 @@
 #include <math.h>
 #include <GL/glew.h>
 #include <GL/glut.h>
-#include "extfuncs.h"
+
 
 static int Win;
 static int Width = 400, Height = 400;
@@ -41,7 +41,7 @@ Display(void)
       GL_COLOR_ATTACHMENT1_EXT
    };
 
-   glUseProgram_func(Program);
+   glUseProgram(Program);
 
    glEnable(GL_DEPTH_TEST);
 
@@ -85,7 +85,7 @@ Display(void)
                 buffer);
 
    /* draw to window */
-   glUseProgram_func(0);
+   glUseProgram(0);
    glDisable(GL_DEPTH_TEST);
    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
    glWindowPos2iARB(0, 0);
@@ -216,14 +216,14 @@ static GLuint
 LoadAndCompileShader(GLenum target, const char *text)
 {
    GLint stat;
-   GLuint shader = glCreateShader_func(target);
-   glShaderSource_func(shader, 1, (const GLchar **) &text, NULL);
-   glCompileShader_func(shader);
-   glGetShaderiv_func(shader, GL_COMPILE_STATUS, &stat);
+   GLuint shader = glCreateShader(target);
+   glShaderSource(shader, 1, (const GLchar **) &text, NULL);
+   glCompileShader(shader);
+   glGetShaderiv(shader, GL_COMPILE_STATUS, &stat);
    if (!stat) {
       GLchar log[1000];
       GLsizei len;
-      glGetShaderInfoLog_func(shader, 1000, &len, log);
+      glGetShaderInfoLog(shader, 1000, &len, log);
       fprintf(stderr, "drawbuffers: problem compiling shader:\n%s\n", log);
       exit(1);
    }
@@ -235,11 +235,11 @@ static void
 CheckLink(GLuint prog)
 {
    GLint stat;
-   glGetProgramiv_func(prog, GL_LINK_STATUS, &stat);
+   glGetProgramiv(prog, GL_LINK_STATUS, &stat);
    if (!stat) {
       GLchar log[1000];
       GLsizei len;
-      glGetProgramInfoLog_func(prog, 1000, &len, log);
+      glGetProgramInfoLog(prog, 1000, &len, log);
       fprintf(stderr, "drawbuffers: shader link error:\n%s\n", log);
    }
 }
@@ -258,12 +258,12 @@ SetupShaders(void)
    GLuint fragShader;
 
    fragShader = LoadAndCompileShader(GL_FRAGMENT_SHADER, fragShaderText);
-   Program = glCreateProgram_func();
+   Program = glCreateProgram();
 
-   glAttachShader_func(Program, fragShader);
-   glLinkProgram_func(Program);
+   glAttachShader(Program, fragShader);
+   glLinkProgram(Program);
    CheckLink(Program);
-   glUseProgram_func(Program);
+   glUseProgram(Program);
 }
 
 
@@ -285,7 +285,6 @@ static void
 Init(void)
 {
    CheckExtensions();
-   GetExtensionFuncs();
    SetupRenderbuffers();
    SetupShaders();
    SetupLighting();

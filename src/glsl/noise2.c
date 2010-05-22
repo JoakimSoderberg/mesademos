@@ -8,21 +8,11 @@
  * Stefan Gustavson (stegu@itn.liu.se) 2004, 2005
  */
 
-#ifdef WIN32
-#include <windows.h>
-#endif
-
 #include <stdio.h>
 #include <stdlib.h>
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <GL/glut.h>
-#include <GL/glext.h>
 
-#ifdef WIN32
-#define GETPROCADDRESS(F) wglGetProcAddress(F)
-#else
-#define GETPROCADDRESS(F) glutGetProcAddress(F)
-#endif
 
 static GLhandleARB fragShader;
 static GLhandleARB vertShader;
@@ -34,16 +24,6 @@ static GLint t0 = 0;
 static GLint frames = 0;
 
 static GLfloat u_time = 0.0f;
-
-static PFNGLCREATESHADEROBJECTARBPROC glCreateShaderObjectARB = NULL;
-static PFNGLSHADERSOURCEARBPROC glShaderSourceARB = NULL;
-static PFNGLCOMPILESHADERARBPROC glCompileShaderARB = NULL;
-static PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObjectARB = NULL;
-static PFNGLATTACHOBJECTARBPROC glAttachObjectARB = NULL;
-static PFNGLLINKPROGRAMARBPROC glLinkProgramARB = NULL;
-static PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB = NULL;
-static PFNGLGETUNIFORMLOCATIONARBPROC glGetUniformLocationARB = NULL;
-static PFNGLUNIFORM1FARBPROC glUniform1fARB = NULL;
 
 static void Redisplay (void)
 {
@@ -140,26 +120,6 @@ static void Init (void)
 		exit(1);
 	}
 
-	glCreateShaderObjectARB = (PFNGLCREATESHADEROBJECTARBPROC)
-		GETPROCADDRESS("glCreateShaderObjectARB");
- 	glShaderSourceARB = (PFNGLSHADERSOURCEARBPROC)
-		GETPROCADDRESS("glShaderSourceARB");
- 	glCompileShaderARB = (PFNGLCOMPILESHADERARBPROC)
-		GETPROCADDRESS("glCompileShaderARB");
- 	glCreateProgramObjectARB = (PFNGLCREATEPROGRAMOBJECTARBPROC)
-		GETPROCADDRESS("glCreateProgramObjectARB");
- 	glAttachObjectARB = (PFNGLATTACHOBJECTARBPROC)
-		GETPROCADDRESS("glAttachObjectARB");
- 	glLinkProgramARB = (PFNGLLINKPROGRAMARBPROC)
-		GETPROCADDRESS ("glLinkProgramARB");
- 	glUseProgramObjectARB = (PFNGLUSEPROGRAMOBJECTARBPROC)
-		GETPROCADDRESS("glUseProgramObjectARB");          
-
-	glGetUniformLocationARB = (PFNGLGETUNIFORMLOCATIONARBPROC)
-		GETPROCADDRESS("glGetUniformLocationARB");
-	glUniform1fARB = (PFNGLUNIFORM1FARBPROC)
-		GETPROCADDRESS("glUniform1fARB");
-
 	fragShader = glCreateShaderObjectARB (GL_FRAGMENT_SHADER_ARB);
 	glShaderSourceARB (fragShader, 1, &fragShaderText, NULL);
 	glCompileShaderARB (fragShader);
@@ -193,6 +153,7 @@ int main (int argc, char *argv[])
 	glutKeyboardFunc (Key);
 	glutDisplayFunc (Redisplay);
 	glutIdleFunc (Idle);
+	glewInit();
 	Init ();
 	glutMainLoop ();
 	return 0;

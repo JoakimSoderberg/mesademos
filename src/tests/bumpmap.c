@@ -30,13 +30,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <GL/glew.h>
 #include <GL/glut.h>
 
 #include "readtex.h"
-
-static PFNGLGETTEXBUMPPARAMETERFVATIPROC glGetTexBumpParameterfvATI_func = NULL;
-static PFNGLGETTEXBUMPPARAMETERIVATIPROC glGetTexBumpParameterivATI_func = NULL;
-static PFNGLTEXBUMPPARAMETERFVATIPROC glTexBumpParameterfvATI_func = NULL;
 
 static const char *TexFile = "../images/arch.rgb";
 
@@ -71,7 +68,7 @@ static void Display( void )
    glTexEnvf( GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_BUMP_ENVMAP_ATI );
    glTexEnvf( GL_TEXTURE_ENV, GL_BUMP_TARGET_ATI, GL_TEXTURE0);
 
-   glTexBumpParameterfvATI_func(GL_BUMP_ROT_MATRIX_ATI, bumpMatrix);
+   glTexBumpParameterfvATI(GL_BUMP_ROT_MATRIX_ATI, bumpMatrix);
 
    glCallList(1);
 
@@ -127,17 +124,13 @@ static void Init( void )
       exit(1);
    }
 
-   glGetTexBumpParameterfvATI_func = glutGetProcAddress("glGetTexBumpParameterfvATI");
-   glGetTexBumpParameterivATI_func = glutGetProcAddress("glGetTexBumpParameterivATI");
-   glTexBumpParameterfvATI_func = glutGetProcAddress("glTexBumpParameterfvATI");
-
-   glGetTexBumpParameterivATI_func(GL_BUMP_ROT_MATRIX_SIZE_ATI, &param);
+   glGetTexBumpParameterivATI(GL_BUMP_ROT_MATRIX_SIZE_ATI, &param);
    printf("BUMP_ROT_MATRIX_SIZE_ATI = %d\n", param);
-   glGetTexBumpParameterivATI_func(GL_BUMP_NUM_TEX_UNITS_ATI, &param);
+   glGetTexBumpParameterivATI(GL_BUMP_NUM_TEX_UNITS_ATI, &param);
    printf("BUMP_NUM_TEX_UNITS_ATI = %d\n", param);
-   glGetTexBumpParameterfvATI_func(GL_BUMP_ROT_MATRIX_ATI, paramMat);
+   glGetTexBumpParameterfvATI(GL_BUMP_ROT_MATRIX_ATI, paramMat);
    printf("initial rot matrix %f %f %f %f\n", paramMat[0], paramMat[1], paramMat[2], paramMat[3]);
-   glGetTexBumpParameterivATI_func(GL_BUMP_TEX_UNITS_ATI, paramArray);
+   glGetTexBumpParameterivATI(GL_BUMP_TEX_UNITS_ATI, paramArray);
    printf("units supporting bump mapping: ");
    for (i = 0; i < param; i++)
       printf("%d ", paramArray[i] - GL_TEXTURE0);
@@ -199,6 +192,7 @@ int main( int argc, char *argv[] )
    glutInitWindowSize( 400, 400 );
    glutInitDisplayMode( GLUT_RGB | GLUT_DOUBLE );
    glutCreateWindow( "GL_ATI_envmap_bumpmap test" );
+   glewInit();
    glutReshapeFunc( Reshape );
    glutKeyboardFunc( Key );
    glutDisplayFunc( Display );

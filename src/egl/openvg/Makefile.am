@@ -1,4 +1,4 @@
-# Copyright © 2009 Intel Corporation
+# Copyright © 2010 Intel Corporation
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -22,9 +22,43 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-SUBDIRS = \
-	eglut \
-	opengl \
-	openvg \
-	opengles1 \
-	opengles2
+# These programs aren't intended to be included with the normal distro.
+# They're not too interesting but they're good for testing.
+
+AM_CFLAGS = \
+	$(DEMO_CFLAGS) \
+	$(EGL_CFLAGS) \
+	$(VG_CFLAGS) \
+	-I$(top_srcdir)/src/egl/eglut \
+	-I$(top_srcdir)/src/util
+AM_LDFLAGS = \
+	$(DEMO_LIBS) \
+	$(EGL_LIBS) \
+	$(VG_LIBS)
+
+if HAVE_X11
+EGL_X11_DEMOS = \
+	lion_x11 \
+	sp_x11
+endif
+
+if HAVE_EGL
+if HAVE_VG
+noinst_PROGRAMS = \
+	lion_screen \
+	sp_screen \
+	$(EGL_X11_DEMOS)
+endif
+endif
+
+lion_screen_SOURCES = lion.c lion-render.c
+sp_screen_SOURCES = sp.c
+
+lion_x11_SOURCES = lion.c lion-render.c
+sp_x11_SOURCES = sp.c
+
+lion_screen_LDADD = ../eglut/libeglut_screen.la
+sp_screen_LDADD = ../eglut/libeglut_screen.la
+
+lion_x11_LDADD = ../eglut/libeglut_x11.la
+sp_x11_LDADD = ../eglut/libeglut_x11.la

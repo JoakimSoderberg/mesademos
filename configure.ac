@@ -91,6 +91,7 @@ DEMO_LIBS="$DEMO_LIBS $GLU_LIBS"
 PKG_CHECK_MODULES(EGL, [egl], [egl_enabled=yes], [egl_enabled=no])
 PKG_CHECK_MODULES(GLESV1, [glesv1_cm], [glesv1_enabled=yes], [glesv1_enabled=no])
 PKG_CHECK_MODULES(GLESV2, [glesv2], [glesv2_enabled=yes], [glesv2_enabled=no])
+PKG_CHECK_MODULES(VG, [vg], [vg_enabled=yes], [vg_enabled=no])
 PKG_CHECK_MODULES(OSMESA, [osmesa], [osmesa_enabled=yes], [osmesa_enabled=no])
 dnl The OSMesa .pc uses OSMesa32, while we want to build with other versions
 dnl too.
@@ -178,6 +179,7 @@ AC_SUBST([MESA_GLAPI])
 AM_CONDITIONAL(HAVE_EGL, test "x$egl_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_GLESV1, test "x$glesv1_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_GLESV2, test "x$glesv2_enabled" = "xyes")
+AM_CONDITIONAL(HAVE_VG, test "x$vg_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_GLUT, test "x$glut_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_X11, test "x$x11_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_OSMESA, test "x$osmesa_enabled" = "xyes")
@@ -193,6 +195,7 @@ AC_OUTPUT([
 	src/egl/opengl/Makefile
 	src/egl/opengles1/Makefile
 	src/egl/opengles2/Makefile
+	src/egl/openvg/Makefile
 	src/fp/Makefile
 	src/fpglsl/Makefile
 	src/glsl/Makefile

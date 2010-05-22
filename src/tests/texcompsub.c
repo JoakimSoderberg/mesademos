@@ -69,7 +69,7 @@ LoadCompressedImage(void)
 }
 
 static void
-Init()
+Init(void)
 {
    GLint numFormats, formats[100];
    GLint p;

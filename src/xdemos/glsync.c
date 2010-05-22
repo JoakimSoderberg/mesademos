@@ -57,9 +57,10 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 
-void (*video_sync_get)();
-void (*video_sync)();
-void (*swap_interval)();
+static PFNGLXGETVIDEOSYNCSGIPROC video_sync_get;
+static PFNGLXSWAPINTERVALSGIPROC swap_interval;
+static PFNGLXWAITVIDEOSYNCSGIPROC video_sync;
+
 
 static int GLXExtensionSupported(Display *dpy, const char *extension)
 {
@@ -104,7 +105,8 @@ int main(int argc, char *argv[])
 	Display *disp;
 	XVisualInfo *pvi;
 	XSetWindowAttributes swa;
-	GLint last_val = -1, count = 0;
+	GLint last_val = -1;
+        unsigned int count = 0;
 	Window winGL;
 	GLXContext context;
 	int dummy;
@@ -232,10 +234,10 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "failed to make context current: %d\n", ret);
 	}
 
-	video_sync_get = glXGetProcAddress((unsigned char *)"glXGetVideoSyncSGI");
-	video_sync = glXGetProcAddress((unsigned char *)"glXWaitVideoSyncSGI");
+	video_sync_get = (PFNGLXGETVIDEOSYNCSGIPROC) glXGetProcAddress((unsigned char *)"glXGetVideoSyncSGI");
+	video_sync = (PFNGLXWAITVIDEOSYNCSGIPROC) glXGetProcAddress((unsigned char *)"glXWaitVideoSyncSGI");
 
-	swap_interval = glXGetProcAddress((unsigned char *)"glXSwapIntervalSGI");
+	swap_interval = (PFNGLXSWAPINTERVALSGIPROC) glXGetProcAddress((unsigned char *)"glXSwapIntervalSGI");
 
 	if (!video_sync_get || !video_sync || !swap_interval) {
 		fprintf(stderr, "failed to get sync functions\n");

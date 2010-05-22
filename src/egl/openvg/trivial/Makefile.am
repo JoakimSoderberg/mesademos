@@ -26,14 +26,14 @@
 # They're not too interesting but they're good for testing.
 
 AM_CFLAGS = \
-	$(DEMO_CFLAGS) \
+	$(X11_CFLAGS) \
 	$(EGL_CFLAGS) \
 	$(VG_CFLAGS)
 AM_LDFLAGS = \
-	$(DEMO_LIBS) \
+	$(X11_LIBS) \
 	$(EGL_LIBS) \
 	$(VG_LIBS) \
-	-lVGU
+	-lm
 
 if HAVE_X11
 if HAVE_EGL

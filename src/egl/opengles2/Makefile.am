@@ -26,15 +26,15 @@
 # They're not too interesting but they're good for testing.
 
 AM_CFLAGS = \
-	$(DEMO_CFLAGS) \
-	$(EGL_CFLAGS) \
 	$(GLESV2_CFLAGS) \
-	-I$(top_srcdir)/src/egl/eglut \
-	-I$(top_srcdir)/src/util
+	$(EGL_CFLAGS) \
+	$(X11_CFLAGS) \
+	-I$(top_srcdir)/src/egl/eglut
+
 AM_LDFLAGS = \
-	$(DEMO_LIBS) \
+	$(GLESV2_LIBS) \
 	$(EGL_LIBS) \
-	$(GLESV2_LIBS)
+	-lm
 
 if HAVE_EGL
 if HAVE_GLESV2
@@ -44,5 +44,8 @@ noinst_PROGRAMS = \
 	tri
 endif
 endif
+
+es2_info_LDADD = $(X11_LIBS)
+tri_LDADD = $(X11_LIBS)
 
 es2gears_LDADD = ../eglut/libeglut_x11.la

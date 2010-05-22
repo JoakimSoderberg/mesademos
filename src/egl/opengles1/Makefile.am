@@ -26,15 +26,15 @@
 # They're not too interesting but they're good for testing.
 
 AM_CFLAGS = \
-	$(DEMO_CFLAGS) \
-	$(EGL_CFLAGS) \
 	$(GLESV1_CFLAGS) \
-	-I$(top_srcdir)/src/egl/eglut \
-	-I$(top_srcdir)/src/util
+	$(EGL_CFLAGS) \
+	$(X11_CFLAGS) \
+	-I$(top_srcdir)/src/egl/eglut
+
 AM_LDFLAGS = \
-	$(DEMO_LIBS) \
+	$(GLESV1_LIBS) \
 	$(EGL_LIBS) \
-	$(GLESV1_LIBS)
+	-lm
 
 if HAVE_EGL
 if HAVE_GLESV1
@@ -55,6 +55,13 @@ noinst_PROGRAMS = \
 	two_win
 endif
 endif
+
+bindtex_LDADD = $(X11_LIBS)
+es1_info_LDADD = $(X11_LIBS)
+msaa_LDADD = $(X11_LIBS)
+pbuffer_LDADD = $(X11_LIBS)
+render_tex_LDADD = $(X11_LIBS)
+two_win_LDADD = $(X11_LIBS)
 
 drawtex_screen_SOURCES = drawtex.c
 gears_screen_SOURCES = gears.c

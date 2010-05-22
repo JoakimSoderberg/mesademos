@@ -22,8 +22,8 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-AM_CFLAGS = \
-	$(DEMO_CFLAGS)
+AM_CFLAGS = $(EGL_CFLAGS)
+AM_LDFLAGS = $(EGL_LIBS)
 
 if HAVE_EGL
 if HAVE_X11
@@ -42,3 +42,5 @@ libeglut_x11_la_SOURCES = \
 	eglut.c \
 	eglutint.h \
 	eglut_x11.c
+libeglut_x11_la_CFLAGS = $(X11_CFLAGS)
+libeglut_x11_la_LIBADD = $(X11_LIBS)

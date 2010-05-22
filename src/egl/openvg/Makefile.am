@@ -26,15 +26,15 @@
 # They're not too interesting but they're good for testing.
 
 AM_CFLAGS = \
-	$(DEMO_CFLAGS) \
-	$(EGL_CFLAGS) \
 	$(VG_CFLAGS) \
-	-I$(top_srcdir)/src/egl/eglut \
-	-I$(top_srcdir)/src/util
+	$(EGL_CFLAGS) \
+	$(X11_CFLAGS) \
+	-I$(top_srcdir)/src/egl/eglut
+
 AM_LDFLAGS = \
-	$(DEMO_LIBS) \
+	$(VG_LIBS) \
 	$(EGL_LIBS) \
-	$(VG_LIBS)
+	-lm
 
 if HAVE_X11
 EGL_X11_DEMOS = \

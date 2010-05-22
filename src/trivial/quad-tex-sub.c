@@ -36,7 +36,7 @@
 GLenum doubleBuffer;
 GLint line = 0;
 
-static void MakeImage()
+static void MakeImage(void)
 {
    GLubyte tex2d[SIZE][SIZE][3];
    GLint s, t;
@@ -58,7 +58,7 @@ static void MakeImage()
    glEnable(GL_TEXTURE_2D);
 }
 
-static void UpdateLine()
+static void UpdateLine(void)
 {
    GLubyte tex[SIZE][3];
    GLubyte b = 0;

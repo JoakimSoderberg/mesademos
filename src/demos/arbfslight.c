@@ -10,22 +10,11 @@
  * 17 April 2003
  */
 
-#ifdef WIN32
-#include <windows.h>
-#endif
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <GL/glut.h>
-#include <GL/glext.h>
-
-#ifdef WIN32
-#define GETPROCADDRESS wglGetProcAddress
-#else
-#define GETPROCADDRESS glutGetProcAddress
-#endif
 
 static GLfloat diffuse[4] = { 0.5f, 0.5f, 1.0f, 1.0f };
 static GLfloat specular[4] = { 0.8f, 0.8f, 0.8f, 1.0f };
@@ -48,17 +37,6 @@ static GLint t0 = 0;
 static GLint frames = 0;
 
 static GLfloat xRot = 0.0f, yRot = 0.0f;
-
-static PFNGLCREATESHADEROBJECTARBPROC glCreateShaderObjectARB = NULL;
-static PFNGLSHADERSOURCEARBPROC glShaderSourceARB = NULL;
-static PFNGLCOMPILESHADERARBPROC glCompileShaderARB = NULL;
-static PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObjectARB = NULL;
-static PFNGLATTACHOBJECTARBPROC glAttachObjectARB = NULL;
-static PFNGLLINKPROGRAMARBPROC glLinkProgramARB = NULL;
-static PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB = NULL;
-static PFNGLGETUNIFORMLOCATIONARBPROC glGetUniformLocationARB = NULL;
-static PFNGLUNIFORM3FVARBPROC glUniform3fvARB = NULL;
-static PFNGLUNIFORM3FVARBPROC glUniform4fvARB = NULL;
 
 static void normalize (GLfloat *dst, const GLfloat *src)
 {
@@ -265,17 +243,6 @@ static void Init (void)
 		exit(1);
 	}
 
-	glCreateShaderObjectARB = (PFNGLCREATESHADEROBJECTARBPROC) GETPROCADDRESS ("glCreateShaderObjectARB");
-	glShaderSourceARB = (PFNGLSHADERSOURCEARBPROC) GETPROCADDRESS ("glShaderSourceARB");
-	glCompileShaderARB = (PFNGLCOMPILESHADERARBPROC) GETPROCADDRESS ("glCompileShaderARB");
-	glCreateProgramObjectARB = (PFNGLCREATEPROGRAMOBJECTARBPROC) GETPROCADDRESS ("glCreateProgramObjectARB");
-	glAttachObjectARB = (PFNGLATTACHOBJECTARBPROC) GETPROCADDRESS ("glAttachObjectARB");
-	glLinkProgramARB = (PFNGLLINKPROGRAMARBPROC) GETPROCADDRESS ("glLinkProgramARB");
-	glUseProgramObjectARB = (PFNGLUSEPROGRAMOBJECTARBPROC) GETPROCADDRESS ("glUseProgramObjectARB");
-	glGetUniformLocationARB = (PFNGLGETUNIFORMLOCATIONARBPROC) GETPROCADDRESS ("glGetUniformLocationARB");
-   glUniform3fvARB = (PFNGLUNIFORM3FVARBPROC) GETPROCADDRESS ("glUniform3fvARB");
-   glUniform4fvARB = (PFNGLUNIFORM3FVARBPROC) GETPROCADDRESS ("glUniform4fvARB");
-
 	fragShader = glCreateShaderObjectARB (GL_FRAGMENT_SHADER_ARB);
 	glShaderSourceARB (fragShader, 1, &fragShaderText, NULL);
 	glCompileShaderARB (fragShader);
@@ -315,6 +282,7 @@ int main (int argc, char *argv[])
 	glutInit (&argc, argv);
 	glutInitDisplayMode (GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	glutCreateWindow (argv[0]);
+	glewInit();
 	glutReshapeFunc (Reshape);
 	glutKeyboardFunc (Key);
 	glutSpecialFunc (SpecialKey);

@@ -117,7 +117,7 @@ strset (char buf[], char ch)
 
 
 static void
-Clear_Buffers ()
+Clear_Buffers (void)
 {
     strset (Buf1, 0);
     strset (Buf2, 0);
@@ -591,7 +591,7 @@ gear_find (char gear_name[])
 
 
 static void
-process ()
+process (void)
 {
     GLfloat x, y, z, D, dist;
     GLint axle_index, i, j, g1, g2, k;

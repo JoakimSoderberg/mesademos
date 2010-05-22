@@ -17,10 +17,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <GL/glut.h>
-#include <GL/glext.h>
-#include "extfuncs.h"
 
 
 #define TEXTURE 0
@@ -78,11 +76,11 @@ Redisplay(void)
    glLightfv(GL_LIGHT0, GL_POSITION, vec);
    
    if (pixelLight) {
-      glUseProgram_func(program);
+      glUseProgram(program);
       glDisable(GL_LIGHTING);
    }
    else {
-      glUseProgram_func(0);
+      glUseProgram(0);
       glEnable(GL_LIGHTING);
    }
 
@@ -139,9 +137,9 @@ Reshape(int width, int height)
 static void
 CleanUp(void)
 {
-   glDeleteShader_func(fragShader);
-   glDeleteShader_func(vertShader);
-   glDeleteProgram_func(program);
+   glDeleteShader(fragShader);
+   glDeleteShader(vertShader);
+   glDeleteProgram(program);
    glutDestroyWindow(win);
 }
 
@@ -227,16 +225,16 @@ TestFunctions(void)
 {
    printf("Error 0x%x at line %d\n", glGetError(), __LINE__);
 
-   assert(glIsProgram_func(program));
-   assert(glIsShader_func(fragShader));
-   assert(glIsShader_func(vertShader));
+   assert(glIsProgram(program));
+   assert(glIsShader(fragShader));
+   assert(glIsShader(vertShader));
 
    /* attached shaders */
    {
       GLuint shaders[20];
       GLsizei count;
       int i;
-      glGetAttachedShaders_func(program, 20, &count, shaders);
+      glGetAttachedShaders(program, 20, &count, shaders);
       for (i = 0; i < count; i++) {
          printf("Attached: %u\n", shaders[i]);
          assert(shaders[i] == fragShader ||
@@ -247,25 +245,25 @@ TestFunctions(void)
    {
       GLchar log[1000];
       GLsizei len;
-      glGetShaderInfoLog_func(vertShader, 1000, &len, log);
+      glGetShaderInfoLog(vertShader, 1000, &len, log);
       printf("Vert Shader Info Log: %s\n", log);
-      glGetShaderInfoLog_func(fragShader, 1000, &len, log);
+      glGetShaderInfoLog(fragShader, 1000, &len, log);
       printf("Frag Shader Info Log: %s\n", log);
-      glGetProgramInfoLog_func(program, 1000, &len, log);
+      glGetProgramInfoLog(program, 1000, &len, log);
       printf("Program Info Log: %s\n", log);
    }
 
    /* active uniforms */
    {
       GLint n, max, i;
-      glGetProgramiv_func(program, GL_ACTIVE_UNIFORMS, &n);
-      glGetProgramiv_func(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &max);
+      glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &n);
+      glGetProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &max);
       printf("Num uniforms: %d  Max name length: %d\n", n, max);
       for (i = 0; i < n; i++) {
          GLint size, len;
          GLenum type;
          char name[100];
-         glGetActiveUniform_func(program, i, 100, &len, &size, &type, name);
+         glGetActiveUniform(program, i, 100, &len, &size, &type, name);
          printf("  %d: %s nameLen=%d size=%d type=0x%x\n",
                 i, name, len, size, type);
       }
@@ -360,7 +358,7 @@ static void
 VertAttrib(GLint index, float x, float y)
 {
 #if 1
-   glVertexAttrib2f_func(index, x, y);
+   glVertexAttrib2f(index, x, y);
 #else
    glTexCoord2f(x, y);
 #endif
@@ -388,15 +386,15 @@ LoadAndCompileShader(GLuint shader, const char *text)
 {
    GLint stat;
 
-   glShaderSource_func(shader, 1, (const GLchar **) &text, NULL);
+   glShaderSource(shader, 1, (const GLchar **) &text, NULL);
 
-   glCompileShader_func(shader);
+   glCompileShader(shader);
 
-   glGetShaderiv_func(shader, GL_COMPILE_STATUS, &stat);
+   glGetShaderiv(shader, GL_COMPILE_STATUS, &stat);
    if (!stat) {
       GLchar log[1000];
       GLsizei len;
-      glGetShaderInfoLog_func(shader, 1000, &len, log);
+      glGetShaderInfoLog(shader, 1000, &len, log);
       fprintf(stderr, "fslight: problem compiling shader:\n%s\n", log);
       exit(1);
    }
@@ -434,11 +432,11 @@ static void
 CheckLink(GLuint prog)
 {
    GLint stat;
-   glGetProgramiv_func(prog, GL_LINK_STATUS, &stat);
+   glGetProgramiv(prog, GL_LINK_STATUS, &stat);
    if (!stat) {
       GLchar log[1000];
       GLsizei len;
-      glGetProgramInfoLog_func(prog, 1000, &len, log);
+      glGetProgramInfoLog(prog, 1000, &len, log);
       fprintf(stderr, "Linker error:\n%s\n", log);
    }
 }
@@ -472,46 +470,44 @@ Init(void)
       exit(1);
    }
 
-   GetExtensionFuncs();
-
-   fragShader = glCreateShader_func(GL_FRAGMENT_SHADER);
+   fragShader = glCreateShader(GL_FRAGMENT_SHADER);
    if (FragProgFile)
       ReadShader(fragShader, FragProgFile);
    else
       LoadAndCompileShader(fragShader, fragShaderText);
 
 
-   vertShader = glCreateShader_func(GL_VERTEX_SHADER);
+   vertShader = glCreateShader(GL_VERTEX_SHADER);
    if (VertProgFile)
       ReadShader(vertShader, VertProgFile);
    else
       LoadAndCompileShader(vertShader, vertShaderText);
 
-   program = glCreateProgram_func();
-   glAttachShader_func(program, fragShader);
-   glAttachShader_func(program, vertShader);
-   glLinkProgram_func(program);
+   program = glCreateProgram();
+   glAttachShader(program, fragShader);
+   glAttachShader(program, vertShader);
+   glLinkProgram(program);
    CheckLink(program);
-   glUseProgram_func(program);
+   glUseProgram(program);
 
-   uDiffuse = glGetUniformLocation_func(program, "diffuse");
-   uSpecular = glGetUniformLocation_func(program, "specular");
-   uTexture = glGetUniformLocation_func(program, "texture");
+   uDiffuse = glGetUniformLocation(program, "diffuse");
+   uSpecular = glGetUniformLocation(program, "specular");
+   uTexture = glGetUniformLocation(program, "texture");
    printf("DiffusePos %d  SpecularPos %d  TexturePos %d\n",
           uDiffuse, uSpecular, uTexture);
 
-   glUniform4fv_func(uDiffuse, 1, diffuse);
-   glUniform4fv_func(uSpecular, 1, specular);
+   glUniform4fv(uDiffuse, 1, diffuse);
+   glUniform4fv(uSpecular, 1, specular);
    /*   assert(glGetError() == 0);*/
 #if TEXTURE
-   glUniform1i_func(uTexture, 2);  /* use texture unit 2 */
+   glUniform1i(uTexture, 2);  /* use texture unit 2 */
 #endif
    /*assert(glGetError() == 0);*/
 
    if (CoordAttrib) {
       int i;
-      glBindAttribLocation_func(program, CoordAttrib, "coord");
-      i = glGetAttribLocation_func(program, "coord");
+      glBindAttribLocation(program, CoordAttrib, "coord");
+      i = glGetAttribLocation(program, "coord");
       assert(i >= 0);
       if (i != CoordAttrib) {
          printf("Hmmm, NVIDIA bug?\n");
@@ -549,16 +545,16 @@ Init(void)
       GLsizei len = strlen(fragShaderText) + 1;
       GLsizei lenOut;
       GLchar *src =(GLchar *) malloc(len * sizeof(GLchar));
-      glGetShaderSource_func(fragShader, 0, NULL, src);
-      glGetShaderSource_func(fragShader, len, &lenOut, src);
+      glGetShaderSource(fragShader, 0, NULL, src);
+      glGetShaderSource(fragShader, len, &lenOut, src);
       assert(len == lenOut + 1);
       assert(strcmp(src, fragShaderText) == 0);
       free(src);
    }
 
-   assert(glIsProgram_func(program));
-   assert(glIsShader_func(fragShader));
-   assert(glIsShader_func(vertShader));
+   assert(glIsProgram(program));
+   assert(glIsShader(fragShader));
+   assert(glIsShader(vertShader));
 
    glColor3f(1, 0, 0);
 
@@ -604,6 +600,7 @@ main(int argc, char *argv[])
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
    win = glutCreateWindow(argv[0]);
+   glewInit();
    glutReshapeFunc(Reshape);
    glutKeyboardFunc(Key);
    glutSpecialFunc(SpecialKey);

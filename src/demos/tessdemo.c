@@ -87,7 +87,7 @@ static void GLCALLBACK edge_callback( GLenum flag )
    }
 }
 
-static void GLCALLBACK end_callback()
+static void GLCALLBACK end_callback(void)
 {
    GLuint	i;
 
@@ -164,7 +164,7 @@ static void set_screen_wh( GLsizei w, GLsizei h )
    height = h;
 }
 
-typedef void (GLAPIENTRY *callback_t)();
+typedef void (GLAPIENTRY *callback_t)(void);
 
 static void tesse( void )
 {

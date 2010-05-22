@@ -50,7 +50,7 @@ static void Idle( void )
 static int min( int a, int b ) { return a < b ? a : b; }
 #endif
 
-static void DrawObject()
+static void DrawObject(void)
 {
    GLint size = Width * Height * 4;
    

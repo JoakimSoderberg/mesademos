@@ -26,23 +26,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
-#ifdef __darwin__
-#include <GLUT/glut.h>
-
-typedef void (* PFNGLBINDVERTEXARRAYAPPLEPROC) (GLuint array);
-typedef void (* PFNGLDELETEVERTEXARRAYSAPPLEPROC) (GLsizei n, const GLuint *arrays);
-typedef void (* PFNGLGENVERTEXARRAYSAPPLEPROC) (GLsizei n, const GLuint *arrays);
-typedef GLboolean (* PFNGLISVERTEXARRAYAPPLEPROC) (GLuint array);
-
-#else
+#include <GL/glew.h>
 #include <GL/glut.h>
-#endif
 
-static PFNGLBINDVERTEXARRAYAPPLEPROC bind_vertex_array = NULL;
-static PFNGLGENVERTEXARRAYSAPPLEPROC gen_vertex_arrays = NULL;
-static PFNGLDELETEVERTEXARRAYSAPPLEPROC delete_vertex_arrays = NULL;
-static PFNGLISVERTEXARRAYAPPLEPROC is_vertex_array = NULL;
 
 static int Width = 400;
 static int Height = 200;
@@ -198,7 +184,7 @@ static void Display( void )
    glRotatef( angle, 0.0 * angle , 0.0 * angle, 1.0 );
 
 
-   (*bind_vertex_array)( cube_array_obj );
+   glBindVertexArrayAPPLE( cube_array_obj );
    glPushMatrix();
    glTranslatef(-1.5, 0, 0);
    glRotatef( angle, 0.3 * angle , 0.8 * angle, 1.0 );
@@ -206,7 +192,7 @@ static void Display( void )
    glPopMatrix();
 
 
-   (*bind_vertex_array)( oct_array_obj );
+   glBindVertexArrayAPPLE( oct_array_obj );
    glPushMatrix();
    glTranslatef(1.5, 0, 0);
    glRotatef( angle, 0.3 * angle , 0.8 * angle, 1.0 );
@@ -260,8 +246,8 @@ static void Key( unsigned char key, int x, int y )
    (void) y;
    switch (key) {
       case 27:
-         (*delete_vertex_arrays)( 1, & cube_array_obj );
-         (*delete_vertex_arrays)( 1, & oct_array_obj );
+         glDeleteVertexArraysAPPLE( 1, & cube_array_obj );
+         glDeleteVertexArraysAPPLE( 1, & oct_array_obj );
          glutDestroyWindow(Win);
          exit(0);
          break;
@@ -283,33 +269,23 @@ static void Init( void )
       exit(1);
    }
 
-   bind_vertex_array = (PFNGLBINDVERTEXARRAYAPPLEPROC) glutGetProcAddress( "glBindVertexArrayAPPLE" );
-   gen_vertex_arrays = (PFNGLGENVERTEXARRAYSAPPLEPROC) glutGetProcAddress( "glGenVertexArraysAPPLE" );
-   delete_vertex_arrays = (PFNGLDELETEVERTEXARRAYSAPPLEPROC) glutGetProcAddress( "glDeleteVertexArraysAPPLE" );
-   is_vertex_array = (PFNGLISVERTEXARRAYAPPLEPROC) glutGetProcAddress( "glIsVertexArrayAPPLE" );
-
-   assert(bind_vertex_array);
-   assert(gen_vertex_arrays);
-   assert(delete_vertex_arrays);
-   assert(is_vertex_array);
-
    glEnable( GL_DEPTH_TEST );
    
-   (*gen_vertex_arrays)( 1, & cube_array_obj );
-   (*bind_vertex_array)( cube_array_obj );
+   glGenVertexArraysAPPLE( 1, & cube_array_obj );
+   glBindVertexArrayAPPLE( cube_array_obj );
    glVertexPointer( 4, GL_FLOAT, sizeof(GLfloat) * 4, cube_vert);
    glColorPointer( 4, GL_FLOAT, sizeof(GLfloat) * 4, cube_color);
    glEnableClientState( GL_VERTEX_ARRAY );
    glEnableClientState( GL_COLOR_ARRAY );
 
-   (*gen_vertex_arrays)( 1, & oct_array_obj );
-   (*bind_vertex_array)( oct_array_obj );
+   glGenVertexArraysAPPLE( 1, & oct_array_obj );
+   glBindVertexArrayAPPLE( oct_array_obj );
    glVertexPointer( 4, GL_FLOAT, sizeof(GLfloat) * 4, oct_vert);
    glColorPointer( 4, GL_FLOAT, sizeof(GLfloat) * 4, oct_color);
    glEnableClientState( GL_VERTEX_ARRAY );
    glEnableClientState( GL_COLOR_ARRAY );
 
-   (*bind_vertex_array)( 0 );
+   glBindVertexArrayAPPLE( 0 );
    glVertexPointer( 4, GL_FLOAT, sizeof(GLfloat) * 4, (void *) 0xDEADBEEF );
    glColorPointer( 4, GL_FLOAT, sizeof(GLfloat) * 4, (void *) 0xBADDC0DE );
 }
@@ -325,6 +301,7 @@ int main( int argc, char *argv[] )
    glutKeyboardFunc( Key );
    glutDisplayFunc( Display );
    glutVisibilityFunc( Visible );
+   glewInit();
    Init();
    glutMainLoop();
    return 0;

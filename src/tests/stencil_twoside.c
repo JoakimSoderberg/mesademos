@@ -42,10 +42,6 @@ static int Height = 200;
 static const GLfloat Near = 5.0, Far = 25.0;
 
 
-static PFNGLSTENCILFUNCSEPARATEPROC stencil_func_separate = NULL;
-static PFNGLSTENCILFUNCSEPARATEATIPROC stencil_func_separate_ati = NULL;
-static PFNGLSTENCILOPSEPARATEPROC stencil_op_separate = NULL;
-
 static void Display( void )
 {
    GLint  max_stencil;
@@ -89,14 +85,14 @@ static void Display( void )
     * 2nd square
     */
    if (use20syntax) {
-      stencil_func_separate(GL_FRONT, GL_ALWAYS, 0, ~0);
-      stencil_func_separate(GL_BACK, GL_ALWAYS, 0, ~0);
+      glStencilFuncSeparate(GL_FRONT, GL_ALWAYS, 0, ~0);
+      glStencilFuncSeparate(GL_BACK, GL_ALWAYS, 0, ~0);
    }
    else {
-      stencil_func_separate_ati(GL_ALWAYS, GL_ALWAYS, 0, ~0);
+      glStencilFuncSeparateATI(GL_ALWAYS, GL_ALWAYS, 0, ~0);
    }
-   stencil_op_separate(GL_FRONT, GL_KEEP, GL_KEEP, GL_INCR);
-   stencil_op_separate(GL_BACK, GL_KEEP, GL_KEEP, GL_DECR);
+   glStencilOpSeparate(GL_FRONT, GL_KEEP, GL_KEEP, GL_INCR);
+   glStencilOpSeparate(GL_BACK, GL_KEEP, GL_KEEP, GL_DECR);
 
    glTranslatef(3.0, 0, 0);
    glBegin(GL_QUADS);
@@ -124,14 +120,14 @@ static void Display( void )
     * 3rd square
     */
    if (use20syntax) {
-      stencil_func_separate(GL_FRONT, GL_ALWAYS, 0, ~0);
-      stencil_func_separate(GL_BACK, GL_ALWAYS, 0, ~0);
+      glStencilFuncSeparate(GL_FRONT, GL_ALWAYS, 0, ~0);
+      glStencilFuncSeparate(GL_BACK, GL_ALWAYS, 0, ~0);
    }
    else {
-      stencil_func_separate_ati(GL_ALWAYS, GL_ALWAYS, 0, ~0);
+      glStencilFuncSeparateATI(GL_ALWAYS, GL_ALWAYS, 0, ~0);
    }
-   stencil_op_separate(GL_FRONT, GL_KEEP, GL_KEEP, GL_DECR);
-   stencil_op_separate(GL_BACK, GL_KEEP, GL_KEEP, GL_INCR);
+   glStencilOpSeparate(GL_FRONT, GL_KEEP, GL_KEEP, GL_DECR);
+   glStencilOpSeparate(GL_BACK, GL_KEEP, GL_KEEP, GL_INCR);
 
    glTranslatef(3.0, 0, 0);
    glBegin(GL_QUADS);
@@ -159,14 +155,14 @@ static void Display( void )
     * 4th square
     */
    if (use20syntax) {
-      stencil_func_separate(GL_FRONT, GL_NEVER, 0, ~0);
-      stencil_func_separate(GL_BACK, GL_ALWAYS, 0, ~0);
+      glStencilFuncSeparate(GL_FRONT, GL_NEVER, 0, ~0);
+      glStencilFuncSeparate(GL_BACK, GL_ALWAYS, 0, ~0);
    }
    else {
-      stencil_func_separate_ati(GL_NEVER, GL_ALWAYS, 0, ~0);
+      glStencilFuncSeparateATI(GL_NEVER, GL_ALWAYS, 0, ~0);
    }
-   stencil_op_separate(GL_FRONT, GL_KEEP, GL_KEEP, GL_DECR);
-   stencil_op_separate(GL_BACK, GL_KEEP, GL_KEEP, GL_INCR);
+   glStencilOpSeparate(GL_FRONT, GL_KEEP, GL_KEEP, GL_DECR);
+   glStencilOpSeparate(GL_BACK, GL_KEEP, GL_KEEP, GL_INCR);
 
    glTranslatef(3.0, 0, 0);
    glBegin(GL_QUADS);
@@ -199,14 +195,14 @@ static void Display( void )
     * 5th square
     */
    if (use20syntax) {
-      stencil_func_separate(GL_FRONT, GL_ALWAYS, 0, ~0);
-      stencil_func_separate(GL_BACK, GL_ALWAYS, 0, ~0);
+      glStencilFuncSeparate(GL_FRONT, GL_ALWAYS, 0, ~0);
+      glStencilFuncSeparate(GL_BACK, GL_ALWAYS, 0, ~0);
    }
    else {
-      stencil_func_separate_ati(GL_ALWAYS, GL_ALWAYS, 0, ~0);
+      glStencilFuncSeparateATI(GL_ALWAYS, GL_ALWAYS, 0, ~0);
    }
-   stencil_op_separate(GL_FRONT, GL_KEEP, GL_KEEP, GL_INCR);
-   stencil_op_separate(GL_BACK, GL_KEEP, GL_KEEP, GL_DECR);
+   glStencilOpSeparate(GL_FRONT, GL_KEEP, GL_KEEP, GL_INCR);
+   glStencilOpSeparate(GL_BACK, GL_KEEP, GL_KEEP, GL_DECR);
 
    glTranslatef(3.0, 0, 0);
    glBegin(GL_QUADS);
@@ -239,14 +235,14 @@ static void Display( void )
     */
    if (glutExtensionSupported("GL_EXT_stencil_wrap")) {
       if (use20syntax) {
-         stencil_func_separate(GL_FRONT, GL_ALWAYS, 0, ~0);
-         stencil_func_separate(GL_BACK, GL_ALWAYS, 0, ~0);
+         glStencilFuncSeparate(GL_FRONT, GL_ALWAYS, 0, ~0);
+         glStencilFuncSeparate(GL_BACK, GL_ALWAYS, 0, ~0);
       }
       else {
-         stencil_func_separate_ati(GL_ALWAYS, GL_ALWAYS, 0, ~0);
+         glStencilFuncSeparateATI(GL_ALWAYS, GL_ALWAYS, 0, ~0);
       }
-      stencil_op_separate(GL_FRONT, GL_KEEP, GL_KEEP, GL_KEEP);
-      stencil_op_separate(GL_BACK, GL_KEEP, GL_KEEP, GL_INCR_WRAP);
+      glStencilOpSeparate(GL_FRONT, GL_KEEP, GL_KEEP, GL_KEEP);
+      glStencilOpSeparate(GL_BACK, GL_KEEP, GL_KEEP, GL_INCR_WRAP);
 
       glTranslatef(3.0, 0, 0);
       glBegin(GL_QUADS);
@@ -325,9 +321,6 @@ static void Init( void )
    if (atof( ver_string ) < 2.0) {
       use20syntax = 0;
    }
-   stencil_func_separate = (PFNGLSTENCILFUNCSEPARATEPROC) glutGetProcAddress( "glStencilFuncSeparate" );
-   stencil_func_separate_ati = (PFNGLSTENCILFUNCSEPARATEATIPROC) glutGetProcAddress( "glStencilFuncSeparateATI" );
-   stencil_op_separate = (PFNGLSTENCILOPSEPARATEPROC) glutGetProcAddress( "glStencilOpSeparate" );
 
    printf("\nAll 5 (or 6) squares should be the same color.\n");
 }

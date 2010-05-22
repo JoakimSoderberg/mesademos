@@ -19,8 +19,6 @@ static GLenum Buffer = GL_FRONT;
 static GLenum AlphaTest = GL_FALSE;
 static GLboolean UseBlit = GL_FALSE;
 
-static PFNGLBLITFRAMEBUFFEREXTPROC glBlitFramebufferEXT_func = NULL;
-
 
 /**
  * draw teapot in lower-left corner of window
@@ -86,9 +84,9 @@ BlitOne(void)
 #ifdef GL_EXT_framebuffer_blit
    if (UseBlit)
    {
-      glBlitFramebufferEXT_func(0, 0, ImgWidth, ImgHeight,
-                                x, y, x + ImgWidth, y + ImgHeight,
-                                GL_COLOR_BUFFER_BIT, GL_LINEAR);
+      glBlitFramebufferEXT(0, 0, ImgWidth, ImgHeight,
+                           x, y, x + ImgWidth, y + ImgHeight,
+                           GL_COLOR_BUFFER_BIT, GL_LINEAR);
    }
    else
 #endif
@@ -236,8 +234,6 @@ static void
 Init(void)
 {
    if (glutExtensionSupported("GL_EXT_framebuffer_blit")) {
-      glBlitFramebufferEXT_func = (PFNGLBLITFRAMEBUFFEREXTPROC)
-         glutGetProcAddress("glBlitFramebufferEXT");
    }
    else if (UseBlit) {
       printf("Warning: GL_EXT_framebuffer_blit not supported.\n");

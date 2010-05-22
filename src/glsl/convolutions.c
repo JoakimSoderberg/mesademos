@@ -179,7 +179,7 @@ static void fillConvolution(GLint *k,
    }
 }
 
-static void setupConvolution()
+static void setupConvolution(void)
 {
    GLint *kernel = (GLint*)malloc(sizeof(GLint) * 9);
    GLfloat scale = 0.0;
@@ -309,7 +309,7 @@ static void menuSelected(int entry)
    glutPostRedisplay();
 }
 
-static void menuInit()
+static void menuInit(void)
 {
    menuId = glutCreateMenu(menuSelected);
 
@@ -325,7 +325,7 @@ static void menuInit()
    glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
-static void init()
+static void init(void)
 {
    if (!glutExtensionSupported("GL_ARB_shader_objects") ||
        !glutExtensionSupported("GL_ARB_vertex_shader") ||
@@ -397,7 +397,7 @@ special(int k, int x, int y)
 }
 
 
-static void draw()
+static void draw(void)
 {
    GLfloat center[2];
    GLfloat anchor[2];

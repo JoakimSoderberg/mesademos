@@ -9,7 +9,6 @@
 #include <math.h>
 #include <GL/glew.h>
 #include <GL/glut.h>
-#include "extfuncs.h"
 #include "readtex.h"
 #include "shaderutil.h"
 
@@ -187,7 +186,7 @@ CreateProgram(void)
 
    assert(program);
 
-   glUseProgram_func(program);
+   glUseProgram(program);
 
    SetUniformValues(program, Uniforms);
 
@@ -199,8 +198,6 @@ static void
 Init(void)
 {
    glClearColor(0.25, 0.25, 0.25, 0.0);
-
-   GetExtensionFuncs();
 
    if (!ShadersSupported()) {
       printf("Sorry, this test requires GLSL\n");
@@ -216,7 +213,7 @@ Init(void)
    InitTexture();
 
    Program = CreateProgram();
-   glUseProgram_func(Program);
+   glUseProgram(Program);
 }
 
 

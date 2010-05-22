@@ -22,6 +22,14 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
+AM_CFLAGS = \
+	$(DEMO_CFLAGS) \
+	$(GLUT_CFLAGS)
+
+AM_LDFLAGS = \
+	$(DEMO_LIBS) \
+	$(GLUT_LIBS)
+
 if HAVE_GLUT
 noinst_PROGRAMS = \
 	cltest \

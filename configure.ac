@@ -55,13 +55,13 @@ PKG_CHECK_MODULES(DEMO, [gl])
 
 dnl Check for GLUT
 GLUT_CFLAGS=""
-GLUT_LIB=-lglut
+GLUT_LIBS=-lglut
 glut_enabled=yes
 AC_ARG_WITH([glut],
 	[AS_HELP_STRING([--with-glut=DIR],
 			[glut install directory])],
 	[GLUT_CFLAGS="-I$withval/include"
-	 GLUT_LIB="-L$withval/lib -lglut"])
+	 GLUT_LIBS="-L$withval/lib -lglut"])
 AC_CHECK_HEADER([GL/glut.h],
 		[],
 		[glut_enabled=no])
@@ -70,6 +70,8 @@ AC_CHECK_LIB([glut],
 		[],
 		[glut_enabled=no])
 
+GLEW_CFLAGS=""
+GLEW_LIBS="-lGLEW"
 dnl Include a fallback path for GLEW for the moment while not all distros
 dnl have picked up the .pc file.
 PKG_CHECK_MODULES(GLEW, [glew], [], [
@@ -83,6 +85,9 @@ PKG_CHECK_MODULES(GLEW, [glew], [], [
 		  ])
 DEMO_CFLAGS="$DEMO_CFLAGS $GLEW_CFLAGS"
 DEMO_LIBS="$DEMO_LIBS $GLEW_LIBS"
+
+# LIBS was set by AC_CHECK_LIB above
+LIBS=""
 
 PKG_CHECK_MODULES(GLU, [glu])
 DEMO_CFLAGS="$DEMO_CFLAGS $GLU_CFLAGS"

@@ -9,17 +9,36 @@
  */
 
 
-#include <GL/glut.h>
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "extfuncs.h"
+#include <GL/glew.h>
+#include <GL/glut.h>
 
 /* For debug */
 #define DEPTH 1
 #define STENCIL 1
 #define DRAW 1
+
+
+static PFNGLISRENDERBUFFERPROC glIsRenderbuffer_func = NULL;
+static PFNGLBINDRENDERBUFFERPROC glBindRenderbuffer_func = NULL;
+static PFNGLDELETERENDERBUFFERSPROC glDeleteRenderbuffers_func = NULL;
+static PFNGLGENRENDERBUFFERSPROC glGenRenderbuffers_func = NULL;
+static PFNGLRENDERBUFFERSTORAGEPROC glRenderbufferStorage_func = NULL;
+static PFNGLGETRENDERBUFFERPARAMETERIVPROC glGetRenderbufferParameteriv_func = NULL;
+static PFNGLISFRAMEBUFFERPROC glIsFramebuffer_func = NULL;
+static PFNGLBINDFRAMEBUFFERPROC glBindFramebuffer_func = NULL;
+static PFNGLDELETEFRAMEBUFFERSPROC glDeleteFramebuffers_func = NULL;
+static PFNGLGENFRAMEBUFFERSPROC glGenFramebuffers_func = NULL;
+static PFNGLCHECKFRAMEBUFFERSTATUSPROC glCheckFramebufferStatus_func = NULL;
+static PFNGLFRAMEBUFFERTEXTURE1DPROC glFramebufferTexture1D_func = NULL;
+static PFNGLFRAMEBUFFERTEXTURE2DPROC glFramebufferTexture2D_func = NULL;
+static PFNGLFRAMEBUFFERTEXTURE3DPROC glFramebufferTexture3D_func = NULL;
+static PFNGLFRAMEBUFFERRENDERBUFFERPROC glFramebufferRenderbuffer_func = NULL;
+static PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVPROC glGetFramebufferAttachmentParameteriv_func = NULL;
+static PFNGLGENERATEMIPMAPPROC glGenerateMipmap_func = NULL;
 
 
 static int Win = 0;
@@ -465,30 +484,28 @@ ParseArgs(int argc, char *argv[])
 static void
 SetupFunctionPointers(void)
 {
-   GetExtensionFuncs();
-
    if (Use_ARB_fbo) {
       /* no-op: use the ARB functions as-is */
    }
    else {
       /* set the ARB-flavor function pointers to point to the EXT functions */
-      glIsRenderbuffer_func = glIsRenderbufferEXT_func;
-      glBindRenderbuffer_func = glBindRenderbufferEXT_func;
-      glDeleteRenderbuffers_func = glDeleteRenderbuffersEXT_func;
-      glGenRenderbuffers_func = glGenRenderbuffersEXT_func;
-      glRenderbufferStorage_func = glRenderbufferStorageEXT_func;
-      glGetRenderbufferParameteriv_func = glGetRenderbufferParameterivEXT_func;
-      glIsFramebuffer_func = glIsFramebufferEXT_func;
-      glBindFramebuffer_func = glBindFramebufferEXT_func;
-      glDeleteFramebuffers_func = glDeleteFramebuffersEXT_func;
-      glGenFramebuffers_func = glGenFramebuffersEXT_func;
-      glCheckFramebufferStatus_func = glCheckFramebufferStatusEXT_func;
-      glFramebufferTexture1D_func = glFramebufferTexture1DEXT_func;
-      glFramebufferTexture2D_func = glFramebufferTexture2DEXT_func;
-      glFramebufferTexture3D_func = glFramebufferTexture3DEXT_func;
-      glFramebufferRenderbuffer_func = glFramebufferRenderbufferEXT_func;
-      glGetFramebufferAttachmentParameteriv_func = glGetFramebufferAttachmentParameterivEXT_func;
-      glGenerateMipmap_func = glGenerateMipmapEXT_func;
+      glIsRenderbuffer_func = glIsRenderbufferEXT;
+      glBindRenderbuffer_func = glBindRenderbufferEXT;
+      glDeleteRenderbuffers_func = glDeleteRenderbuffersEXT;
+      glGenRenderbuffers_func = glGenRenderbuffersEXT;
+      glRenderbufferStorage_func = glRenderbufferStorageEXT;
+      glGetRenderbufferParameteriv_func = glGetRenderbufferParameterivEXT;
+      glIsFramebuffer_func = glIsFramebufferEXT;
+      glBindFramebuffer_func = glBindFramebufferEXT;
+      glDeleteFramebuffers_func = glDeleteFramebuffersEXT;
+      glGenFramebuffers_func = glGenFramebuffersEXT;
+      glCheckFramebufferStatus_func = glCheckFramebufferStatusEXT;
+      glFramebufferTexture1D_func = glFramebufferTexture1DEXT;
+      glFramebufferTexture2D_func = glFramebufferTexture2DEXT;
+      glFramebufferTexture3D_func = glFramebufferTexture3DEXT;
+      glFramebufferRenderbuffer_func = glFramebufferRenderbufferEXT;
+      glGetFramebufferAttachmentParameteriv_func = glGetFramebufferAttachmentParameterivEXT;
+      glGenerateMipmap_func = glGenerateMipmapEXT;
    }
 }
 

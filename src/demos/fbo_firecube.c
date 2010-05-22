@@ -936,7 +936,7 @@ reshape(int width, int height)
 
 
 static void 
-init_fbotexture()
+init_fbotexture(void)
 {
    static const GLenum depthFormats[] = {
       GL_DEPTH_COMPONENT,

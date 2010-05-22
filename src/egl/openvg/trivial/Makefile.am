@@ -28,40 +28,68 @@
 AM_CFLAGS = \
 	$(DEMO_CFLAGS) \
 	$(EGL_CFLAGS) \
-	$(VG_CFLAGS) \
-	-I$(top_srcdir)/src/egl/eglut \
-	-I$(top_srcdir)/src/util
+	$(VG_CFLAGS)
 AM_LDFLAGS = \
 	$(DEMO_LIBS) \
 	$(EGL_LIBS) \
-	$(VG_LIBS)
+	$(VG_LIBS) \
+	-lVGU
 
 if HAVE_X11
-EGL_X11_DEMOS = \
-	lion_x11 \
-	sp_x11
-endif
-
 if HAVE_EGL
 if HAVE_VG
+noinst_LTLIBRARIES = libcommon.la
+libcommon_la_SOURCES = \
+	eglcommon.c
+
 noinst_PROGRAMS = \
-	lion_screen \
-	sp_screen \
-	$(EGL_X11_DEMOS)
+	arc \
+	cap \
+	clear \
+	coord \
+	dash \
+	ellipse \
+	filter \
+	gradorigin \
+	lineto \
+	lingrad \
+	lookup \
+	mask4 \
+	mask \
+	path3 \
+	radialgrad \
+	readpixels \
+	roundedrect \
+	star-nonzero \
+	star-oddeven \
+	stroke2 \
+	stroke
+
+# VGU is broken on current mesa master
+#	vguarc
+
+arc_LDADD = libcommon.la
+cap_LDADD = libcommon.la
+clear_LDADD = libcommon.la
+coord_LDADD = libcommon.la
+dash_LDADD = libcommon.la
+ellipse_LDADD = libcommon.la
+filter_LDADD = libcommon.la
+gradorigin_LDADD = libcommon.la
+lineto_LDADD = libcommon.la
+lingrad_LDADD = libcommon.la
+lookup_LDADD = libcommon.la
+mask4_LDADD = libcommon.la
+mask_LDADD = libcommon.la
+path3_LDADD = libcommon.la
+radialgrad_LDADD = libcommon.la
+readpixels_LDADD = libcommon.la
+roundedrect_LDADD = libcommon.la
+star_nonzero_LDADD = libcommon.la
+star_oddeven_LDADD = libcommon.la
+stroke2_LDADD = libcommon.la
+stroke_LDADD = libcommon.la
+#vguarc_LDADD = libcommon.la
 endif
 endif
-
-lion_screen_SOURCES = lion.c lion-render.c
-sp_screen_SOURCES = sp.c
-
-lion_x11_SOURCES = lion.c lion-render.c
-sp_x11_SOURCES = sp.c
-
-lion_screen_LDADD = ../eglut/libeglut_screen.la
-sp_screen_LDADD = ../eglut/libeglut_screen.la
-
-lion_x11_LDADD = ../eglut/libeglut_x11.la
-sp_x11_LDADD = ../eglut/libeglut_x11.la
-
-SUBDIRS = \
-	trivial
+endif

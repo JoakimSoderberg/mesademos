@@ -196,6 +196,7 @@ AC_OUTPUT([
 	src/egl/opengles1/Makefile
 	src/egl/opengles2/Makefile
 	src/egl/openvg/Makefile
+	src/egl/openvg/trivial/Makefile
 	src/fp/Makefile
 	src/fpglsl/Makefile
 	src/glsl/Makefile

@@ -469,10 +469,6 @@ def generate(env):
     # Default libs
     env.Append(LIBS = [])
 
-    # Load LLVM
-    if env['llvm']:
-        env.Tool('llvm')
-
     # Custom builders and methods
     env.Tool('custom')
     createInstallMethods(env)

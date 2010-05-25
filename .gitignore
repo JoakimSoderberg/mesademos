@@ -18,6 +18,7 @@ compile
 configure
 autom4te.cache
 aclocal.m4
+build
 config.guess
 config.log
 config.status

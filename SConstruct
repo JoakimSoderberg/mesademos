@@ -30,29 +30,8 @@ import common
 #######################################################################
 # Configuration options
 
-default_statetrackers = 'mesa'
-
-if common.default_platform in ('linux', 'freebsd', 'darwin'):
-	default_drivers = 'softpipe,failover,svga,i915,i965,trace,identity,llvmpipe'
-	default_winsys = 'xlib'
-elif common.default_platform in ('winddk',):
-	default_drivers = 'softpipe,svga,i915,i965,trace,identity'
-	default_winsys = 'all'
-elif common.default_platform in ('embedded',):
-	default_drivers = 'softpipe,llvmpipe'
-	default_winsys = 'xlib'
-else:
-	default_drivers = 'all'
-	default_winsys = 'all'
-
 opts = Variables('config.py')
 common.AddOptions(opts)
-opts.Add(ListVariable('statetrackers', 'state trackers to build', default_statetrackers,
-                     ['mesa', 'python', 'xorg']))
-opts.Add(ListVariable('drivers', 'pipe drivers to build', default_drivers,
-                     ['softpipe', 'failover', 'svga', 'i915', 'i965', 'trace', 'r300', 'identity', 'llvmpipe', 'nouveau', 'nv50', 'nvfx']))
-opts.Add(ListVariable('winsys', 'winsys drivers to build', default_winsys,
-                     ['xlib', 'vmware', 'i915', 'i965', 'gdi', 'radeon', 'graw-xlib']))
 
 opts.Add(EnumVariable('MSVS_VERSION', 'MS Visual C++ version', None, allowed_values=('7.1', '8.0', '9.0')))
 
@@ -102,25 +81,9 @@ Export([
 #######################################################################
 # Environment setup
 
-# Always build trace, identity, softpipe, and llvmpipe (where possible)
-if 'trace' not in env['drivers']:
-    env['drivers'].append('trace')
-if 'identity' not in env['drivers']:
-    env['drivers'].append('identity')
-if 'softpipe' not in env['drivers']:
-    env['drivers'].append('softpipe')
-if env['llvm'] and 'llvmpipe' not in env['drivers']:
-    env['drivers'].append('llvmpipe')
-
 # Includes
 env.Prepend(CPPPATH = [
 	'#/include',
-])
-env.Append(CPPPATH = [
-	'#/src/gallium/include',
-	'#/src/gallium/auxiliary',
-	'#/src/gallium/drivers',
-	'#/src/gallium/winsys',
 ])
 
 if env['msvc']:
@@ -175,38 +138,9 @@ Export('env')
 # TODO: Build several variants at the same time?
 # http://www.scons.org/wiki/SimultaneousVariantBuilds
 
-if env['platform'] != common.default_platform:
-    # GLSL code has to be built twice -- one for the host OS, another for the target OS...
-
-    host_env = Environment(
-        # options are ignored
-        # default tool is used
-        tools = ['default', 'custom'],
-        toolpath = ['#scons'],	
-        ENV = os.environ,
-    )
-
-    host_env['platform'] = common.default_platform
-    host_env['machine'] = common.default_machine
-    host_env['debug'] = env['debug']
-
-    SConscript(
-        'src/glsl/SConscript',
-        variant_dir = os.path.join(env['build'], 'host'),
-        duplicate = 0, # http://www.scons.org/doc/0.97/HTML/scons-user/x2261.html
-        exports={'env':host_env},
-    )
-
 SConscript(
 	'src/SConscript',
 	variant_dir = env['build'],
 	duplicate = 0 # http://www.scons.org/doc/0.97/HTML/scons-user/x2261.html
 )
 
-env.Default('src')
-
-SConscript(
-    'progs/SConscript',
-    variant_dir = os.path.join('progs', env['build']),
-    duplicate = 0 # http://www.scons.org/doc/0.97/HTML/scons-user/x2261.html
-)

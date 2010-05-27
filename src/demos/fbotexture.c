@@ -463,6 +463,7 @@ ParseArgs(int argc, char *argv[])
             printf("GL_ARB_framebuffer_object not found!\n");
             exit(0);
          }
+         UsePackedDepthStencil = GL_TRUE;
          UsePackedDepthStencilBoth = GL_TRUE;
          printf("Using GL_EXT_packed_depth_stencil and GL_DEPTH_STENCIL attachment point\n");
       }

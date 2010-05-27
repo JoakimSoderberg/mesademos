@@ -485,10 +485,27 @@ static void
 SetupFunctionPointers(void)
 {
    if (Use_ARB_fbo) {
-      /* no-op: use the ARB functions as-is */
+      /* use the ARB functions */
+      glIsRenderbuffer_func = glIsRenderbuffer;
+      glBindRenderbuffer_func = glBindRenderbuffer;
+      glDeleteRenderbuffers_func = glDeleteRenderbuffers;
+      glGenRenderbuffers_func = glGenRenderbuffers;
+      glRenderbufferStorage_func = glRenderbufferStorage;
+      glGetRenderbufferParameteriv_func = glGetRenderbufferParameteriv;
+      glIsFramebuffer_func = glIsFramebuffer;
+      glBindFramebuffer_func = glBindFramebuffer;
+      glDeleteFramebuffers_func = glDeleteFramebuffers;
+      glGenFramebuffers_func = glGenFramebuffers;
+      glCheckFramebufferStatus_func = glCheckFramebufferStatus;
+      glFramebufferTexture1D_func = glFramebufferTexture1D;
+      glFramebufferTexture2D_func = glFramebufferTexture2D;
+      glFramebufferTexture3D_func = glFramebufferTexture3D;
+      glFramebufferRenderbuffer_func = glFramebufferRenderbuffer;
+      glGetFramebufferAttachmentParameteriv_func = glGetFramebufferAttachmentParameteriv;
+      glGenerateMipmap_func = glGenerateMipmap;
    }
    else {
-      /* set the ARB-flavor function pointers to point to the EXT functions */
+      /* use the EXT functions */
       glIsRenderbuffer_func = glIsRenderbufferEXT;
       glBindRenderbuffer_func = glBindRenderbufferEXT;
       glDeleteRenderbuffers_func = glDeleteRenderbuffersEXT;
@@ -681,6 +698,7 @@ main(int argc, char *argv[])
       glutIdleFunc(Idle);
 
    ParseArgs(argc, argv);
+   glewInit();
    Init();
    Usage();
 

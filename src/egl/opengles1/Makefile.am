@@ -48,6 +48,7 @@ noinst_PROGRAMS = \
 	msaa \
 	pbuffer\
 	render_tex \
+	texture_from_pixmap \
 	torus_screen \
 	torus_x11 \
 	tri_screen \
@@ -61,6 +62,7 @@ es1_info_LDADD = $(X11_LIBS)
 msaa_LDADD = $(X11_LIBS)
 pbuffer_LDADD = $(X11_LIBS)
 render_tex_LDADD = $(X11_LIBS)
+texture_from_pixmap_LDADD = $(X11_LIBS)
 two_win_LDADD = $(X11_LIBS)
 
 drawtex_screen_SOURCES = drawtex.c

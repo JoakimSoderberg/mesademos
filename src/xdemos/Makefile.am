@@ -77,9 +77,11 @@ xrotfontdemo_SOURCES = \
 	xuserotfont.c \
 	xuserotfont.h
 
+glthreads_LDADD = -lpthread
 glxgears_fbconfig_LDADD = libpbutil.la
 pbdemo_LDADD = libpbutil.la
 pbinfo_LDADD = libpbutil.la
+sharedtex_mt_LDADD = -lpthread
 
 EXTRA_DIST = \
 	yuvrect_client.c \

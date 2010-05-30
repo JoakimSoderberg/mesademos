@@ -169,13 +169,17 @@ endif
 
 afsmultiarb_LDADD = ../util/libutil.la
 arraytexture_LDADD = ../util/libutil.la
+auxbuffer_LDADD = -lX11
 bug_3195_LDADD = ../util/libutil.la
 bumpmap_LDADD = ../util/libutil.la
 floattex_LDADD = ../util/libutil.la
 fillrate_LDADD = ../util/libutil.la
 invert_LDADD = ../util/libutil.la
+jkrahntest_LDADD = -lX11
 mipmap_limits_LDADD = ../util/libutil.la
 mipmap_view_LDADD = ../util/libutil.la
+sharedtex_LDADD = -lX11
+texobjshare_LDADD = -lX11
 texrect_LDADD = ../util/libutil.la
 
 EXTRA_DIST = \

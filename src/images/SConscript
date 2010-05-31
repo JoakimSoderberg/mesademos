@@ -1,0 +1,10 @@
+Import('*')
+
+images = env.Glob('*.rgb') + env.Glob('*.rgba')
+
+for image in images:
+    env.Command(
+        target = image,
+        source = image.srcnode(),
+        action = [Copy('$TARGET', '$SOURCE')],
+    )

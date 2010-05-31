@@ -69,3 +69,13 @@ progs_env.Program(
         'particles.cxx',
     ]
 )
+
+
+datafiles = env.Glob('*.dat')
+
+for datafile in datafiles:
+    env.Command(
+        target = datafile,
+        source = datafile.srcnode(),
+        action = [Copy('$TARGET', '$SOURCE')],
+    )

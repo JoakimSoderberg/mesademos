@@ -38,6 +38,7 @@ progs_env.Prepend(LIBS = [
 Export('progs_env')
 
 SConscript([
+    'images/SConscript',
     'demos/SConscript',
     'glsl/SConscript',
     'redbook/SConscript',

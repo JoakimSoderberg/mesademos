@@ -57,7 +57,6 @@ Help(opts.GenerateHelpText(env))
 
 # replicate options values in local variables
 debug = env['debug']
-dri = env['dri']
 machine = env['machine']
 platform = env['platform']
 
@@ -71,7 +70,6 @@ Export([
 	'debug', 
 	'x86', 
 	'ppc', 
-	'dri', 
 	'platform',
 	'gcc',
 	'msvc',

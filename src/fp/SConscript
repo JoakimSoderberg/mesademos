@@ -16,3 +16,12 @@ for prog in progs:
         target = prog,
         source = [prog + '.c'],
     )
+
+shaders = env.Glob('*.txt')
+
+for shader in shaders:
+    env.Command(
+        target = shader,
+        source = shader.srcnode(),
+        action = [Copy('$TARGET', '$SOURCE')],
+    )

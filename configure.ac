@@ -100,7 +100,15 @@ DEMO_LIBS="$DEMO_LIBS $GLEW_LIBS"
 # LIBS was set by AC_CHECK_LIB above
 LIBS=""
 
-PKG_CHECK_MODULES(GLU, [glu])
+PKG_CHECK_MODULES(GLU, [glu], [],
+		  [AC_CHECK_HEADER([GL/glu.h],
+				   [],
+		  		   AC_MSG_ERROR([GLU not found]))
+		   AC_CHECK_LIB([GLU],
+				[gluBeginCurve],
+				[GLU_LIBS=-lGLU],
+				AC_MSG_ERROR([GLU required])) ])
+
 DEMO_CFLAGS="$DEMO_CFLAGS $GLU_CFLAGS"
 DEMO_LIBS="$DEMO_LIBS $GLU_LIBS"
 

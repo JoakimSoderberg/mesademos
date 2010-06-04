@@ -49,9 +49,20 @@ m4_ifndef([PKG_PROG_PKG_CONFIG],
   ACLOCAL="aclocal -I/other/macro/dir" before running autoreconf.])])
 PKG_PROG_PKG_CONFIG()
 
-dnl Get the pkg-config definitions for libGL.  Probably want a fallback for
-dnl non-pkgconfig here.
-PKG_CHECK_MODULES(DEMO, [gl])
+dnl Get the pkg-config definitions for libGL.  We include a fallback
+dnl path for GL implementation that don't provide a .pc file
+PKG_CHECK_MODULES(GL, [gl], [], [
+		  AC_CHECK_HEADER([GL/gl.h],
+		  		  [],
+		  		  AC_MSG_ERROR([GL not found]))
+		  AC_CHECK_LIB([GL],
+			       [glBegin],
+			       [GL_LIBS=-lGL],
+			       AC_MSG_ERROR([GL required]))
+		  ])
+
+DEMO_CFLAGS="$DEMO_CFLAGS $GL_CFLAGS"
+DEMO_LIBS="$DEMO_LIBS $GL_LIBS"
 
 dnl Check for GLUT
 GLUT_CFLAGS=""

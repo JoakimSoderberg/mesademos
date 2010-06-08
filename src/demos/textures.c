@@ -23,6 +23,7 @@ static GLboolean Anim = GL_TRUE;
 static GLboolean Blend = GL_FALSE;
 static GLuint Filter = 0;
 static GLboolean Clamp = GL_FALSE;
+static GLfloat Scale = 1.0;
 
 static GLuint NumTextures;
 static GLuint Textures[MAX_TEXTURES];
@@ -115,6 +116,7 @@ Draw(void)
    glRotatef(Xrot, 1, 0, 0);
    glRotatef(Yrot, 0, 1, 0);
    glRotatef(Zrot, 0, 0, 1);
+   glScalef(Scale, Scale, Scale);
 
    DrawTextures();
 
@@ -189,6 +191,15 @@ SetTexParams(void)
 
 
 static void
+PrintState(void)
+{
+   printf("Blend=%s Filter=%s\n",
+          Blend ? "Y" : "n",
+          FilterModes[Filter].name);
+}
+
+
+static void
 Key(unsigned char key, int x, int y)
 {
    const GLfloat step = 3.0;
@@ -205,6 +216,12 @@ Key(unsigned char key, int x, int y)
       break;
    case 'b':
       Blend = !Blend;
+      break;
+   case 's':
+      Scale /= 1.1;
+      break;
+   case 'S':
+      Scale *= 1.1;
       break;
    case 'f':
       Filter = (Filter + 1) % NUM_FILTERS;
@@ -231,9 +248,7 @@ Key(unsigned char key, int x, int y)
       break;
    }
 
-   printf("Blend=%s Filter=%s\n",
-          Blend ? "Y" : "n",
-          FilterModes[Filter].name);
+   PrintState();
 
    glutPostRedisplay();
 }
@@ -434,6 +449,7 @@ main(int argc, char *argv[])
       glutIdleFunc(Idle);
    Init(argc, (const char **) argv);
    Usage();
+   PrintState();
    glutMainLoop();
    return 0;
 }

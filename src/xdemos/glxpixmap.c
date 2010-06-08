@@ -108,7 +108,10 @@ static GLXPixmap make_pixmap( Display *dpy, Window win,
 #ifdef GLX_MESA_pixmap_colormap
    if (strstr(glXQueryExtensionsString(dpy, 0), "GLX_MESA_pixmap_colormap")) {
       /* stand-alone Mesa, specify the colormap */
-      glxpm = glXCreateGLXPixmapMESA( dpy, visinfo, pm, attr.colormap );
+      PFNGLXCREATEGLXPIXMAPMESAPROC glXCreateGLXPixmapMESA_func =
+         (PFNGLXCREATEGLXPIXMAPMESAPROC)
+         glXGetProcAddressARB((GLubyte *) "glXCreateGLXPixmapMESA");
+      glxpm = glXCreateGLXPixmapMESA_func( dpy, visinfo, pm, attr.colormap );
    }
    else {
       glxpm = glXCreateGLXPixmap( dpy, visinfo, pm );

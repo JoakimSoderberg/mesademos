@@ -101,7 +101,6 @@ noinst_PROGRAMS = \
 	lineclip \
 	manytex \
 	mapbufrange \
-	mapvbo \
 	minmag \
 	mipgen \
 	mipmap_comp \

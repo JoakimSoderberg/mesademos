@@ -13,9 +13,7 @@ arbvptorus
 arbvpwarpmesh
 arraytexture
 auxbuffer
-blendminmax
-blendsquare
-blendxor
+gblendxor
 blitfb
 bufferobj
 bug_3050
@@ -26,7 +24,6 @@ bumpmap
 calibrate_rast
 condrender
 copypixrate
-crossbar
 cva
 cva_huge
 cylwrap
@@ -79,9 +76,7 @@ seccolor
 shader_api
 sharedtex
 stencilreaddraw
-stencil_twoside
 stencilwrap
-stencil_wrap
 streaming_rect
 subtex
 subtexrate
@@ -100,8 +95,6 @@ texobjshare
 texrect
 texwrap
 unfilledclip
-vao-01
-vao-02
 vparray
 vpeval
 vptest1

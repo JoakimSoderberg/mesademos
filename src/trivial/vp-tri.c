@@ -43,7 +43,7 @@ static void Init( void )
 static void Display( void )
 {
    glClearColor(0.3, 0.3, 0.3, 1);
-   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+   glClear( GL_COLOR_BUFFER_BIT );
 
    glEnable(GL_VERTEX_PROGRAM_NV);
 
@@ -57,7 +57,7 @@ static void Display( void )
    glEnd();
 
 
-   glFlush(); 
+   glutSwapBuffers(); 
 }
 
 
@@ -93,7 +93,7 @@ int main( int argc, char *argv[] )
    glutInit( &argc, argv );
    glutInitWindowPosition( 0, 0 );
    glutInitWindowSize( 250, 250 );
-   glutInitDisplayMode( GLUT_DEPTH | GLUT_RGB | GLUT_SINGLE );
+   glutInitDisplayMode( GLUT_RGB | GLUT_DOUBLE );
    glutCreateWindow(argv[0]);
    glewInit();
    glutReshapeFunc( Reshape );

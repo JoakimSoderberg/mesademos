@@ -65,8 +65,6 @@ noinst_PROGRAMS = \
 	arbvpwarpmesh \
 	arraytexture \
 	auxbuffer \
-	blendminmax \
-	blendsquare \
 	blendxor \
 	blitfb \
 	bufferobj \
@@ -78,7 +76,6 @@ noinst_PROGRAMS = \
 	calibrate_rast \
 	condrender \
 	copypixrate \
-	crossbar \
 	cva \
 	cva_huge \
 	cylwrap \
@@ -130,9 +127,7 @@ noinst_PROGRAMS = \
 	shader_api \
 	sharedtex \
 	stencilreaddraw \
-	stencil_twoside \
 	stencilwrap \
-	stencil_wrap \
 	streaming_rect \
 	subtex \
 	subtexrate \
@@ -150,8 +145,6 @@ noinst_PROGRAMS = \
 	texrect \
 	texwrap \
 	unfilledclip \
-	vao-01 \
-	vao-02 \
 	vparray \
 	vpeval \
 	vptest1 \

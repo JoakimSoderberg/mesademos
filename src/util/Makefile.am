@@ -30,6 +30,10 @@ AM_LDFLAGS = \
 noinst_LTLIBRARIES = libutil.la
 
 if HAVE_GLUT
+AM_CFLAGS += \
+	$(GLUT_CFLAGS)
+AM_LDFLAGS += \
+	$(GLUT_LIBS)
 SHADERUTIL_SRC = \
 	shaderutil.c \
 	shaderutil.h

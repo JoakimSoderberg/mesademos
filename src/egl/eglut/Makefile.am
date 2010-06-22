@@ -42,5 +42,5 @@ libeglut_x11_la_SOURCES = \
 	eglut.c \
 	eglutint.h \
 	eglut_x11.c
-libeglut_x11_la_CFLAGS = $(X11_CFLAGS)
-libeglut_x11_la_LIBADD = $(X11_LIBS)
+libeglut_x11_la_CFLAGS = $(X11_CFLAGS) $(EGL_CFLAGS)
+libeglut_x11_la_LIBADD = $(X11_LIBS) $(EGL_LIBS)

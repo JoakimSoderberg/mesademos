@@ -50,4 +50,5 @@ SConscript([
     'fp/SConscript',
     'wgl/SConscript',
     'perf/SConscript',
+    'xdemos/SConscript',
 ])

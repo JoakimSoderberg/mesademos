@@ -40,6 +40,7 @@ bin_PROGRAMS = \
 	copypix \
 	cubemap \
 	dinoshade \
+	dissolve \
 	drawpix \
 	engine \
 	fbo_firecube \
@@ -92,6 +93,7 @@ tunnel_SOURCES = \
 copypix_LDADD = ../util/libutil.la
 cubemap_LDADD = ../util/libutil.la
 drawpix_LDADD = ../util/libutil.la
+dissolve_LDADD = ../util/libutil.la
 engine_LDADD = ../util/libutil.la
 fbo_firecube_LDADD = ../util/libutil.la
 fire_LDADD = ../util/libutil.la

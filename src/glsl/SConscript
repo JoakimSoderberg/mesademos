@@ -3,6 +3,7 @@ Import('*')
 progs = [
       'array',
       'bitmap',
+      'bezier',
       'brick',
       'bump',
       'convolutions',

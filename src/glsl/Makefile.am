@@ -33,6 +33,7 @@ AM_LDFLAGS = \
 if HAVE_GLUT
 bin_PROGRAMS = \
 	array \
+        bezier \
 	bitmap \
 	brick \
 	bump \
@@ -69,6 +70,7 @@ samplers_array_CFLAGS = $(AM_CFLAGS) -DSAMPLERS_ARRAY
 
 array_LDADD = ../util/libutil.la
 bitmap_LDADD = ../util/libutil.la
+bezier_LDADD = ../util/libutil.la
 brick_LDADD = ../util/libutil.la
 bump_LDADD = ../util/libutil.la
 convolutions_LDADD = ../util/libutil.la
@@ -103,6 +105,7 @@ EXTRA_DIST = \
 	CH11-toyball.vert \
 	CH18-mandel.frag \
 	CH18-mandel.vert \
+        bezier.geom \
 	brick.shtest \
 	convolution.vert \
 	cubemap.frag \

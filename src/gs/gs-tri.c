@@ -1,3 +1,7 @@
+/*
+ * Simple example for testing basic features of
+ * geometry shaders
+ */
 
 #include <assert.h>
 #include <string.h>

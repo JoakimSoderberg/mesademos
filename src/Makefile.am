@@ -29,6 +29,7 @@ SUBDIRS = \
 	fp \
 	fpglsl \
 	glsl \
+        gs \
 	images \
 	objviewer \
 	osdemos \

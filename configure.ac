@@ -224,6 +224,7 @@ AC_OUTPUT([
 	src/fp/Makefile
 	src/fpglsl/Makefile
 	src/glsl/Makefile
+	src/gs/Makefile
 	src/images/Makefile
 	src/objviewer/Makefile
 	src/osdemos/Makefile

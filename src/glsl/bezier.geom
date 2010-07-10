@@ -1,12 +1,14 @@
 #version 120
 #extension GL_EXT_geometry_shader4: enable
 
+uniform int NumSubdivisions;
+
 void main()
 {
    /* num is the number of subdivisions
     * can be anything between 1 and infinity
     */
-   const int num = 3;
+   const int num = NumSubdivisions;
 
    float dt = 1. / float(num);
    float t = 0.;

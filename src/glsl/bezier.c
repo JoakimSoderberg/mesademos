@@ -9,8 +9,10 @@
 #include <stdlib.h>
 #include <math.h>
 #define GL_GLEXT_PROTOTYPES
+#include <GL/glew.h>
 #include <GL/glut.h>
 #include <GL/glext.h>
+#include "shaderutil.h"
 
 static const char *filename = "bezier.geom";
 
@@ -19,18 +21,25 @@ static GLuint vertShader;
 static GLuint geoShader;
 static GLuint program;
 
+#define QUIT 9999
+
 GLfloat vertices[][3] =
    { {  -0.9, -0.9, 0.0 },
      {  -0.5,  0.9, 0.0 },
      {   0.5,  0.9, 0.0 },
      {   0.9, -0.9, 0.0 } };
 
-GLfloat color[][4] = 
+GLfloat color[][4] =
 { { 1, 1, 1, 1 },
   { 1, 1, 1, 1 },
   { 1, 1, 1, 1 },
   { 1, 1, 1, 1 } };
 
+
+static struct uniform_info Uniforms[] = {
+   { "NumSubdivisions", 1, GL_INT, { 50, 0, 0, 0 }, -1 },
+   END_OF_UNIFORMS
+};
 
 static void usage( char *name )
 {
@@ -89,7 +98,43 @@ static void check_link(GLuint prog)
    }
 }
 
-static void prepare_shaders(void)
+static void menu_selected(int entry)
+{
+   switch (entry) {
+   case QUIT:
+      exit(0);
+      break;
+   default:
+      Uniforms[0].value[0] = entry;
+   }
+
+   SetUniformValues(program, Uniforms);
+   glutPostRedisplay();
+}
+
+
+static void menu_init(void)
+{
+   glutCreateMenu(menu_selected);
+
+   glutAddMenuEntry("1 Subdivision",  1);
+   glutAddMenuEntry("2 Subdivisions", 2);
+   glutAddMenuEntry("3 Subdivisions", 3);
+   glutAddMenuEntry("4 Subdivisions", 4);
+   glutAddMenuEntry("5 Subdivisions", 5);
+   glutAddMenuEntry("6 Subdivisions", 6);
+   glutAddMenuEntry("7 Subdivisions", 7);
+   glutAddMenuEntry("10 Subdivisions", 10);
+   glutAddMenuEntry("50 Subdivisions", 50);
+   glutAddMenuEntry("100 Subdivisions", 100);
+   glutAddMenuEntry("500 Subdivisions", 500);
+
+   glutAddMenuEntry("Quit", QUIT);
+
+   glutAttachMenu(GLUT_RIGHT_BUTTON);
+}
+
+static void init(void)
 {
    static const char *fragShaderText =
       "void main() {\n"
@@ -112,6 +157,13 @@ static void prepare_shaders(void)
       "    EmitVertex();\n"
       "  }\n"
       "}\n";
+
+
+   if (!ShadersSupported())
+      exit(1);
+
+   menu_init();
+
    fragShader = glCreateShader(GL_FRAGMENT_SHADER);
    load_and_compile_shader(fragShader, fragShaderText);
 
@@ -144,6 +196,11 @@ static void prepare_shaders(void)
    glLinkProgram(program);
    check_link(program);
    glUseProgram(program);
+
+   SetUniformValues(program, Uniforms);
+   PrintUniforms(Uniforms);
+
+   assert(glGetError() == 0);
 
    glEnableClientState( GL_VERTEX_ARRAY );
    glEnableClientState( GL_COLOR_ARRAY );
@@ -214,11 +271,12 @@ int main( int argc, char *argv[] )
    glutInitWindowSize( 250, 250 );
    glutInitDisplayMode( GLUT_RGB | GLUT_SINGLE | GLUT_DEPTH );
    glutCreateWindow(argv[0]);
+   glewInit();
    glutReshapeFunc( Reshape );
    glutKeyboardFunc( Key );
    glutDisplayFunc( Display );
-   args( argc, argv );
-   prepare_shaders();
+   args(argc, argv);
+   init();
    glutMainLoop();
    return 0;
 }

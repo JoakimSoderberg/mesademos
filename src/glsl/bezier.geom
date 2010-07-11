@@ -8,7 +8,7 @@ void main()
    /* num is the number of subdivisions
     * can be anything between 1 and infinity
     */
-   const int num = NumSubdivisions;
+   int num = NumSubdivisions;
 
    float dt = 1. / float(num);
    float t = 0.;

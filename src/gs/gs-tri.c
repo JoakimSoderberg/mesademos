@@ -8,9 +8,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#define GL_GLEXT_PROTOTYPES
+#include <GL/glew.h>
 #include <GL/glut.h>
-#include <GL/glext.h>
 
 static const char *filename = NULL;
 static GLuint nr_steps = 0;
@@ -103,6 +102,12 @@ static void prepare_shaders(void)
       "    EmitVertex();\n"
       "  }\n"
       "}\n";
+
+   if (!glutExtensionSupported("GL_ARB_geometry_shader4")) {
+      fprintf(stderr, "needs GL_ARB_geometry_shader4 extension\n");
+      exit(1);
+   }
+
    fragShader = glCreateShader(GL_FRAGMENT_SHADER);
    load_and_compile_shader(fragShader, fragShaderText);
 
@@ -286,6 +291,7 @@ int main( int argc, char *argv[] )
    glutInitWindowSize( 250, 250 );
    glutInitDisplayMode( GLUT_RGB | GLUT_SINGLE | GLUT_DEPTH );
    glutCreateWindow(argv[0]);
+   glewInit();
    glutReshapeFunc( Reshape );
    glutKeyboardFunc( Key );
    glutDisplayFunc( Display );

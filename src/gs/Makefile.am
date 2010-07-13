@@ -7,7 +7,7 @@ AM_LDFLAGS = \
 	$(GLUT_LIBS)
 
 if HAVE_GLUT
-noinst_PROGRAMS = \
+bin_PROGRAMS = \
 	gs-tri
 endif
 

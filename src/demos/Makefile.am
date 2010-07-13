@@ -113,4 +113,7 @@ tunnel2_LDADD = ../util/libutil.la
 winpos_LDADD = ../util/libutil.la
 
 EXTRA_DIST = \
-	README
+	README \
+	geartrain.dat \
+	isosurf.dat \
+	terrain.dat

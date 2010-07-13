@@ -1,0 +1,142 @@
+<HTML>
+<TITLE>Mesa Demos Distribution</TITLE>
+<BODY>
+
+<H1>Introduction</H1>
+<p>
+The Mesa Demos package contains a large number of OpenGL demonstration
+and test programs.
+</p>
+
+<p>
+These programs were previously distributed as the MesaDemos-x.y.z.tar.gz
+package released in conjunction with the MesaLib-x.y.z.tar.gz package.
+The demos are separated now since they don't change often and
+aren't tied to a particular version of Mesa.
+</p>
+
+<p>
+Note that the Mesa demos should be usable with any OpenGL implementation;
+not just Mesa.
+</p>
+
+
+<H1>FTP site</H1>
+
+<p>
+The latest version of the Mesa demos can be found on the
+<a href="ftp://ftp.freedesktop.org/pub/mesa/demos/">freedesktop.org FTP</a>
+site.
+</p>
+
+
+
+<H1>Git Repository</H1>
+
+<p>
+The Mesa demos git repository can be obtained with:
+<pre>
+  git clone git://anongit.freedesktop.org/git/mesa/demos
+</pre>
+
+Or, if you're a developer:
+<pre>
+  git clone git+ssh://USERNAME@git.freedesktop.org/git/mesa/demos
+</pre>
+
+</p>
+
+
+<H1>Building</H1>
+
+<p>
+The Mesa demos can be built with autoconf or
+<a href="http://www.scons.org/">SCons</a>.
+</p>
+
+<H2>Autoconf</H2>
+
+<p>
+First, you may need to install the GLEW and GLUT library and header files for
+your distro.
+For example, if you're using an RPM-based Linux distro:
+</p>
+<pre>
+  yum install glew glew-devel
+  yum install freeglut freeglut-devel
+</pre>
+
+<p>
+Run <b>./configure --help</b> to see the options available for building
+the demos.
+</p>
+
+<p>
+Otherwise, just run <b>./configure ; make</b> to build the demos.
+</p>
+
+
+
+<H2>SCons</H2>
+
+<p>
+As with autoconf, you may need to install GLEW and GLUT before building.
+</p>
+Just run <b>cons</b> to build with SCons.
+</p>
+<p>
+XXX more info?
+</p>
+
+
+<H1>The Demos</H1>
+
+<p>
+Look in the <b>src/</b> directory for these sub-directories, among others:
+</p>
+<ul>
+<li>demos - the original Mesa demos, such as gears, gloss, etc.
+<li>redbook - the OpenGL Programming Guide demos
+<li>samples- original SGI OpenGL demos
+<li>glsl - OpenGL Shading Language demos
+<li>gs - Geometry shader demos
+<li>xdemos - GLX-based demos
+<li>egl - EGL-based demos
+<li>wgl - WGL-based demos
+<li>fp - fragment program tests
+<li>vp - vertex program tests
+<li>images - sample image files (in SGI .rgb format)
+<li>perf - performance tests
+<li>tests - assorted test programs
+<li>objviewer - program to view .obj modes with a skybox
+</ul>
+
+
+
+<H1>Getting Help</H1>
+
+<p>
+If you have trouble building or using the Mesa demos, you can post
+to the<a href="http://lists.freedesktop.org/mailman/listinfo/mesa-users">
+Mesa users</a> mailing list.
+</p>
+
+<p>
+If your question is especially technical, you can try the
+to the<a href="http://lists.freedesktop.org/mailman/listinfo/mesa-dev">
+Mesa dev</a> mailing list.
+</p>
+
+
+<H1>Reporting Bugs</H1>
+
+<p>
+Bugs in the demos can be reported to the
+<a href="https://bugs.freedesktop.org/enter_bug.cgi?product=Mesa">
+Mesa bug database</a>.
+Choose Component="Demos" in the drop-down list.
+</p>
+
+
+</BODY>
+</HTML>

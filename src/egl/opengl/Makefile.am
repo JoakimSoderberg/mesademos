@@ -51,8 +51,6 @@ noinst_PROGRAMS = \
 	eglgears_screen \
 	egltri_screen \
 	peglgears \
-	xeglgears \
-	xeglthreads \
 	$(EGL_X11_DEMOS)
 endif
 
@@ -61,6 +59,11 @@ eglgears_screen_SOURCES = eglgears.c
 
 egltri_x11_SOURCES = egltri.c
 eglgears_x11_SOURCES = eglgears.c
+
+eglgears_x11_LDFLAGS = $(AM_LDFLAGS) $(X11_LIBS)
+egltri_x11_LDFLAGS = $(AM_LDFLAGS) $(X11_LIBS)
+xeglgears_LDFLAGS = $(AM_LDFLAGS) $(X11_LIBS)
+xeglthreads_LDFLAGS = $(AM_LDFLAGS) $(X11_LIBS) -pthread
 
 eglgears_screen_LDADD = ../eglut/libeglut_screen.la
 egltri_screen_LDADD = ../eglut/libeglut_screen.la

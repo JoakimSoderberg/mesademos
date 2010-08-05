@@ -54,17 +54,25 @@ The Mesa demos can be built with autoconf or
 <a href="http://www.scons.org/">SCons</a>.
 </p>
 
-<H2>Autoconf</H2>
+
+<h2>Prerequisites</h2>
 
 <p>
-First, you may need to install the GLEW and GLUT library and header files for
-your distro.
-For example, if you're using an RPM-based Linux distro:
+You'll need <a href="http://glew.sourceforge.net/">glew</a> version 1.5.4
+or later and glut or freeglut (runtime libraries and header files).
+</p>
+
+<p>
+If you're using an RPM-based Linux distro you can install these items with:
 </p>
 <pre>
   yum install glew glew-devel
   yum install freeglut freeglut-devel
 </pre>
+
+
+
+<H2>Autoconf</H2>
 
 <p>
 Run <b>./configure --help</b> to see the options available for building
@@ -80,8 +88,6 @@ Otherwise, just run <b>./configure ; make</b> to build the demos.
 <H2>SCons</H2>
 
 <p>
-As with autoconf, you may need to install GLEW and GLUT before building.
-</p>
 Just run <b>cons</b> to build with SCons.
 </p>
 <p>

@@ -105,25 +105,14 @@ static GLint T0 = 0;
 static GLint Frames = 0;
 
 
-#ifndef _WIN32
-static void
-strset (char buf[], char ch)
-{
-    int i;
-    for (i = 0; i < strlen (buf); i++)
-      buf[i] = ch;
-}
-#endif
-
-
 static void
 Clear_Buffers (void)
 {
-    strset (Buf1, 0);
-    strset (Buf2, 0);
-    strset (Buf3, 0);
-    strset (Buf4, 0);
-    strset (Buf5, 0);
+    memset (Buf1, '\0', 256);
+    memset (Buf2, '\0', 256);
+    memset (Buf3, '\0', 256);
+    memset (Buf4, '\0', 256);
+    memset (Buf5, '\0', 256);
 }
 
 
@@ -274,8 +263,11 @@ getdata (char filename[])
 	if (!(strcmp (Buf1, "GEAR2NAME")))
 	  LoadText (b[belt_count - 1].gear2_name);
     }
-
     while (Buf1[0] != 0);
+
+    number_of_gears = gear_count;
+    number_of_axles = axle_count;
+    number_of_belts = belt_count;
 
     for (i = 0; i < number_of_gears; i++)
     {
@@ -284,9 +276,6 @@ getdata (char filename[])
 	g[i].angular_velocity = 0.0;
     }
 
-    number_of_gears = gear_count;
-    number_of_axles = axle_count;
-    number_of_belts = belt_count;
     fclose (mainfile);
 }
 

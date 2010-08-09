@@ -407,40 +407,40 @@ gear (GLint j, char type[], GLfloat radius, GLfloat width,
     glEnd ();
 
 
-    /* draw outward faces of teeth */
+    /* draw outward faces of teeth. The visible faces are the backfaces, for testing purposes */
 	glBegin (GL_QUAD_STRIP);
 	for (i = 0; i < teeth; i++)
 	{
 	    angle = i * 2.0 * M_PI / teeth;
 
-	    glNormal3f (cos (angle - 0.5*da), sin (angle - 0.5*da), 0.0);
-	    glVertex3f (r1 * cos (angle), r1 * sin (angle), width * fraction);
+	    glNormal3f (-cos (angle - 0.5*da), -sin (angle - 0.5*da), 0.0);
 	    glVertex3f (r1 * cos (angle), r1 * sin (angle), -width * fraction);
+	    glVertex3f (r1 * cos (angle), r1 * sin (angle), width * fraction);
 	    u = (r2_front+r2_back)/2.0 * cos (angle + da) - r1 * cos (angle);
 	    v = (r2_front+r2_back)/2.0 * sin (angle + da) - r1 * sin (angle);
 	    len = sqrt (u * u + v * v);
 	    u /= len;
 	    v /= len;
-	    glNormal3f (v, -u, 0.0);
-	    glVertex3f (r2_front * cos (angle + da), r2_front * sin (angle + da), width * fraction);
+	    glNormal3f (-v, u, 0.0);
 	    glVertex3f (r2_back * cos (angle + da), r2_back * sin (angle + da), -width * fraction);
-	    glNormal3f (cos (angle + 1.5*da), sin (angle + 1.5*da), 0.0);
-	    glVertex3f (r2_front * cos (angle + 2 * da), r2_front * sin (angle + 2 * da), width * fraction);
+	    glVertex3f (r2_front * cos (angle + da), r2_front * sin (angle + da), width * fraction);
+	    glNormal3f (-cos (angle + 1.5*da), -sin (angle + 1.5*da), 0.0);
 	    glVertex3f (r2_back * cos (angle + 2 * da), r2_back * sin (angle + 2 * da), -width * fraction);
+	    glVertex3f (r2_front * cos (angle + 2 * da), r2_front * sin (angle + 2 * da), width * fraction);
 	    u = r1 * cos (angle + 3 * da) - (r2_front+r2_back)/2.0 * cos (angle + 2 * da);
 	    v = r1 * sin (angle + 3 * da) - (r2_front+r2_back)/2.0 * sin (angle + 2 * da);
 	    len = sqrt (u * u + v * v);
 	    u /= len;
 	    v /= len;
-	    glNormal3f (v, -u, 0.0);
-	    glVertex3f (r1 * cos (angle + 3 * da), r1 * sin (angle + 3 * da), width * fraction);
+	    glNormal3f (-v, u, 0.0);
 	    glVertex3f (r1 * cos (angle + 3 * da), r1 * sin (angle + 3 * da), -width * fraction);
-	    glNormal3f (cos (angle + 3.5*da), sin (angle + 3.5*da), 0.0);
+	    glVertex3f (r1 * cos (angle + 3 * da), r1 * sin (angle + 3 * da), width * fraction);
+	    glNormal3f (-cos (angle + 3.5*da), -sin (angle + 3.5*da), 0.0);
 	}
 
-    glNormal3f (cos (-0.5*da), sin (-0.5*da), 0.0);
-    glVertex3f (r1 * cos (0), r1 * sin (0), width * fraction);
+    glNormal3f (-cos (-0.5*da), -sin (-0.5*da), 0.0);
     glVertex3f (r1 * cos (0), r1 * sin (0), -width * fraction);
+    glVertex3f (r1 * cos (0), r1 * sin (0), width * fraction);
     glEnd ();
 }
 
@@ -954,6 +954,7 @@ init (void)
     int i;
 
     glShadeModel(GL_FLAT);
+    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, 1);
 
     glClearColor (background[0], background[1], background[2], 1.0F);
     glClearIndex ((GLfloat) 0.0);

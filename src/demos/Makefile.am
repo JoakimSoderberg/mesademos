@@ -62,6 +62,7 @@ bin_PROGRAMS = \
 	morph3d \
 	multiarb \
 	paltex \
+	pixeltest \
 	pointblast \
 	projtex \
 	ray \

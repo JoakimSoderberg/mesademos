@@ -74,7 +74,7 @@ drawzoomline(int x0, int y0, int x1, int y1, GLushort color)
    float error;
    float deltaerr;
    int ystep;
-   int y;
+   int x, y;
 
    if (steep) {
       int temp0 = x0;
@@ -104,7 +104,7 @@ drawzoomline(int x0, int y0, int x1, int y1, GLushort color)
    else
       ystep = -1;
   
-   for (int x = x0; x < x1; x++) {
+   for (x = x0; x < x1; x++) {
       if (y>0 && x>0) {
          if (!steep) {
             myImage[y][x] = color;
@@ -418,7 +418,7 @@ processMouseMotion(int x, int y)
 }
 
 static void
-Init()
+Init(void)
 {
    printf("GL_VERSION = %s\n", (char *) glGetString(GL_VERSION));
    printf("GL_RENDERER = %s\n", (char *) glGetString(GL_RENDERER));

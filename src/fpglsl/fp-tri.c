@@ -156,6 +156,15 @@ static void setup_uniforms(void)
       if (loc4f >= 0)
          glUniform4fv(loc4f, 4, vecKer);
    }
+
+   {
+      GLint tex1 = glGetUniformLocationARB(program, "tex1");
+      GLint tex2 = glGetUniformLocationARB(program, "tex2");
+      if (tex1 >= 0)
+         glUniform1i(tex1, 0);
+      if (tex2 >= 0)
+         glUniform1i(tex2, 1);
+   }
 }
 
 static void prepare_shaders(void)
@@ -236,7 +245,7 @@ static void Init( void )
 {
    GLuint Texture;
 
-   /* Load texture */
+   /* Setup texture unit 0 */
    glGenTextures(1, &Texture);
    glBindTexture(GL_TEXTURE_2D, Texture);
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -247,7 +256,7 @@ static void Init( void )
       exit(1);
    }
 
-
+   /* Setup texture unit 1 */
    glGenTextures(1, &Texture);
    glActiveTextureARB(GL_TEXTURE0_ARB + 1);
    glBindTexture(GL_TEXTURE_2D, Texture);
@@ -297,6 +306,7 @@ static void Init( void )
                     GL_ALPHA, GL_UNSIGNED_BYTE, data );
    }
 
+   /* Setup texture unit 2 */
    glGenTextures(1, &Texture);
    glActiveTextureARB(GL_TEXTURE0_ARB + 2);
    glBindTexture(GL_TEXTURE_2D, Texture);

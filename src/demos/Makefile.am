@@ -35,6 +35,7 @@ bin_PROGRAMS = \
 	arbfplight \
 	arbfslight \
 	arbocclude \
+	arbocclude2 \
 	bounce \
 	clearspd \
 	copypix \

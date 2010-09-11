@@ -1,5 +1,5 @@
 /*
- * GL_ARB_occlusion_query demo
+ * GL_ARB_occlusion_query(2) demo
  *
  * Brian Paul
  * 12 June 2003
@@ -22,6 +22,8 @@
  * BRIAN PAUL BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Enhanced by Dave Airlie to add ARB_occlusion_query2
  */
 
 #include <assert.h>
@@ -37,6 +39,7 @@ static GLfloat Xpos = 0;
 static GLuint OccQuery1;
 static GLuint OccQuery2;
 static GLint Win = 0;
+static GLboolean has_oq2 = GL_FALSE;
 
 
 static void
@@ -81,7 +84,8 @@ static void Idle(void)
 
 static void Display( void )
 {
-   GLuint passed1, passed2;
+   GLuint passed1;
+   GLuint passed2_boolean;
    GLint ready;
    char s[100];
 
@@ -131,46 +135,57 @@ static void Display( void )
 
    /* draw the second polygon with occlusion testing */
    glPopMatrix();
+#endif
    glPushMatrix();
    glTranslatef(Xpos, -0.4, -0.5);
    glScalef(0.3, 0.3, 1.0);
+#if defined(GL_ARB_occlusion_query2)
+   if (has_oq2) {
 
-   glBeginQueryARB(GL_SAMPLES_PASSED_ARB, OccQuery2);
+      glBeginQueryARB(GL_ANY_SAMPLES_PASSED, OccQuery2);
 
-   glBegin(GL_POLYGON);
-   glVertex3f(-1, -1, 0);
-   glVertex3f( 1, -1, 0);
-   glVertex3f( 1,  1, 0);
-   glVertex3f(-1,  1, 0);
-   glEnd();
+      glBegin(GL_POLYGON);
+      glVertex3f(-1, -1, 0);
+      glVertex3f( 1, -1, 0);
+      glVertex3f( 1,  1, 0);
+      glVertex3f(-1,  1, 0);
+      glEnd();
 
-   glEndQueryARB(GL_SAMPLES_PASSED_ARB);
+      glEndQueryARB(GL_ANY_SAMPLES_PASSED);
+   }
+#endif
 
    /* turn off occlusion testing */
    glColorMask(1, 1, 1, 1);
    glDepthMask(GL_TRUE);
 
+#if defined(GL_ARB_occlusion_query)
    do {
       /* do useful work here, if any */
       glGetQueryObjectivARB(OccQuery1, GL_QUERY_RESULT_AVAILABLE_ARB, &ready);
    } while (!ready);
    glGetQueryObjectuivARB(OccQuery1, GL_QUERY_RESULT_ARB, &passed1);
-
-   do {
-      /* do useful work here, if any */
-      glGetQueryObjectivARB(OccQuery2, GL_QUERY_RESULT_AVAILABLE_ARB, &ready);
-   } while (!ready);
-   glGetQueryObjectuivARB(OccQuery2, GL_QUERY_RESULT_ARB, &passed2);
-#endif /* GL_ARB_occlusion_query */
+#endif
+#if defined(GL_ARB_occlusion_query2)
+   if (has_oq2) {
+      do {
+         /* do useful work here, if any */
+         glGetQueryObjectivARB(OccQuery2, GL_QUERY_RESULT_AVAILABLE_ARB, &ready);
+      } while (!ready);
+      glGetQueryObjectuivARB(OccQuery2, GL_QUERY_RESULT_ARB, &passed2_boolean);
+   }
+#endif /* GL_ARB_occlusion_query2 */
 
    /* draw the second rect, so we can see what's going on */
    glColor3f(0.8, 0.5, 0);
-   glBegin(GL_POLYGON);
-   glVertex3f(-1, -1, 0);
-   glVertex3f( 1, -1, 0);
-   glVertex3f( 1,  1, 0);
-   glVertex3f(-1,  1, 0);
-   glEnd();
+   if (has_oq2) {
+      glBegin(GL_POLYGON);
+      glVertex3f(-1, -1, 0);
+      glVertex3f( 1, -1, 0);
+      glVertex3f( 1,  1, 0);
+      glVertex3f(-1,  1, 0);
+      glEnd();
+   }
 
    glPopMatrix();
    glPushMatrix();
@@ -204,13 +219,16 @@ static void Display( void )
       glRasterPos3f(-0.25, -0.7, 0);
       PrintString("Fully Occluded");
    }
-   sprintf(s, " %4d Fragments Visible", passed2);
-   glRasterPos3f(-0.50, -0.8, 0);
-   PrintString(s);
-   if (!passed2) {
+#if defined(GL_ARB_occlusion_query2)
+   if (has_oq2) {
       glRasterPos3f(-0.25, -0.9, 0);
-      PrintString("Fully Occluded");
+      if (!passed2_boolean) {
+         PrintString("Fully Occluded");
+      } else {
+         PrintString("Partly Visible");
+      }
    }
+#endif
 #else
    glRasterPos3f(-0.25, -0.8, 0);
    PrintString("GL_ARB_occlusion_query not available at compile time");
@@ -274,6 +292,10 @@ static void Init( void )
       exit(-1);
    }
 
+   if (strstr(ext, "GL_ARB_occlusion_query2")) {
+      has_oq2 = GL_TRUE;
+      printf("OQ2 supported\n");
+   }
 #if defined(GL_ARB_occlusion_query)
    glGetQueryivARB(GL_SAMPLES_PASSED_ARB, GL_QUERY_COUNTER_BITS_ARB, &bits);
    if (!bits) {
@@ -288,8 +310,12 @@ static void Init( void )
 #if defined(GL_ARB_occlusion_query)
    glGenQueriesARB(1, &OccQuery1);
    assert(OccQuery1 > 0);
-   glGenQueriesARB(1, &OccQuery2);
-   assert(OccQuery2 > 0);
+#if defined(GL_ARB_occlusion_query2)
+   if (has_oq2) {
+      glGenQueriesARB(1, &OccQuery2);
+      assert(OccQuery2 > 0);
+   }
+#endif
 #endif /* GL_ARB_occlusion_query */
 
    glEnable(GL_DEPTH_TEST);

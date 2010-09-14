@@ -332,6 +332,7 @@ printHelp(void)
    printf("       t      toggle texgen mode\n");
    printf("       o      toggle object: torus/sphere\n");
    printf("       i      toggle texture image: noise/gradient\n");
+   printf("       f      toggle linear/nearest filtering\n");
 }
 
 

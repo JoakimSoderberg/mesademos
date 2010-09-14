@@ -156,6 +156,7 @@ bin_PROGRAMS = \
 	tristrip \
 	tristrip-clip \
 	tristrip-flat \
+	tri-tex-1d \
 	tri-tex-3d \
 	tri-tex \
 	tri-tri \

@@ -39,7 +39,7 @@ static const char *DefaultFiles[] = {
 };
 
 
-#define NUM_FILTERS 5
+#define NUM_FILTERS 6
 static
 struct filter {
    GLenum min, mag;
@@ -48,6 +48,7 @@ struct filter {
    { GL_NEAREST, GL_NEAREST, "Nearest,Nearest" },
    { GL_LINEAR, GL_LINEAR, "Linear,Linear" },
    { GL_NEAREST_MIPMAP_NEAREST, GL_NEAREST, "NearestMipmapNearest,Nearest" },
+   { GL_NEAREST_MIPMAP_NEAREST, GL_LINEAR, "NearestMipmapNearest,Linear" },
    { GL_LINEAR_MIPMAP_NEAREST, GL_LINEAR, "LinearMipmapNearest,Linear" },
    { GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, "LinearMipmapLinear,Linear" }
 };

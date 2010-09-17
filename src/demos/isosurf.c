@@ -969,7 +969,7 @@ static void Key( unsigned char key, int x, int y )
       break;
    case '-':
    case '_':
-      plane[3] += 2.0;
+      plane[3] += 0.5;
       glMatrixMode(GL_MODELVIEW);
       glLoadIdentity();
       glClipPlane(GL_CLIP_PLANE0, plane);
@@ -978,7 +978,7 @@ static void Key( unsigned char key, int x, int y )
       break;
    case '+':
    case '=':
-      plane[3] -= 2.0;
+      plane[3] -= 0.5;
       glMatrixMode(GL_MODELVIEW);
       glLoadIdentity();
       glClipPlane(GL_CLIP_PLANE0, plane);

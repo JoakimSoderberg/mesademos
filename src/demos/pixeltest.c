@@ -254,6 +254,7 @@ Display( void )
    glPixelStorei(GL_PACK_ALIGNMENT, 1);
 
    /* Legend */
+   glLineWidth(1.0);
    glBegin(GL_LINE_STRIP);
    glVertex3f(590, 800, 0);
    glVertex3f(590, 670, 0);

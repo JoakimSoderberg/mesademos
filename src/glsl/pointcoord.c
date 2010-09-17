@@ -24,11 +24,17 @@ static GLuint program;
 static GLint win = 0;
 static GLint tex0;
 static GLenum Filter = GL_NEAREST;
+static GLenum Origin = GL_UPPER_LEFT;
 
 
 static void
 Redisplay(void)
 {
+   printf("GL_POINT_SPRITE_COORD_ORIGIN = %s\n",
+          (Origin == GL_UPPER_LEFT ? "GL_UPPER_LEFT" : "GL_LOWER_LEFT"));
+
+   glPointParameteri(GL_POINT_SPRITE_COORD_ORIGIN, Origin);
+
    glClear(GL_COLOR_BUFFER_BIT);
 
    /* draw one point/sprite */
@@ -76,6 +82,13 @@ Key(unsigned char key, int x, int y)
   (void) y;
 
    switch(key) {
+   case 'o':
+   case 'O':
+      if (Origin == GL_UPPER_LEFT)
+         Origin = GL_LOWER_LEFT;
+      else
+         Origin = GL_UPPER_LEFT;
+      break;
    case 27:
       CleanUp();
       exit(0);

@@ -113,94 +113,93 @@ static void Display( void )
    glEnd();
 
 #if defined(GL_ARB_occlusion_query)
-   glColorMask(0, 0, 0, 0);
+   /* disable all buffer updates */
+   glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
    glDepthMask(GL_FALSE);
 
    /* draw the first polygon with occlusion testing */
    glPushMatrix();
-   glTranslatef(Xpos, 0.4, -0.5);
-   glScalef(0.3, 0.3, 1.0);
-   glRotatef(-90.0 * Xpos, 0, 0, 1);
+      glTranslatef(Xpos, 0.4, -0.5);
+      glScalef(0.3, 0.3, 1.0);
+      glRotatef(-90.0 * Xpos, 0, 0, 1);
 
-   glBeginQueryARB(GL_SAMPLES_PASSED_ARB, OccQuery1);
+      glBeginQueryARB(GL_SAMPLES_PASSED_ARB, OccQuery1);
 
-   glBegin(GL_POLYGON);
-   glVertex3f(-1, -1, 0);
-   glVertex3f( 1, -1, 0);
-   glVertex3f( 1,  1, 0);
-   glVertex3f(-1,  1, 0);
-   glEnd();
+      glBegin(GL_POLYGON);
+      glVertex3f(-1, -1, 0);
+      glVertex3f( 1, -1, 0);
+      glVertex3f( 1,  1, 0);
+      glVertex3f(-1,  1, 0);
+      glEnd();
 
-   glEndQueryARB(GL_SAMPLES_PASSED_ARB);
+      glEndQueryARB(GL_SAMPLES_PASSED_ARB);
+   glPopMatrix();
+#endif
 
    /* draw the second polygon with occlusion testing */
-   glPopMatrix();
-#endif
    glPushMatrix();
-   glTranslatef(Xpos, -0.4, -0.5);
-   glScalef(0.3, 0.3, 1.0);
+      glTranslatef(Xpos, -0.4, -0.5);
+      glScalef(0.3, 0.3, 1.0);
 #if defined(GL_ARB_occlusion_query2)
-   if (has_oq2) {
+      if (has_oq2) {
+         glBeginQueryARB(GL_ANY_SAMPLES_PASSED, OccQuery2);
 
-      glBeginQueryARB(GL_ANY_SAMPLES_PASSED, OccQuery2);
+         glBegin(GL_POLYGON);
+         glVertex3f(-1, -1, 0);
+         glVertex3f( 1, -1, 0);
+         glVertex3f( 1,  1, 0);
+         glVertex3f(-1,  1, 0);
+         glEnd();
 
-      glBegin(GL_POLYGON);
-      glVertex3f(-1, -1, 0);
-      glVertex3f( 1, -1, 0);
-      glVertex3f( 1,  1, 0);
-      glVertex3f(-1,  1, 0);
-      glEnd();
-
-      glEndQueryARB(GL_ANY_SAMPLES_PASSED);
-   }
+         glEndQueryARB(GL_ANY_SAMPLES_PASSED);
+      }
 #endif
 
-   /* turn off occlusion testing */
-   glColorMask(1, 1, 1, 1);
-   glDepthMask(GL_TRUE);
+      /* re-enable buffer updates */
+      glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+      glDepthMask(GL_TRUE);
 
 #if defined(GL_ARB_occlusion_query)
-   do {
-      /* do useful work here, if any */
-      glGetQueryObjectivARB(OccQuery1, GL_QUERY_RESULT_AVAILABLE_ARB, &ready);
-   } while (!ready);
-   glGetQueryObjectuivARB(OccQuery1, GL_QUERY_RESULT_ARB, &passed1);
-#endif
-#if defined(GL_ARB_occlusion_query2)
-   if (has_oq2) {
       do {
          /* do useful work here, if any */
-         glGetQueryObjectivARB(OccQuery2, GL_QUERY_RESULT_AVAILABLE_ARB, &ready);
+         glGetQueryObjectivARB(OccQuery1, GL_QUERY_RESULT_AVAILABLE_ARB, &ready);
       } while (!ready);
-      glGetQueryObjectuivARB(OccQuery2, GL_QUERY_RESULT_ARB, &passed2_boolean);
-   }
+      glGetQueryObjectuivARB(OccQuery1, GL_QUERY_RESULT_ARB, &passed1);
+#endif
+#if defined(GL_ARB_occlusion_query2)
+      if (has_oq2) {
+         do {
+            /* do useful work here, if any */
+            glGetQueryObjectivARB(OccQuery2, GL_QUERY_RESULT_AVAILABLE_ARB, &ready);
+         } while (!ready);
+         glGetQueryObjectuivARB(OccQuery2, GL_QUERY_RESULT_ARB, &passed2_boolean);
+      }
 #endif /* GL_ARB_occlusion_query2 */
 
-   /* draw the second rect, so we can see what's going on */
-   glColor3f(0.8, 0.5, 0);
-   if (has_oq2) {
+      /* draw the second rect, so we can see what's going on */
+      glColor3f(0.8, 0.5, 0);
+      if (has_oq2) {
+         glBegin(GL_POLYGON);
+         glVertex3f(-1, -1, 0);
+         glVertex3f( 1, -1, 0);
+         glVertex3f( 1,  1, 0);
+         glVertex3f(-1,  1, 0);
+         glEnd();
+      }
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(Xpos, 0.4, -0.5);
+      glScalef(0.3, 0.3, 1.0);
+      glRotatef(-90.0 * Xpos, 0, 0, 1);
+
+      /* draw the first rect, so we can see what's going on */
       glBegin(GL_POLYGON);
       glVertex3f(-1, -1, 0);
       glVertex3f( 1, -1, 0);
       glVertex3f( 1,  1, 0);
       glVertex3f(-1,  1, 0);
       glEnd();
-   }
-
-   glPopMatrix();
-   glPushMatrix();
-   glTranslatef(Xpos, 0.4, -0.5);
-   glScalef(0.3, 0.3, 1.0);
-   glRotatef(-90.0 * Xpos, 0, 0, 1);
-
-   /* draw the first rect, so we can see what's going on */
-   glBegin(GL_POLYGON);
-   glVertex3f(-1, -1, 0);
-   glVertex3f( 1, -1, 0);
-   glVertex3f( 1,  1, 0);
-   glVertex3f(-1,  1, 0);
-   glEnd();
-
    glPopMatrix();
 
    /* Print result message */

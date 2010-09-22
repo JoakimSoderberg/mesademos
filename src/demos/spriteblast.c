@@ -14,6 +14,7 @@
 /* Modified by Brian Paul to test GL_ARB_point_sprite */
 
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -39,12 +40,14 @@ static int moving, begin;
 static float theTime;
 static int repeat = 1;
 static int blend = 1;
-int useMipmaps = 1;
-int linearFiltering = 1;
+static int useMipmaps = 1;
+static int linearFiltering = 1;
+
+static GLuint Tex0, Tex1;
 
 static GLfloat constant[3] = { .2,  0.0,     0.0 };
 static GLfloat linear[3]   = { .0,   .1,     0.0 };
-static GLfloat theQuad[3]  = { .005, 0.1, 1/600.0 };
+static GLfloat theQuad[3]  = { .005, 0.05, 1/600.0 };
 
 #define MAX_POINTS 2000
 
@@ -91,6 +94,41 @@ static GLint spritePattern[16][16] = {
    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
 };
+
+
+/** Fragment shader which inverts the texture's color */
+static const char *FragShaderText =
+   "uniform sampler2D tex; \n"
+   "void main(void) \n"
+   "{ \n"
+   "   gl_FragColor = vec4(1.0) - texture2D(tex, gl_TexCoord[0].xy); \n"
+   "} \n";
+
+static GLuint FragShader, ShaderProg;
+static GLboolean UseFragShader = GL_FALSE;
+static GLboolean HaveShaders = GL_FALSE;
+
+static void
+makeFragShader(void)
+{
+   const char *version = (const char *) glGetString(GL_VERSION);
+   GLint stat;
+
+   HaveShaders = (version[0] >= '2' && version[1] == '.');
+   if (!HaveShaders)
+      return;
+
+   FragShader = glCreateShader(GL_FRAGMENT_SHADER);
+   glShaderSource(FragShader, 1, (const GLchar **) &FragShaderText, NULL);
+   glCompileShader(FragShader);
+
+   ShaderProg = glCreateProgram();
+   glAttachShader(ShaderProg, FragShader);
+   glLinkProgram(ShaderProg);
+
+   glGetProgramiv(ShaderProg, GL_LINK_STATUS, &stat);
+   assert(stat);
+}
 
 
 
@@ -212,13 +250,15 @@ redraw(void)
   glDepthMask(GL_TRUE);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+  if (HaveShaders)
+     glUseProgram(0);
+
   glPushMatrix();
   glRotatef(15.0, 1.0, 0.0, 0.0);
   glRotatef(angle, 0.0, 1.0, 0.0);
 
 
   /* Draw the floor. */
-/*  glEnable(GL_TEXTURE_2D);*/
   glColor3f(0.1, 0.5, 1.0);
   glBegin(GL_QUADS);
     glTexCoord2f(0.0, 0.0);
@@ -238,10 +278,20 @@ redraw(void)
      glEnable(GL_BLEND);
 
   if (sprite) {
+     glActiveTexture(GL_TEXTURE0);
      glEnable(GL_TEXTURE_2D);
+     if (0) {
+        /* debug/test code */
+        glActiveTexture(GL_TEXTURE1);
+        glEnable(GL_TEXTURE_2D);
+     }
+
 #ifdef GL_ARB_point_sprite
      glEnable(GL_POINT_SPRITE_ARB);
 #endif
+     if (UseFragShader) {
+        glUseProgram(ShaderProg);
+     }
   }
 
   glColor3f(1,1,1);
@@ -249,13 +299,18 @@ redraw(void)
     for (i=0; i<numPoints; i++) {
       /* Draw alive particles. */
       if (colorList[i] != DEAD) {
-        if (!sprite) glColor4fv(colorSet[colorList[i]]);
+        if (!sprite)
+           glColor4fv(colorSet[colorList[i]]);
         glVertex3fv(pointList[i]);
       }
     }
   glEnd();
 
+  glActiveTexture(GL_TEXTURE0);
   glDisable(GL_TEXTURE_2D);
+  glActiveTexture(GL_TEXTURE1);
+  glDisable(GL_TEXTURE_2D);
+
 #ifdef GL_ARB_point_sprite
   glDisable(GL_POINT_SPRITE_ARB);
 #endif
@@ -406,6 +461,13 @@ key(unsigned char c, int x, int y)
     (smooth ^= 1) ? glEnable(GL_POINT_SMOOTH) : glDisable(GL_POINT_SMOOTH);
     glutPostRedisplay();
     break;
+  case 'f':
+  case 'F':
+    if (HaveShaders) {
+       UseFragShader = !UseFragShader;
+       glutPostRedisplay();
+    }
+    break;
   case '0':
     glPointSize(1.0);
     glutPostRedisplay();
@@ -434,7 +496,7 @@ key(unsigned char c, int x, int y)
 
 
 static void
-makeSprite(void)
+makeSpriteTextures(void)
 {
    GLubyte texture[16][16][4];
    int i, j;
@@ -448,6 +510,7 @@ makeSprite(void)
       exit(0);
    }
 
+   /* "GL" */
    for (i = 0; i < 16; i++) {
       for (j = 0; j < 16; j++) {
          if (spritePattern[i][j]) {
@@ -465,13 +528,53 @@ makeSprite(void)
       }
    }
 
+   /* texture 0 */
+   glActiveTexture(GL_TEXTURE0);
+   glGenTextures(1, &Tex0);
+   glBindTexture(GL_TEXTURE_2D, Tex0);
    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 16, 16, 0, GL_RGBA, GL_UNSIGNED_BYTE,
                 texture);
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 #ifdef GL_ARB_point_sprite
    glTexEnvi(GL_POINT_SPRITE_ARB, GL_COORD_REPLACE_ARB, GL_TRUE);
 #endif
+
+   /* left=yellow, right=green */
+   memset(texture, 0, sizeof(texture));
+   for (i = 0; i < 16; i++) {
+      for (j = 0; j < 16; j++) {
+         if (j < 8) {
+            texture[i][j][0] = 255;
+            texture[i][j][1] = 255;
+            texture[i][j][2] = 0;
+            texture[i][j][3] = 255;
+         }
+         else {
+            texture[i][j][0] = 0;
+            texture[i][j][1] = 255;
+            texture[i][j][2] = 0;
+            texture[i][j][3] = 255;
+         }
+      }
+   }
+
+   /* texture 1 */
+   glActiveTexture(GL_TEXTURE1);
+   glGenTextures(1, &Tex1);
+   glBindTexture(GL_TEXTURE_2D, Tex1);
+   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 16, 16, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+                texture);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+#ifdef GL_ARB_point_sprite
+   glTexEnvi(GL_POINT_SPRITE_ARB, GL_COORD_REPLACE_ARB, GL_TRUE);
+#endif
+
+   glActiveTexture(GL_TEXTURE0);
 }
 
 
@@ -481,6 +584,13 @@ reshape(int width, int height)
   GLfloat h = (GLfloat) height / (GLfloat) width;
 
   glViewport(0, 0, (GLint) width, (GLint) height);
+
+#if 0 /* debug/test code */
+  glMatrixMode(GL_TEXTURE);
+  glLoadIdentity();
+  glRotatef(45, 0, 0, 1);
+#endif
+
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   glFrustum(-1.0, 1.0, -h, h, 2.0, 30.0);
@@ -539,7 +649,8 @@ main(int argc, char **argv)
   glutAttachMenu(GLUT_RIGHT_BUTTON);
 
   makePointList();
-  makeSprite();
+  makeSpriteTextures();
+  makeFragShader();
 
   glShadeModel(GL_FLAT);
   glEnable(GL_DEPTH_TEST);

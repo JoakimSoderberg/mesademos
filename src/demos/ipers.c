@@ -668,6 +668,7 @@ draw(void)
       if (t - T0 >= 2000) {
          GLfloat seconds = (t - T0) / 1000.0;
          fr = Frames / seconds;
+         printf("Frame rate: %f\n", fr);
          T0 = t;
          Frames = 0;
       }

@@ -490,6 +490,7 @@ draw(void)
          GLfloat seconds = (t - T0) / 1000.0;
          GLfloat fps = Frames / seconds;
          sprintf(frbuf, "Frame rate: %f", fps);
+         printf("%s\n", frbuf);
          T0 = t;
          Frames = 0;
       }

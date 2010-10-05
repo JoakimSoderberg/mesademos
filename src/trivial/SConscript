@@ -15,6 +15,7 @@ progs = [
 	'drawarrays',
 	'draw2arrays',
 	'drawelements',
+	'drawelements-large',
 	'drawrange',
 	'flat-clip',
 	'fs-tri',

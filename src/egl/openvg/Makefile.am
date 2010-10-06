@@ -51,10 +51,10 @@ noinst_PROGRAMS = \
 endif
 endif
 
-lion_screen_SOURCES = lion.c lion-render.c
+lion_screen_SOURCES = lion.c lion-render.c lion-render.h
 sp_screen_SOURCES = sp.c
 
-lion_x11_SOURCES = lion.c lion-render.c
+lion_x11_SOURCES = lion.c lion-render.c lion-render.h
 sp_x11_SOURCES = sp.c
 
 lion_screen_LDADD = ../eglut/libeglut_screen.la

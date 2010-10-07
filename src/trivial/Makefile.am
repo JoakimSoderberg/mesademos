@@ -75,6 +75,7 @@ bin_PROGRAMS = \
 	line-userclip-nop \
 	line-userclip-nop-clip \
 	line-wide \
+	line-xor \
 	long-fixed-func \
 	pgon-mode \
 	point \

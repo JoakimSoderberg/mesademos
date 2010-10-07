@@ -40,6 +40,7 @@ if HAVE_EGL
 if HAVE_VG
 noinst_LTLIBRARIES = libcommon.la
 libcommon_la_SOURCES = \
+	eglcommon.h \
 	eglcommon.c
 
 noinst_PROGRAMS = \

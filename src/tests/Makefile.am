@@ -107,6 +107,7 @@ noinst_PROGRAMS = \
 	mipmap_comp_tests \
 	mipmap_limits \
 	mipmap_view \
+	mipmap_tunnel \
 	multipal \
 	multitexarray \
 	multiwindow \

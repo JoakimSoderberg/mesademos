@@ -175,7 +175,7 @@ InitTexture(void)
 
 
 static GLuint
-CreateProgram(void)
+CreateAProgram(void)
 {
    GLuint fragShader, vertShader, program;
 
@@ -212,7 +212,7 @@ Init(void)
 
    InitTexture();
 
-   Program = CreateProgram();
+   Program = CreateAProgram();
    glUseProgram(Program);
 }
 

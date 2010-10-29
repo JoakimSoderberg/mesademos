@@ -80,9 +80,9 @@ Reshape(int width, int height)
 static void
 CleanUp(void)
 {
-   glDeleteShader(fragShader);
-   glDeleteShader(vertShader);
-   glDeleteProgram(program);
+   DeleteShader(fragShader);
+   DeleteShader(vertShader);
+   DeleteProgram(program);
    glutDestroyWindow(win);
 }
 
@@ -146,7 +146,7 @@ Init(void)
    fragShader = CompileShaderFile(GL_FRAGMENT_SHADER, FragProgFile);
    program = LinkShaders(vertShader, fragShader);
 
-   glUseProgram(program);
+   UseProgram(program);
 
    SetUniformValues(program, Uniforms);
    PrintUniforms(Uniforms);
@@ -157,9 +157,11 @@ Init(void)
 
    printf("GL_RENDERER = %s\n",(const char *) glGetString(GL_RENDERER));
 
-   assert(glIsProgram(program));
-   assert(glIsShader(fragShader));
-   assert(glIsShader(vertShader));
+   if (GLEW_VERSION_2_0) {
+      assert(glIsProgram(program));
+      assert(glIsShader(fragShader));
+      assert(glIsShader(vertShader));
+   }
 
    glColor3f(1, 0, 0);
 }

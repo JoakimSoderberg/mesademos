@@ -20,22 +20,83 @@ static GLdouble CompileTime = 0.0;
 /** time to linke previous program */
 static GLdouble LinkTime = 0.0;
 
+PFNGLCREATESHADERPROC CreateShader = NULL;
+PFNGLDELETESHADERPROC DeleteShader = NULL;
+PFNGLSHADERSOURCEPROC ShaderSource = NULL;
+PFNGLGETSHADERIVPROC GetShaderiv = NULL;
+PFNGLGETSHADERINFOLOGPROC GetShaderInfoLog = NULL;
+PFNGLCREATEPROGRAMPROC CreateProgram = NULL;
+PFNGLDELETEPROGRAMPROC DeleteProgram = NULL;
+PFNGLATTACHSHADERPROC AttachShader = NULL;
+PFNGLLINKPROGRAMPROC LinkProgram = NULL;
+PFNGLUSEPROGRAMPROC UseProgram = NULL;
+PFNGLGETPROGRAMIVPROC GetProgramiv = NULL;
+PFNGLGETPROGRAMINFOLOGPROC GetProgramInfoLog = NULL;
+PFNGLVALIDATEPROGRAMARBPROC ValidateProgramARB = NULL;
+PFNGLUNIFORM1IPROC Uniform1i = NULL;
+PFNGLUNIFORM1FVPROC Uniform1fv = NULL;
+PFNGLUNIFORM2FVPROC Uniform2fv = NULL;
+PFNGLUNIFORM3FVPROC Uniform3fv = NULL;
+PFNGLUNIFORM4FVPROC Uniform4fv = NULL;
+PFNGLGETACTIVEATTRIBPROC GetActiveAttrib = NULL;
+PFNGLGETATTRIBLOCATIONPROC GetAttribLocation = NULL;
+
+static void
+fake_ValidateProgram(GLuint prog)
+{
+   (void) prog;
+}
 
 GLboolean
 ShadersSupported(void)
 {
-   const char *version = (const char *) glGetString(GL_VERSION);
-
-   /* NVIDIA binary drivers will return "3.0.0", and they clearly support
-    * shaders.
-    */
-   if (version[0] >= '2' && version[1] == '.') {
+   if (GLEW_VERSION_2_0) {
+      CreateShader = glCreateShader;
+      DeleteShader = glDeleteShader;
+      ShaderSource = glShaderSource;
+      GetShaderiv = glGetShaderiv;
+      GetShaderInfoLog = glGetShaderInfoLog;
+      CreateProgram = glCreateProgram;
+      DeleteProgram = glDeleteProgram;
+      AttachShader = glAttachShader;
+      LinkProgram = glLinkProgram;
+      UseProgram = glUseProgram;
+      GetProgramiv = glGetProgramiv;
+      GetProgramInfoLog = glGetProgramInfoLog;
+      ValidateProgramARB = (GLEW_ARB_shader_objects)
+	 ? glValidateProgramARB : fake_ValidateProgram;
+      Uniform1i = glUniform1i;
+      Uniform1fv = glUniform1fv;
+      Uniform2fv = glUniform2fv;
+      Uniform3fv = glUniform3fv;
+      Uniform4fv = glUniform4fv;
+      GetActiveAttrib = glGetActiveAttrib;
+      GetAttribLocation = glGetAttribLocation;
       return GL_TRUE;
    }
-   else if (glutExtensionSupported("GL_ARB_vertex_shader")
-            && glutExtensionSupported("GL_ARB_fragment_shader")
-            && glutExtensionSupported("GL_ARB_shader_objects")) {
+   else if (GLEW_ARB_vertex_shader && GLEW_ARB_fragment_shader
+	    && GLEW_ARB_shader_objects) {
       fprintf(stderr, "Warning: Trying ARB GLSL instead of OpenGL 2.x.  This may not work.\n");
+      CreateShader = glCreateShaderObjectARB;
+      DeleteShader = glDeleteObjectARB;
+      ShaderSource = glShaderSourceARB;
+      GetShaderiv = glGetObjectParameterivARB;
+      GetShaderInfoLog = glGetInfoLogARB;
+      CreateProgram = glCreateProgramObjectARB;
+      DeleteProgram = glDeleteObjectARB;
+      AttachShader = glAttachObjectARB;
+      LinkProgram = glLinkProgramARB;
+      UseProgram = glUseProgramObjectARB;
+      GetProgramiv = glGetObjectParameterivARB;
+      GetProgramInfoLog = glGetInfoLogARB;
+      ValidateProgramARB = glValidateProgramARB;
+      Uniform1i = glUniform1iARB;
+      Uniform1fv = glUniform1fvARB;
+      Uniform2fv = glUniform2fvARB;
+      Uniform3fv = glUniform3fvARB;
+      Uniform4fv = glUniform4fvARB;
+      GetActiveAttrib = glGetActiveAttribARB;
+      GetAttribLocation = glGetAttribLocationARB;
       return GL_TRUE;
    }
    fprintf(stderr, "Sorry, GLSL not supported with this OpenGL.\n");
@@ -50,8 +111,8 @@ CompileShaderText(GLenum shaderType, const char *text)
    GLint stat;
    GLdouble t0, t1;
 
-   shader = glCreateShader(shaderType);
-   glShaderSource(shader, 1, (const GLchar **) &text, NULL);
+   shader = CreateShader(shaderType);
+   ShaderSource(shader, 1, (const GLchar **) &text, NULL);
 
    t0 = glutGet(GLUT_ELAPSED_TIME) * 0.001;
    glCompileShader(shader);
@@ -59,11 +120,11 @@ CompileShaderText(GLenum shaderType, const char *text)
 
    CompileTime = t1 - t0;
 
-   glGetShaderiv(shader, GL_COMPILE_STATUS, &stat);
+   GetShaderiv(shader, GL_COMPILE_STATUS, &stat);
    if (!stat) {
       GLchar log[1000];
       GLsizei len;
-      glGetShaderInfoLog(shader, 1000, &len, log);
+      GetShaderInfoLog(shader, 1000, &len, log);
       fprintf(stderr, "Error: problem compiling shader: %s\n", log);
       exit(1);
    }
@@ -115,18 +176,18 @@ CompileShaderFile(GLenum shaderType, const char *filename)
 GLuint
 LinkShaders(GLuint vertShader, GLuint fragShader)
 {
-   GLuint program = glCreateProgram();
+   GLuint program = CreateProgram();
    GLdouble t0, t1;
 
    assert(vertShader || fragShader);
 
    if (fragShader)
-      glAttachShader(program, fragShader);
+      AttachShader(program, fragShader);
    if (vertShader)
-      glAttachShader(program, vertShader);
+      AttachShader(program, vertShader);
 
    t0 = glutGet(GLUT_ELAPSED_TIME) * 0.001;
-   glLinkProgram(program);
+   LinkProgram(program);
    t1 = glutGet(GLUT_ELAPSED_TIME) * 0.001;
 
    LinkTime = t1 - t0;
@@ -134,11 +195,11 @@ LinkShaders(GLuint vertShader, GLuint fragShader)
    /* check link */
    {
       GLint stat;
-      glGetProgramiv(program, GL_LINK_STATUS, &stat);
+      GetProgramiv(program, GL_LINK_STATUS, &stat);
       if (!stat) {
          GLchar log[1000];
          GLsizei len;
-         glGetProgramInfoLog(program, 1000, &len, log);
+         GetProgramInfoLog(program, 1000, &len, log);
          fprintf(stderr, "Shader link error:\n%s\n", log);
          return 0;
       }
@@ -152,13 +213,13 @@ GLboolean
 ValidateShaderProgram(GLuint program)
 {
    GLint stat;
-   glValidateProgramARB(program);
-   glGetProgramiv(program, GL_VALIDATE_STATUS, &stat);
+   ValidateProgramARB(program);
+   GetProgramiv(program, GL_VALIDATE_STATUS, &stat);
 
    if (!stat) {
       GLchar log[1000];
       GLsizei len;
-      glGetProgramInfoLog(program, 1000, &len, log);
+      GetProgramInfoLog(program, 1000, &len, log);
       fprintf(stderr, "Program validation error:\n%s\n", log);
       return 0;
    }
@@ -198,20 +259,20 @@ SetUniformValues(GLuint program, struct uniform_info uniforms[])
       case GL_SAMPLER_CUBE:
       case GL_SAMPLER_2D_RECT_ARB:
          assert(uniforms[i].value[0] >= 0.0F);
-         glUniform1i(uniforms[i].location,
+         Uniform1i(uniforms[i].location,
                      (GLint) uniforms[i].value[0]);
          break;
       case GL_FLOAT:
-         glUniform1fv(uniforms[i].location, 1, uniforms[i].value);
+         Uniform1fv(uniforms[i].location, 1, uniforms[i].value);
          break;
       case GL_FLOAT_VEC2:
-         glUniform2fv(uniforms[i].location, 1, uniforms[i].value);
+         Uniform2fv(uniforms[i].location, 1, uniforms[i].value);
          break;
       case GL_FLOAT_VEC3:
-         glUniform3fv(uniforms[i].location, 1, uniforms[i].value);
+         Uniform3fv(uniforms[i].location, 1, uniforms[i].value);
          break;
       case GL_FLOAT_VEC4:
-         glUniform4fv(uniforms[i].location, 1, uniforms[i].value);
+         Uniform4fv(uniforms[i].location, 1, uniforms[i].value);
          break;
       default:
          if (strncmp(uniforms[i].name, "gl_", 3) == 0) {
@@ -233,8 +294,8 @@ GetUniforms(GLuint program, struct uniform_info uniforms[])
 {
    GLint n, max, i;
 
-   glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &n);
-   glGetProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &max);
+   GetProgramiv(program, GL_ACTIVE_UNIFORMS, &n);
+   GetProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &max);
 
    for (i = 0; i < n; i++) {
       GLint size, len;
@@ -283,20 +344,20 @@ GetAttribs(GLuint program, struct attrib_info attribs[])
 {
    GLint n, max, i;
 
-   glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &n);
-   glGetProgramiv(program, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &max);
+   GetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &n);
+   GetProgramiv(program, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &max);
 
    for (i = 0; i < n; i++) {
       GLint size, len;
       GLenum type;
       char name[100];
 
-      glGetActiveAttrib(program, i, 100, &len, &size, &type, name);
+      GetActiveAttrib(program, i, 100, &len, &size, &type, name);
 
       attribs[i].name = strdup(name);
       attribs[i].size = size;
       attribs[i].type = type;
-      attribs[i].location = glGetAttribLocation(program, name);
+      attribs[i].location = GetAttribLocation(program, name);
    }
 
    attribs[i].name = NULL; /* end of list */

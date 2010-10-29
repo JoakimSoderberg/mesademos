@@ -371,7 +371,7 @@ InitTextures(GLboolean useImageFiles)
 
 
 static GLuint
-CreateProgram(const char *vertProgFile, const char *fragProgFile,
+CreateAProgram(const char *vertProgFile, const char *fragProgFile,
               struct uniform_info *uniforms)
 {
    GLuint fragShader, vertShader, program;
@@ -392,8 +392,8 @@ CreateProgram(const char *vertProgFile, const char *fragProgFile,
 static void
 InitPrograms(void)
 {
-   Program1 = CreateProgram(ReflectVertFile, CubeFragFile, ReflectUniforms);
-   Program2 = CreateProgram(SimpleVertFile, SimpleTexFragFile, SimpleUniforms);
+   Program1 = CreateAProgram(ReflectVertFile, CubeFragFile, ReflectUniforms);
+   Program2 = CreateAProgram(SimpleVertFile, SimpleTexFragFile, SimpleUniforms);
 }
 
 

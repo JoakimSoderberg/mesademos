@@ -316,8 +316,8 @@ InitTextures(void)
 
 
 static GLuint
-CreateProgram(const char *vertProgFile, const char *fragProgFile,
-              struct uniform_info *uniforms)
+CreateAProgram(const char *vertProgFile, const char *fragProgFile,
+	       struct uniform_info *uniforms)
 {
    GLuint fragShader, vertShader, program;
 
@@ -362,7 +362,7 @@ CreateProgram(const char *vertProgFile, const char *fragProgFile,
 static void
 InitPrograms(void)
 {
-   Program = CreateProgram(VertFile, FragFile, Uniforms);
+   Program = CreateAProgram(VertFile, FragFile, Uniforms);
 }
 
 

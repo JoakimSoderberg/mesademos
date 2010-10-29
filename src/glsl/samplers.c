@@ -279,7 +279,7 @@ GenFragmentShader(GLint numSamplers)
 
 /** Create & bind shader program */
 static GLuint
-CreateProgram(void)
+CreateAProgram(void)
 {
    GLuint fragShader, vertShader, program;
    const char *vertShaderText = 
@@ -310,7 +310,7 @@ InitProgram(void)
 {
    GLint s;
 
-   Program = CreateProgram();
+   Program = CreateAProgram();
 
    /* init sampler uniforms */
    for (s = 0; s < NumSamplers; s++) {

@@ -60,4 +60,27 @@ GetAttribs(GLuint program, struct attrib_info attribs[]);
 extern void
 PrintAttribs(const struct attrib_info attribs[]);
 
+/* These pointers are only valid after calling ShadersSupported.
+ */
+extern PFNGLCREATESHADERPROC CreateShader;
+extern PFNGLDELETESHADERPROC DeleteShader;
+extern PFNGLSHADERSOURCEPROC ShaderSource;
+extern PFNGLGETSHADERIVPROC GetShaderiv;
+extern PFNGLGETSHADERINFOLOGPROC GetShaderInfoLog;
+extern PFNGLCREATEPROGRAMPROC CreateProgram;
+extern PFNGLDELETEPROGRAMPROC DeleteProgram;
+extern PFNGLATTACHSHADERPROC AttachShader;
+extern PFNGLLINKPROGRAMPROC LinkProgram;
+extern PFNGLUSEPROGRAMPROC UseProgram;
+extern PFNGLGETPROGRAMIVPROC GetProgramiv;
+extern PFNGLGETPROGRAMINFOLOGPROC GetProgramInfoLog;
+extern PFNGLVALIDATEPROGRAMARBPROC ValidateProgramARB;
+extern PFNGLUNIFORM1IPROC Uniform1i;
+extern PFNGLUNIFORM1FVPROC Uniform1fv;
+extern PFNGLUNIFORM2FVPROC Uniform2fv;
+extern PFNGLUNIFORM3FVPROC Uniform3fv;
+extern PFNGLUNIFORM4FVPROC Uniform4fv;
+extern PFNGLGETACTIVEATTRIBPROC GetActiveAttrib;
+extern PFNGLGETATTRIBLOCATIONPROC GetAttribLocation;
+
 #endif /* SHADER_UTIL_H */

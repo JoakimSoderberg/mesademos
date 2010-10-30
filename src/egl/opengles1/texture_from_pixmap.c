@@ -152,12 +152,23 @@ app_redraw(struct app_data *data)
 {
    /* pixmap has changed */
    if (data->reshape || data->paint.active) {
+      /*
+       * The extension only states that
+       *
+       *   If an application specifies an EGLImage sibling as the destination
+       *   for rendering and/or pixel download operations (e.g., as an
+       *   OpenGL-ES framebuffer object, glTexSubImage2D, etc.), the modified
+       *   image results will be observed by all EGLImage siblings in all
+       *   client API contexts.
+       *
+       * Though not required by the drivers I tested, I think the rules of
+       * "Propagating Changes to Objects" should apply here.  That is, the
+       * changes made by the native engine must be completed and the resource
+       * must be re-attached.
+       */
       eglWaitNative(EGL_CORE_NATIVE_ENGINE);
-
-      if (data->reshape) {
-         data->glEGLImageTargetTexture2DOES(GL_TEXTURE_2D,
-               (GLeglImageOES) data->img);
-      }
+      data->glEGLImageTargetTexture2DOES(GL_TEXTURE_2D,
+            (GLeglImageOES) data->img);
    }
 
    XCopyArea(data->xdpy, data->pix, data->canvas, data->fg,

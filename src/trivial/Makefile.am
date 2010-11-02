@@ -128,6 +128,7 @@ bin_PROGRAMS = \
 	tri-cull \
 	tri-dlist \
 	tri-edgeflag \
+	tri-edgeflag-array \
 	trifan \
 	trifan-flat \
 	trifan-flat-clip \

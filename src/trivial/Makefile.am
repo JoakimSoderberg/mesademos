@@ -32,7 +32,7 @@ AM_LDFLAGS = \
 
 if HAVE_GLUT
 bin_PROGRAMS = \
-	clear \
+	clear-color \
 	clear-fbo \
 	clear-fbo-tex \
 	clear-random \

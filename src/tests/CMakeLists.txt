@@ -34,7 +34,6 @@ set (targets
 	arbvptorus
 	arbvpwarpmesh
 	arraytexture
-	auxbuffer
 	blendxor
 	blitfb
 	bufferobj
@@ -70,7 +69,6 @@ set (targets
 	glutfx
 	interleave
 	invert
-	jkrahntest
 	lineclip
 	manytex
 	mapbufrange
@@ -99,7 +97,6 @@ set (targets
 	scissor-viewport
 	seccolor
 	shader_api
-	sharedtex
 	stencilreaddraw
 	stencilwrap
 	streaming_rect
@@ -115,7 +112,6 @@ set (targets
 	texleak
 	texline
 	texobj
-	texobjshare
 	texrect
 	texwrap
 	unfilledclip
@@ -139,3 +135,27 @@ foreach (target ${targets})
 endforeach (target)
 
 install (TARGETS ${targets} DESTINATION tests)
+
+if (X11_FOUND)
+	include_directories (
+		${X11_INCLUDE_DIR}
+	)
+
+	link_libraries (
+		${X11_X11_LIBRARY}
+	)
+
+	set (xtargets
+		auxbuffer
+		jkrahntest
+		sharedtex
+		texobjshare
+	)
+
+	foreach (xtarget ${xtargets})
+		add_executable (${xtarget} ${xtarget}.c)
+	endforeach (xtarget)
+
+	install (TARGETS ${xtargets} DESTINATION tests)
+endif (X11_FOUND)
+

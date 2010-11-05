@@ -1,0 +1,141 @@
+include_directories (
+	${mesademos_SOURCE_DIR}/src/util
+	${OPENGL_INCLUDE_PATH}
+	${GLUT_INCLUDE_DIR}
+	${GLEW_INCLUDE_DIR}
+)
+
+link_directories (
+	${mesademos_SOURCE_DIR}/src/util
+)
+
+link_libraries (
+	util
+	${OPENGL_gl_LIBRARY}
+	${OPENGL_glu_LIBRARY}
+	${GLUT_glut_LIBRARY}
+	${GLEW_glew_LIBRARY}
+)
+
+set (targets
+	afsmultiarb
+	antialias
+	# XXX: Requires Linux kernel headers???
+	#api_speed 
+	arbfpspec
+	arbfptest1
+	arbfptexture
+	arbfptrig
+	arbgpuprog
+	arbnpot
+	arbnpot-mipmap
+	arbvptest1
+	arbvptest3
+	arbvptorus
+	arbvpwarpmesh
+	arraytexture
+	auxbuffer
+	blendxor
+	blitfb
+	bufferobj
+	bug_3050
+	bug_3101
+	bug_3195
+	bug_texstore_i8
+	bumpmap
+	calibrate_rast
+	condrender
+	copypixrate
+	cva
+	cva_huge
+	cylwrap
+	# XXX: Depends on Mesa GL header
+	#debugger
+	drawbuffers2
+	drawbuffers
+	exactrast
+	ext422square
+	fbotest1
+	fbotest2
+	fbotest3
+	fillrate
+	floattex
+	fog
+	fogcoord
+	fptest1
+	fptexture
+	# XXX: Requires Mesa source
+	#getprocaddress
+	getteximage
+	glutfx
+	interleave
+	invert
+	jkrahntest
+	lineclip
+	manytex
+	mapbufrange
+	minmag
+	mipgen
+	mipmap_comp
+	mipmap_comp_tests
+	mipmap_limits
+	mipmap_tunnel
+	mipmap_view
+	multipal
+	multitexarray
+	multiwindow
+	no_s3tc
+	occlude
+	packedpixels
+	pbo
+	persp_hint
+	prim
+	prog_parameter
+	quads
+	random
+	readrate
+	rubberband
+	scissor
+	scissor-viewport
+	seccolor
+	shader_api
+	sharedtex
+	stencilreaddraw
+	stencilwrap
+	streaming_rect
+	subtex
+	subtexrate
+	tex1d
+	texcmp
+	texcompress2
+	texcompsub
+	texdown
+	texfilt
+	texgenmix
+	texleak
+	texline
+	texobj
+	texobjshare
+	texrect
+	texwrap
+	unfilledclip
+	vparray
+	vpeval
+	vptest1
+	vptest2
+	vptest3
+	vptorus
+	vpwarpmesh
+	yuvrect
+	yuvsquare
+	zbitmap
+	zcomp
+	zdrawpix
+	zreaddraw
+)
+
+foreach (target ${targets})
+	add_executable (${target} ${target}.c)
+endforeach (target)
+
+install (TARGETS ${targets} DESTINATION tests)

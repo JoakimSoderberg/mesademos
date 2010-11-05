@@ -1,4 +1,4 @@
-include_directories(
+include_directories (
 	${mesademos_SOURCE_DIR}/src/util
 	${OPENGL_INCLUDE_PATH}
 	${GLUT_INCLUDE_DIR}
@@ -79,4 +79,6 @@ endforeach (target)
 
 install (TARGETS ${targets} DESTINATION demos)
 
-install (FILES geartrain.dat isosurf.dat terrain.dat DESTINATION demos)
+file (GLOB data *.dat)
+
+install (FILES ${data} DESTINATION demos)

@@ -1,9 +1,11 @@
 include_directories (
 	${OPENGL_INCLUDE_PATH}
+	${GLEW_INCLUDE_DIR}
 )
 
 link_libraries (
 	${OPENGL_gl_LIBRARY}
+	${GLEW_glew_LIBRARY}
 )
 
 add_executable (wglthreads wglthreads/wglthreads.c)

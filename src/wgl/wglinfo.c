@@ -33,9 +33,8 @@
 
 #include <windows.h>
 
-#include <GL/gl.h>
-#include <GL/glext.h>
-#include <GL/wglext.h>
+#include <GL/glew.h>
+#include <GL/wglew.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

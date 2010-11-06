@@ -84,7 +84,9 @@ static void Display( void )
 	  end.tv_sec * 1000 + end.tv_usec / 1000 - start.tv_sec * 1000 -
 	  start.tv_usec / 1000, numTexObj * 4 * size / 1024 * size / 1024);
 
+#ifndef _WIN32
    sleep(1);
+#endif
 }
 
 

@@ -32,7 +32,6 @@ set (targets
 	line
 	logo
 	nurb
-	oglinfo
 	olympic
 	overlay
 	point
@@ -55,3 +54,23 @@ foreach (target ${targets})
 endforeach (target)
 
 install (TARGETS ${targets} DESTINATION samples)
+
+if (X11_FOUND)
+	include_directories (
+		${X11_INCLUDE_DIR}
+	)
+
+	link_libraries (
+		${X11_X11_LIBRARY}
+	)
+
+	set (xtargets
+		oglinfo
+	)
+
+	foreach (xtarget ${xtargets})
+		add_executable (${xtarget} ${xtarget}.c)
+	endforeach (xtarget)
+
+	install (TARGETS ${xtargets} DESTINATION tests)
+endif (X11_FOUND)

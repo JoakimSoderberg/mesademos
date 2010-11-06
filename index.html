@@ -1,5 +1,8 @@
 <HTML>
 <TITLE>Mesa Demos Distribution</TITLE>
+<STYLE TYPE="text/css">
+  PRE {background-color: #cccccc}
+</STYLE>
 <BODY>
 
 <H1>Introduction</H1>
@@ -36,12 +39,12 @@ site.
 <p>
 The Mesa demos git repository can be obtained with:
 <pre>
-  git clone git://anongit.freedesktop.org/git/mesa/demos
+git clone git://anongit.freedesktop.org/git/mesa/demos
 </pre>
 
 Or, if you're a developer:
 <pre>
-  git clone git+ssh://USERNAME@git.freedesktop.org/git/mesa/demos
+git clone git+ssh://USERNAME@git.freedesktop.org/git/mesa/demos
 </pre>
 
 </p>
@@ -50,7 +53,7 @@ Or, if you're a developer:
 <H1>Building</H1>
 
 <p>
-The Mesa demos can be built with autoconf or
+The Mesa demos can be built with autoconf, <a href="http://www.cmake.org/">CMake</a>, or
 <a href="http://www.scons.org/">SCons</a>.
 </p>
 
@@ -59,15 +62,22 @@ The Mesa demos can be built with autoconf or
 
 <p>
 You'll need <a href="http://glew.sourceforge.net/">glew</a> version 1.5.4
-or later and glut or freeglut (runtime libraries and header files).
+or later and glut or <a href="http://freeglut.sourceforge.net/">freeglut</a> (runtime libraries and header files).
 </p>
 
 <p>
 If you're using an RPM-based Linux distro you can install these items with:
 </p>
 <pre>
-  yum install glew glew-devel
-  yum install freeglut freeglut-devel
+yum install glew glew-devel
+yum install freeglut freeglut-devel
+</pre>
+
+<p>
+And if you're using a Debian based Linux distro you can install these items with:
+</p>
+<pre>
+apt-get install libglew-dev freeglut3-dev
 </pre>
 
 
@@ -85,10 +95,86 @@ Otherwise, just run <b>./configure ; make</b> to build the demos.
 
 
 
+<H2>CMake</H2>
+
+<p>
+See the <a href="http://www.cmake.org/cmake/help/documentation.html">CMake documentation</a> for more information about CMake.
+</p>
+
+<H3>Unix</H3>
+
+<p>
+Run:
+</p>
+<pre>
+cmake .
+make
+</pre>
+
+<H3>MSVC</H3>
+
+<ul>
+<li>Start the CMake GUI.
+<li>Specify where this source is and where to build the binaries.
+<li>Click <i>Configure</i>.
+<li>Specify where GLEW and GLUT headers and libraries are; specifically via the 
+<b>GLEW_INCLUDE_DIR</b>, <b>GLEW_glew_LIBRARY</b>, <b>GLUT_INCLUDE_DIR</b>, and <b>GLUT_glut_LIBRARY</b> variables.
+<li>Click <i>Generate</i>.
+<li>Open the generated <b>mesademos.sln</b> Visual Studio solution file and build the target <b>ALL</b>.
+</ul>
+
+<H3>MinGW cross-compilation</H3>
+
+<p>
+Create a <b>Toolchain.cmake</b> file containing:
+</p>
+<pre>
+# the name of the target operating system
+SET(CMAKE_SYSTEM_NAME Windows)
+
+# which compilers to use for C and C++
+SET(CMAKE_C_COMPILER i586-mingw32msvc-gcc)
+SET(CMAKE_CXX_COMPILER i586-mingw32msvc-g++)
+
+# here is the target environment located
+SET(CMAKE_FIND_ROOT_PATH /usr/i586-mingw32msvc)
+
+# adjust the default behaviour of the FIND_XXX() commands:
+# search headers and libraries in the target environment, search
+# programs in the host environment
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+</pre>
+
+<p>
+Create a <b>Cache.cmake</b> file containing:
+</p>
+<pre>
+set(GLEW_INCLUDE_DIR "/path/to/glew/include" CACHE PATH "" FORCE)
+set(GLEW_glew_LIBRARY "/path/to/glew/lib/libglew32.a" CACHE FILEPATH "" FORCE)
+
+set(GLUT_INCLUDE_DIR "/path/to/glut/include" CACHE PATH "" FORCE)
+set(GLUT_glut_LIBRARY "/path/to/glut/lib/libglut32.a" CACHE FILEPATH "" FORCE)
+</pre>
+
+<p>
+Then do:
+</p>
+<pre>
+cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/path/to/install -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_TOOLCHAIN_FILE=/path/to/Toolchain.cmake -C /path/to/Cache.cmake
+make
+make install
+</pre>
+
+<p>
+Read <a href="http://www.vtk.org/Wiki/CmakeMingw">this</a> for more information about CMake and MinGW cross compilation.
+</p>
+
 <H2>SCons</H2>
 
 <p>
-Just run <b>cons</b> to build with SCons.
+Just run <b>scons</b> to build with SCons.
 </p>
 <p>
 XXX more info?

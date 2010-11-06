@@ -77,7 +77,9 @@ foreach (target ${targets})
 	add_executable (${target} ${target}.c)
 endforeach (target)
 
-install (TARGETS ${targets} DESTINATION demos)
+add_executable (rain rain.cxx particles.cxx)
+
+install (TARGETS ${targets} rain DESTINATION demos)
 
 file (GLOB data *.dat)
 

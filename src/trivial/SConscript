@@ -7,7 +7,7 @@ progs = [
 	'clear-scissor',
 	'clear-undefined',
 	'clear-repeat',
-	'clear',
+	'clear-color',
 	'dlist-dangling',
 	'dlist-edgeflag-dangling',
 	'dlist-edgeflag',

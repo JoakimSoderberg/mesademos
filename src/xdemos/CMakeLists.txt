@@ -19,6 +19,8 @@ link_libraries (
 
 add_library (pbutil pbutil.c)
 
+set (subdir xdemos)
+
 set (targets
 	glsync
 	glthreads
@@ -54,16 +56,18 @@ set (targets
 )
 
 foreach (target ${targets})
-	add_executable (${target} ${target}.c)
+	add_executable (${subdir}_${target} ${target}.c)
+	set_target_properties (${subdir}_${target} PROPERTIES OUTPUT_NAME ${target})
+	install (TARGETS ${subdir}_${target} DESTINATION ${subdir})
 endforeach (target)
 
-target_link_libraries (glthreads pthread)
-target_link_libraries (glxgears_fbconfig pbutil)
-target_link_libraries (pbdemo pbutil)
-target_link_libraries (pbinfo pbutil)
-target_link_libraries (sharedtex_mt pthread)
+target_link_libraries (${subdir}_glthreads pthread)
+target_link_libraries (${subdir}_glxgears_fbconfig pbutil)
+target_link_libraries (${subdir}_pbdemo pbutil)
+target_link_libraries (${subdir}_pbinfo pbutil)
+target_link_libraries (${subdir}_sharedtex_mt pthread)
 
 add_executable (corender corender.c ipc.c) 
 add_executable (xrotfontdemo xrotfontdemo.c xuserotfont.c)
 
-install (TARGETS ${targets} corender xrotfontdemo DESTINATION xdemos)
+install (TARGETS corender xrotfontdemo DESTINATION demos)

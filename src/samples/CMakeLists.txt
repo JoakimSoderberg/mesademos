@@ -17,6 +17,8 @@ link_libraries (
 	${GLEW_glew_LIBRARY}
 )
 
+set (subdir samples)
+
 set (targets
 	accum
 	bitmap1
@@ -50,10 +52,10 @@ set (targets
 )
 
 foreach (target ${targets})
-	add_executable (${target} ${target}.c)
+	add_executable (${subdir}_${target} ${target}.c)
+	set_target_properties (${subdir}_${target} PROPERTIES OUTPUT_NAME ${target})
+	install (TARGETS ${subdir}_${target} DESTINATION ${subdir})
 endforeach (target)
-
-install (TARGETS ${targets} DESTINATION samples)
 
 if (X11_FOUND)
 	include_directories (
@@ -72,5 +74,5 @@ if (X11_FOUND)
 		add_executable (${xtarget} ${xtarget}.c)
 	endforeach (xtarget)
 
-	install (TARGETS ${xtargets} DESTINATION tests)
+	install (TARGETS ${xtargets} DESTINATION ${subdir})
 endif (X11_FOUND)

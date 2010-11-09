@@ -17,6 +17,8 @@ link_libraries (
 	${GLEW_glew_LIBRARY}
 )
 
+set (subdir perf)
+
 set (targets
 	copytex
 	drawoverhead
@@ -31,7 +33,7 @@ set (targets
 )
 
 foreach (target ${targets})
-	add_executable (${target} ${target}.c common.c glmain.c)
+	add_executable (${subdir}_${target} ${target}.c common.c glmain.c)
+	set_target_properties (${subdir}_${target} PROPERTIES OUTPUT_NAME ${target})
+	install (TARGETS ${subdir}_${target} DESTINATION ${subdir})
 endforeach (target)
-
-install (TARGETS ${targets} DESTINATION perf)

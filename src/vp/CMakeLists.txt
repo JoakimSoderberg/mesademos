@@ -17,16 +17,18 @@ link_libraries (
 	${GLEW_glew_LIBRARY}
 )
 
+set (subdir vp)
+
 set (targets
 	vp-tris
 )
 
 foreach (target ${targets})
-	add_executable (${target} ${target}.c)
+	add_executable (${subdir}_${target} ${target}.c)
+	set_target_properties (${subdir}_${target} PROPERTIES OUTPUT_NAME ${target})
+	install (TARGETS ${subdir}_${target} DESTINATION ${subdir})
 endforeach (target)
-
-install (TARGETS ${targets} DESTINATION vp)
 
 file (GLOB data *.txt)
 
-install (FILES ${data} DESTINATION vp)
+install (FILES ${data} DESTINATION ${subdir})

@@ -1,8 +1,5 @@
 cmake_minimum_required (VERSION 2.6)
 
-# Allow targets with duplicate names
-cmake_policy(SET CMP0002 OLD)
-
 project (mesademos)
 
 find_package (OpenGL REQUIRED)

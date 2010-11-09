@@ -17,16 +17,18 @@ link_libraries (
 	${GLEW_glew_LIBRARY}
 )
 
+set (subdir fpglsl)
+
 set (targets
 	fp-tri
 )
 
 foreach (target ${targets})
-	add_executable (${target} ${target}.c)
+	add_executable (${subdir}_${target} ${target}.c)
+	set_target_properties (${subdir}_${target} PROPERTIES OUTPUT_NAME ${target})
+	install (TARGETS ${subdir}_${target} DESTINATION ${subdir})
 endforeach (target)
-
-install (TARGETS ${targets} DESTINATION fpglsl)
 
 file (GLOB data *.glsl)
 
-install (FILES ${data} DESTINATION fpglsl)
+install (FILES ${data} DESTINATION ${subdir})

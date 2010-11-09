@@ -17,6 +17,8 @@ link_libraries (
 	${GLEW_glew_LIBRARY}
 )
 
+set (subdir demos)
+
 set (targets
 	arbfplight
 	arbfslight
@@ -74,12 +76,14 @@ set (targets
 )
 
 foreach (target ${targets})
-	add_executable (${target} ${target}.c)
+	add_executable (${subdir}_${target} ${target}.c)
+	set_target_properties (${subdir}_${target} PROPERTIES OUTPUT_NAME ${target})
+	install (TARGETS ${subdir}_${target} DESTINATION ${subdir})
 endforeach (target)
 
 add_executable (rain rain.cxx particles.cxx)
 
-install (TARGETS ${targets} rain DESTINATION demos)
+install (TARGETS rain DESTINATION demos)
 
 file (GLOB data *.dat)
 

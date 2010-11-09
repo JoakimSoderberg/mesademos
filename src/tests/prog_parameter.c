@@ -49,8 +49,6 @@ static PFNGLPROGRAMLOCALPARAMETER4FVARBPROC program_local_parameter4fv = NULL;
 static PFNGLGETPROGRAMLOCALPARAMETERFVARBPROC get_program_local_parameterfv = NULL;
 static PFNGLPROGRAMENVPARAMETER4FVARBPROC program_env_parameter4fv = NULL;
 static PFNGLGETPROGRAMENVPARAMETERFVARBPROC get_program_env_parameterfv = NULL;
-static PFNGLBINDPROGRAMARBPROC bind_program = NULL;
-static PFNGLGETPROGRAMIVARBPROC get_program = NULL;
 
 static PFNGLPROGRAMLOCALPARAMETERS4FVEXTPROC program_local_parameters4fv = NULL;
 static PFNGLPROGRAMENVPARAMETERS4FVEXTPROC program_env_parameters4fv = NULL;
@@ -198,26 +196,23 @@ static void Init( void )
    printf("GL_RENDERER = %s\n", (char *) glGetString(GL_RENDERER));
    printf("GL_VERSION = %s\n\n", ver_string);
 
-   if ( !glutExtensionSupported("GL_ARB_vertex_program") ) {
+   if ( !GLEW_ARB_vertex_program ) {
       printf("Sorry, this program requires GL_ARB_vertex_program\n");
       exit(2);
    }
 
 
-   program_local_parameter4fv = (PFNGLPROGRAMLOCALPARAMETER4FVARBPROC) glutGetProcAddress( "glProgramLocalParameter4fvARB" );
-   program_env_parameter4fv = (PFNGLPROGRAMENVPARAMETER4FVARBPROC) glutGetProcAddress( "glProgramEnvParameter4fvARB" );
+   program_local_parameter4fv = glProgramLocalParameter4fvARB;
+   program_env_parameter4fv = glProgramEnvParameter4fvARB;
 
-   get_program_local_parameterfv = (PFNGLGETPROGRAMLOCALPARAMETERFVARBPROC) glutGetProcAddress( "glGetProgramLocalParameterfvARB" );
-   get_program_env_parameterfv = (PFNGLGETPROGRAMENVPARAMETERFVARBPROC) glutGetProcAddress( "glGetProgramEnvParameterfvARB" );
+   get_program_local_parameterfv = glGetProgramLocalParameterfvARB;
+   get_program_env_parameterfv = glGetProgramEnvParameterfvARB;
 
-   bind_program = (PFNGLBINDPROGRAMARBPROC) glutGetProcAddress( "glBindProgramARB" );
-   get_program = (PFNGLGETPROGRAMIVARBPROC) glutGetProcAddress( "glGetProgramivARB" );
-
-   if ( glutExtensionSupported("GL_EXT_gpu_program_parameters") ) {
+   if ( GLEW_EXT_gpu_program_parameters ) {
       printf("GL_EXT_gpu_program_parameters available, testing that path.\n");
 
-      program_local_parameters4fv = (PFNGLPROGRAMLOCALPARAMETERS4FVEXTPROC) glutGetProcAddress( "glProgramLocalParameters4fvEXT" );
-      program_env_parameters4fv = (PFNGLPROGRAMENVPARAMETERS4FVEXTPROC) glutGetProcAddress( "glProgramEnvParameters4fvEXT" );
+      program_local_parameters4fv = glProgramLocalParameters4fvEXT;
+      program_env_parameters4fv = glProgramEnvParameters4fvEXT;
    }
    else {
       printf("GL_EXT_gpu_program_parameters not available.\n");
@@ -231,11 +226,11 @@ static void Init( void )
    /* Since the test sets program local parameters, a program must be bound.
     * Program source, however, is not needed.
     */
-   (*bind_program)(GL_VERTEX_PROGRAM_ARB, 1);
+   glBindProgramARB(GL_VERTEX_PROGRAM_ARB, 1);
 
 
-   (*get_program)(GL_VERTEX_PROGRAM_ARB, GL_MAX_PROGRAM_ENV_PARAMETERS_ARB,
-		  & max_program_env_parameters);
+   glGetProgramivARB(GL_VERTEX_PROGRAM_ARB, GL_MAX_PROGRAM_ENV_PARAMETERS_ARB,
+                     & max_program_env_parameters);
 
    params = malloc(max_program_env_parameters * 4 * sizeof(GLfloat));
 
@@ -249,8 +244,8 @@ static void Init( void )
 			       get_program_env_parameterfv);
 
 
-   (*get_program)(GL_VERTEX_PROGRAM_ARB, GL_MAX_PROGRAM_LOCAL_PARAMETERS_ARB,
-		  & max_program_local_parameters);
+   glGetProgramivARB(GL_VERTEX_PROGRAM_ARB, GL_MAX_PROGRAM_LOCAL_PARAMETERS_ARB,
+                     & max_program_local_parameters);
 
    if (max_program_local_parameters > max_program_env_parameters) {
       params = realloc(params,

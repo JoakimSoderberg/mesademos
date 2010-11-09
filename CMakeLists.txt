@@ -31,12 +31,15 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 		add_definitions (--include windows.h)
 	endif (MSVC)
 
+	# MSVC & MinGW only define & use APIENTRY
+	add_definitions (-DGLAPIENTRY=__stdcall)
+
 	link_libraries (winmm)
 endif (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 
 if (MSVC)
 	# Silence several MSVC pedantic warnings
-	add_definitions (-D_CRT_SECURE_NO_DEPRECATE -D_CRT_SECURE_NO_WARNINGS -DCRT_NONSTDC_NO_WARNINGS)
+	add_definitions (-D_CRT_SECURE_NO_DEPRECATE -D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_WARNINGS)
 	add_definitions (-D_SCL_SECURE_NO_DEPRECATE -D_SCL_SECURE_NO_WARNINGS)
 	add_definitions (-wd4244) # conversion' conversion from 'type1' to 'type2', possible loss of data
 endif (MSVC)

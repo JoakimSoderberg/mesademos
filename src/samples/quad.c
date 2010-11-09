@@ -28,11 +28,6 @@
 #include <GL/glut.h>
 
 
-#ifndef CALLBACK
-#define CALLBACK
-#endif
-
-
 #define PI 3.141592654
 #define	BLACK 0
 #define	GRAY 128
@@ -96,13 +91,11 @@ GLubyte brickImage[4*brickImageWidth*brickImageHeight] = {
 char *texFileName = 0;
 
 
-static void CALLBACK ErrorHandler(GLenum which)
+static void GLAPIENTRY ErrorHandler(GLenum which)
 {
 
     fprintf(stderr, "Quad Error: %s\n", (char *) gluErrorString(which));
 }
-
-typedef void (GLAPIENTRY *callback_t)();
 
 static void Init(void)
 {
@@ -165,7 +158,7 @@ static void Init(void)
     }
 
     quadObj = gluNewQuadric();
-    gluQuadricCallback(quadObj, GLU_ERROR, (callback_t) ErrorHandler);
+    gluQuadricCallback(quadObj, GLU_ERROR, ErrorHandler);
 
     radius1 = 10;
     radius2 = 5;

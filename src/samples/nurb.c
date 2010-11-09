@@ -29,11 +29,6 @@
 #include <GL/glut.h>
 
 
-#ifndef CALLBACK
-#define CALLBACK
-#endif
-
-
 #define INREAL float
 
 #define S_NUMPOINTS 13
@@ -207,7 +202,7 @@ Point ctlpoints[S_NUMPOINTS][T_NUMPOINTS] = {
 GLUnurbsObj *theNurbs;
 
 
-static void CALLBACK ErrorCallback(GLenum which)
+static void GLAPIENTRY ErrorCallback(GLenum which)
 {
 
     if (which != expectedError) {
@@ -216,13 +211,11 @@ static void CALLBACK ErrorCallback(GLenum which)
     }
 }
 
-typedef void (GLAPIENTRY *callback_t)();
-
 static void Init(void)
 {
 
     theNurbs = gluNewNurbsRenderer();
-    gluNurbsCallback(theNurbs, GLU_ERROR, (callback_t) ErrorCallback);
+    gluNurbsCallback(theNurbs, GLU_ERROR, ErrorCallback);
 
     gluNurbsProperty(theNurbs, GLU_SAMPLING_TOLERANCE, 15.0);
     gluNurbsProperty(theNurbs, GLU_DISPLAY_MODE, GLU_OUTLINE_PATCH);

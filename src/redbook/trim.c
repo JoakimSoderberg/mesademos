@@ -46,11 +46,6 @@
 #include <stdio.h>
 
 
-#ifndef CALLBACK
-#define CALLBACK
-#endif
-
-
 GLfloat ctlpoints[4][4][3];
 
 GLUnurbsObj *theNurb;
@@ -75,7 +70,7 @@ static void init_surface(void)
    }
 }
 
-static void nurbsError(GLenum errorCode)
+static void GLAPIENTRY nurbsError(GLenum errorCode)
 {
    const GLubyte *estring;
 
@@ -108,8 +103,7 @@ static void init(void)
    theNurb = gluNewNurbsRenderer();
    gluNurbsProperty(theNurb, GLU_SAMPLING_TOLERANCE, 25.0);
    gluNurbsProperty(theNurb, GLU_DISPLAY_MODE, GLU_FILL);
-   gluNurbsCallback(theNurb, GLU_ERROR, 
-                    (GLvoid (CALLBACK*) ()) nurbsError);
+   gluNurbsCallback(theNurb, GLU_ERROR, nurbsError);
 }
 
 static void display(void)

@@ -8,10 +8,6 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 
-#ifndef APIENTRY
-#define APIENTRY
-#endif
-
 static void assert_test(const char *file, int line, int cond, const char *msg)
 {
    if (!cond)
@@ -46,7 +42,7 @@ static void assert_error_test(const char *file, int line, GLenum expect)
 
 #define assert_error(err) assert_error_test(__FILE__, __LINE__, (err))
 
-static void check_status(GLuint id, GLenum pname, void (APIENTRY *query)(GLuint, GLenum, GLint *))
+static void check_status(GLuint id, GLenum pname, void (GLAPIENTRY *query)(GLuint, GLenum, GLint *))
 {
     GLint status;
 

@@ -48,11 +48,6 @@
 
 #ifdef GLU_VERSION_1_2
 
-/* Win32 calling conventions. */
-#ifndef CALLBACK
-#define CALLBACK
-#endif
-
 GLdouble currentWinding = GLU_TESS_WINDING_ODD;
 int currentShape = 0;
 GLUtesselator *tobj;
@@ -168,12 +163,12 @@ static void display (void) {
    glFlush();
 }
 
-static void CALLBACK beginCallback(GLenum which)
+static void GLAPIENTRY beginCallback(GLenum which)
 {
    glBegin(which);
 }
 
-static void CALLBACK errorCallback(GLenum errorCode)
+static void GLAPIENTRY errorCallback(GLenum errorCode)
 {
    const GLubyte *estring;
 
@@ -182,7 +177,7 @@ static void CALLBACK errorCallback(GLenum errorCode)
    exit(0);
 }
 
-static void CALLBACK endCallback(void)
+static void GLAPIENTRY endCallback(void)
 {
    glEnd();
 }
@@ -193,7 +188,7 @@ static void CALLBACK endCallback(void)
  *  coordinate data.
  */
 /* ARGSUSED */
-static void CALLBACK combineCallback(GLdouble coords[3], GLdouble *data[4],
+static void GLAPIENTRY combineCallback(GLdouble coords[3], GLdouble *data[4],
                      GLfloat weight[4], GLdouble **dataOut )
 {
    GLdouble *vertex;
@@ -211,16 +206,11 @@ static void init(void)
    glShadeModel(GL_FLAT);    
 
    tobj = gluNewTess();
-   gluTessCallback(tobj, GLU_TESS_VERTEX, 
-                   (GLvoid (CALLBACK*) ()) &glVertex3dv);
-   gluTessCallback(tobj, GLU_TESS_BEGIN, 
-                   (GLvoid (CALLBACK*) ()) &beginCallback);
-   gluTessCallback(tobj, GLU_TESS_END, 
-                   (GLvoid (CALLBACK*) ()) &endCallback);
-   gluTessCallback(tobj, GLU_TESS_ERROR, 
-                   (GLvoid (CALLBACK*) ()) &errorCallback);
-   gluTessCallback(tobj, GLU_TESS_COMBINE, 
-                   (GLvoid (CALLBACK*) ()) &combineCallback);
+   gluTessCallback(tobj, GLU_TESS_VERTEX, &glVertex3dv);
+   gluTessCallback(tobj, GLU_TESS_BEGIN, &beginCallback);
+   gluTessCallback(tobj, GLU_TESS_END, &endCallback);
+   gluTessCallback(tobj, GLU_TESS_ERROR, &errorCallback);
+   gluTessCallback(tobj, GLU_TESS_COMBINE, &combineCallback);
 
    list = glGenLists(4);
    makeNewLists();

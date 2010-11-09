@@ -13,14 +13,6 @@
 #define MAX_CONTOURS	32
 #define MAX_TRIANGLES	256
 
-#ifndef GLCALLBACK
-#ifdef CALLBACK
-#define GLCALLBACK CALLBACK
-#else
-#define GLCALLBACK
-#endif
-#endif
-
 #ifdef GLU_VERSION_1_2
 
 typedef enum{ QUIT, TESSELATE, CLEAR } menu_entries;
@@ -50,7 +42,7 @@ static struct {
 
 
 
-static void GLCALLBACK error_callback( GLenum err )
+static void GLAPIENTRY error_callback( GLenum err )
 {
    int		len, i;
    char const	*str;
@@ -66,14 +58,14 @@ static void GLCALLBACK error_callback( GLenum err )
    }
 }
 
-static void GLCALLBACK begin_callback( GLenum mode )
+static void GLAPIENTRY begin_callback( GLenum mode )
 {
    /* Allow multiple triangles to be output inside the begin/end pair. */
    triangle_cnt = 0;
    triangles[triangle_cnt].no = 0;
 }
 
-static void GLCALLBACK edge_callback( GLenum flag )
+static void GLAPIENTRY edge_callback( GLenum flag )
 {
    /* Persist the edge flag across triangles. */
    if ( flag == GL_TRUE ) {
@@ -87,7 +79,7 @@ static void GLCALLBACK edge_callback( GLenum flag )
    }
 }
 
-static void GLCALLBACK end_callback(void)
+static void GLAPIENTRY end_callback(void)
 {
    GLuint	i;
 
@@ -121,7 +113,7 @@ static void GLCALLBACK end_callback(void)
    glEnd();
 }
 
-static void GLCALLBACK vertex_callback( void *data )
+static void GLAPIENTRY vertex_callback( void *data )
 {
    GLsizei	no;
    GLfloat	*p;
@@ -143,9 +135,9 @@ static void GLCALLBACK vertex_callback( void *data )
    }
 }
 
-static void GLCALLBACK combine_callback( GLdouble coords[3],
-					 GLdouble *vertex_data[4],
-					 GLfloat weight[4], void **data )
+static void GLAPIENTRY combine_callback( GLdouble coords[3],
+				       GLdouble *vertex_data[4],
+				       GLfloat weight[4], void **data )
 {
    GLfloat	*vertex;
 
@@ -164,8 +156,6 @@ static void set_screen_wh( GLsizei w, GLsizei h )
    height = h;
 }
 
-typedef void (GLAPIENTRY *callback_t)(void);
-
 static void tesse( void )
 {
    GLUtesselator	*tobj;
@@ -178,11 +168,11 @@ static void tesse( void )
 
    if ( tobj != NULL ) {
       gluTessNormal( tobj, 0.0, 0.0, 1.0 );
-      gluTessCallback( tobj, GLU_TESS_BEGIN, (callback_t) glBegin );
-      gluTessCallback( tobj, GLU_TESS_VERTEX, (callback_t) glVertex2fv );
-      gluTessCallback( tobj, GLU_TESS_END, (callback_t) glEnd );
-      gluTessCallback( tobj, GLU_TESS_ERROR, (callback_t) error_callback );
-      gluTessCallback( tobj, GLU_TESS_COMBINE, (callback_t) combine_callback );
+      gluTessCallback( tobj, GLU_TESS_BEGIN, glBegin );
+      gluTessCallback( tobj, GLU_TESS_VERTEX, glVertex2fv );
+      gluTessCallback( tobj, GLU_TESS_END, glEnd );
+      gluTessCallback( tobj, GLU_TESS_ERROR, error_callback );
+      gluTessCallback( tobj, GLU_TESS_COMBINE, combine_callback );
 
       glNewList( list_start, GL_COMPILE );
       gluBeginPolygon( tobj );
@@ -202,10 +192,10 @@ static void tesse( void )
       gluEndPolygon( tobj );
       glEndList();
 
-      gluTessCallback( tobj, GLU_TESS_BEGIN, (callback_t) begin_callback );
-      gluTessCallback( tobj, GLU_TESS_VERTEX, (callback_t) vertex_callback );
-      gluTessCallback( tobj, GLU_TESS_END, (callback_t) end_callback );
-      gluTessCallback( tobj, GLU_TESS_EDGE_FLAG, (callback_t) edge_callback );
+      gluTessCallback( tobj, GLU_TESS_BEGIN, begin_callback );
+      gluTessCallback( tobj, GLU_TESS_VERTEX, vertex_callback );
+      gluTessCallback( tobj, GLU_TESS_END, end_callback );
+      gluTessCallback( tobj, GLU_TESS_EDGE_FLAG, edge_callback );
 
       glNewList( list_start + 1, GL_COMPILE );
       gluBeginPolygon( tobj );

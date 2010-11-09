@@ -38,6 +38,9 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 endif (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 
 if (MSVC)
+	# Enable math constants defines
+	add_definitions (-D_USE_MATH_DEFINES)
+
 	# Silence several MSVC pedantic warnings
 	add_definitions (-D_CRT_SECURE_NO_DEPRECATE -D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_WARNINGS)
 	add_definitions (-D_SCL_SECURE_NO_DEPRECATE -D_SCL_SECURE_NO_WARNINGS)

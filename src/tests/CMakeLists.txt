@@ -111,7 +111,6 @@ set (targets
 	texdown
 	texfilt
 	texgenmix
-	texleak
 	texline
 	texobj
 	texrect
@@ -131,6 +130,11 @@ set (targets
 	zdrawpix
 	zreaddraw
 )
+
+if (UNIX)
+	set (targets ${targets} texleak)
+endif (UNIX)
+
 
 foreach (target ${targets})
 	add_executable (${subdir}_${target} ${target}.c)

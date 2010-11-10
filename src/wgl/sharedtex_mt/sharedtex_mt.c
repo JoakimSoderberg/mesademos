@@ -100,7 +100,7 @@ WndProc(HWND hWnd,
       {
          CREATESTRUCT *pcs = (CREATESTRUCT *) lParam;
 
-         SetWindowLong(hWnd, GWL_USERDATA, (LONG) pcs->lpCreateParams);
+         SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR) pcs->lpCreateParams);
       }
       break;
    case WM_DESTROY:

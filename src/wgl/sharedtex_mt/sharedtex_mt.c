@@ -86,7 +86,7 @@ WndProc(HWND hWnd,
       break;
    case WM_SIZE:
       {
-         LONG index = GetWindowLong(hWnd, GWL_USERDATA);
+         LONG_PTR index = GetWindowLongPtr(hWnd, GWLP_USERDATA);
 
          if (index >= 0 && index < MAX_WINDOWS) {
             RECT r;

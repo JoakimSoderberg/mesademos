@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <GL/glew.h> /* for GL_RESCALE_NORMAL_EXT */
 #include <GL/glut.h>
 
 

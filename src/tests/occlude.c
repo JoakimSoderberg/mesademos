@@ -29,8 +29,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <GL/glew.h>
 #include <GL/glut.h>
-#include <GL/glext.h>
 
 
 static GLfloat Xpos = 0;

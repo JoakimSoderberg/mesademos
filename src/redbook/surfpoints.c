@@ -60,10 +60,6 @@
 
 #ifdef GLU_VERSION_1_3
 
-#ifndef CALLBACK
-#define CALLBACK
-#endif
-
 GLfloat ctlpoints[4][4][3];
 int showPoints = 0;
 
@@ -89,7 +85,7 @@ static void init_surface(void)
    }				
 }				
 
-static void CALLBACK nurbsError(GLenum errorCode)
+static void GLAPIENTRY nurbsError(GLenum errorCode)
 {
    const GLubyte *estring;
 
@@ -98,7 +94,7 @@ static void CALLBACK nurbsError(GLenum errorCode)
    exit (0);
 }
 
-static void CALLBACK beginCallback(GLenum whichType)
+static void GLAPIENTRY beginCallback(GLenum whichType)
 {
    glBegin (whichType);  /*  resubmit rendering directive  */
    printf ("glBegin(");
@@ -135,20 +131,20 @@ static void CALLBACK beginCallback(GLenum whichType)
    }
 }
 
-static void CALLBACK endCallback()
+static void GLAPIENTRY endCallback()
 {
    glEnd();  /*  resubmit rendering directive  */
    printf ("glEnd()\n");
 }
 
-static void CALLBACK vertexCallback(GLfloat *vertex)
+static void GLAPIENTRY vertexCallback(GLfloat *vertex)
 {
    glVertex3fv(vertex);  /*  resubmit rendering directive  */
    printf ("glVertex3f (%5.3f, %5.3f, %5.3f)\n", 
 	   vertex[0], vertex[1], vertex[2]);
 }
 
-static void CALLBACK normalCallback(GLfloat *normal)
+static void GLAPIENTRY normalCallback(GLfloat *normal)
 {
    glNormal3fv(normal);  /*  resubmit rendering directive  */
    printf ("glNormal3f (%5.3f, %5.3f, %5.3f)\n", 

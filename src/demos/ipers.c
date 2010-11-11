@@ -16,6 +16,7 @@
 #include <mmsystem.h>
 #endif
 
+#include <GL/glew.h> /* for GL_RESCALE_NORMAL_EXT */
 #include <GL/glut.h>
 
 #include "readtex.h"

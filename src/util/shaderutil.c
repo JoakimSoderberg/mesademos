@@ -41,7 +41,7 @@ PFNGLUNIFORM4FVPROC Uniform4fv = NULL;
 PFNGLGETACTIVEATTRIBPROC GetActiveAttrib = NULL;
 PFNGLGETATTRIBLOCATIONPROC GetAttribLocation = NULL;
 
-static void
+static void GLAPIENTRY
 fake_ValidateProgram(GLuint prog)
 {
    (void) prog;

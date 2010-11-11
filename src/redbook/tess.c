@@ -54,11 +54,6 @@
 
 #ifdef GLU_VERSION_1_2
 
-/* Win32 calling conventions. */
-#ifndef CALLBACK
-#define CALLBACK
-#endif
-
 GLuint startList;
 
 static void display (void) {
@@ -69,12 +64,12 @@ static void display (void) {
    glFlush();
 }
 
-static void CALLBACK beginCallback(GLenum which)
+static void GLAPIENTRY beginCallback(GLenum which)
 {
    glBegin(which);
 }
 
-static void CALLBACK errorCallback(GLenum errorCode)
+static void GLAPIENTRY errorCallback(GLenum errorCode)
 {
    const GLubyte *estring;
 
@@ -83,12 +78,12 @@ static void CALLBACK errorCallback(GLenum errorCode)
    exit(0);
 }
 
-static void CALLBACK endCallback(void)
+static void GLAPIENTRY endCallback(void)
 {
    glEnd();
 }
 
-static void CALLBACK vertexCallback(GLvoid *vertex)
+static void GLAPIENTRY vertexCallback(GLvoid *vertex)
 {
    const GLdouble *pointer;
 
@@ -102,7 +97,7 @@ static void CALLBACK vertexCallback(GLvoid *vertex)
  *  but weight[4] may be used to average color, normal, or texture
  *  coordinate data.  In this program, color is weighted.
  */
-static void CALLBACK combineCallback(GLdouble coords[3],
+static void GLAPIENTRY combineCallback(GLdouble coords[3],
                      GLdouble *vertex_data[4],
                      GLfloat weight[4], GLdouble **dataOut )
 {
@@ -143,14 +138,10 @@ static void init (void)
    startList = glGenLists(2);
 
    tobj = gluNewTess();
-   gluTessCallback(tobj, GLU_TESS_VERTEX,
-                   (GLvoid (CALLBACK*) ()) &glVertex3dv);
-   gluTessCallback(tobj, GLU_TESS_BEGIN,
-                   (GLvoid (CALLBACK*) ()) &beginCallback);
-   gluTessCallback(tobj, GLU_TESS_END,
-                   (GLvoid (CALLBACK*) ()) &endCallback);
-   gluTessCallback(tobj, GLU_TESS_ERROR,
-                   (GLvoid (CALLBACK*) ()) &errorCallback);
+   gluTessCallback(tobj, GLU_TESS_VERTEX, &glVertex3dv);
+   gluTessCallback(tobj, GLU_TESS_BEGIN, &beginCallback);
+   gluTessCallback(tobj, GLU_TESS_END, &endCallback);
+   gluTessCallback(tobj, GLU_TESS_ERROR, &errorCallback);
 
    /*  rectangle with triangular hole inside  */
    glNewList(startList, GL_COMPILE);
@@ -170,16 +161,11 @@ static void init (void)
    gluTessEndPolygon(tobj);
    glEndList();
 
-   gluTessCallback(tobj, GLU_TESS_VERTEX,
-                   (GLvoid (CALLBACK*) ()) &vertexCallback);
-   gluTessCallback(tobj, GLU_TESS_BEGIN,
-                   (GLvoid (CALLBACK*) ()) &beginCallback);
-   gluTessCallback(tobj, GLU_TESS_END,
-                   (GLvoid (CALLBACK*) ()) &endCallback);
-   gluTessCallback(tobj, GLU_TESS_ERROR,
-                   (GLvoid (CALLBACK*) ()) &errorCallback);
-   gluTessCallback(tobj, GLU_TESS_COMBINE,
-                   (GLvoid (CALLBACK*) ()) &combineCallback);
+   gluTessCallback(tobj, GLU_TESS_VERTEX, &vertexCallback);
+   gluTessCallback(tobj, GLU_TESS_BEGIN, &beginCallback);
+   gluTessCallback(tobj, GLU_TESS_END, &endCallback);
+   gluTessCallback(tobj, GLU_TESS_ERROR, &errorCallback);
+   gluTessCallback(tobj, GLU_TESS_COMBINE, &combineCallback);
 
    /*  smooth shaded, self-intersecting star  */
    glNewList(startList + 1, GL_COMPILE);

@@ -1,10 +1,27 @@
 Import('*')
 
-images = env.Glob('*.rgb') + env.Glob('*.rgba')
+progs = [
+    'fp-tri',
+    'tri-depth',
+    'tri-depth2',
+    'tri-depthwrite',
+    'tri-depthwrite2',
+    'tri-param',
+    'tri-tex',
+    'point-position',
+]
 
-for image in images:
+for prog in progs:
+    progs_env.Program(
+        target = prog,
+        source = [prog + '.c'],
+    )
+
+shaders = env.Glob('*.txt')
+
+for shader in shaders:
     env.Command(
-        target = image,
-        source = image.srcnode(),
+        target = shader,
+        source = shader.srcnode(),
         action = [Copy('$TARGET', '$SOURCE')],
     )

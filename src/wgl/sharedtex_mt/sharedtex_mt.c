@@ -86,7 +86,7 @@ WndProc(HWND hWnd,
       break;
    case WM_SIZE:
       {
-         LONG index = GetWindowLong(hWnd, GWL_USERDATA);
+         LONG_PTR index = GetWindowLongPtr(hWnd, GWLP_USERDATA);
 
          if (index >= 0 && index < MAX_WINDOWS) {
             RECT r;
@@ -100,7 +100,7 @@ WndProc(HWND hWnd,
       {
          CREATESTRUCT *pcs = (CREATESTRUCT *) lParam;
 
-         SetWindowLong(hWnd, GWL_USERDATA, (LONG) pcs->lpCreateParams);
+         SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR) pcs->lpCreateParams);
       }
       break;
    case WM_DESTROY:

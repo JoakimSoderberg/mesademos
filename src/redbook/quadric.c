@@ -47,14 +47,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* Win32 calling conventions. */
-#ifndef CALLBACK
-#define CALLBACK
-#endif
-
 GLuint startList;
 
-static void CALLBACK errorCallback(GLenum errorCode)
+static void GLAPIENTRY errorCallback(GLenum errorCode)
 {
    const GLubyte *estring;
 
@@ -90,8 +85,7 @@ static void init(void)
  */
    startList = glGenLists(4);
    qobj = gluNewQuadric();
-   gluQuadricCallback(qobj, GLU_ERROR, 
-                      (GLvoid (CALLBACK*) ()) errorCallback);
+   gluQuadricCallback(qobj, GLU_ERROR, errorCallback);
 
    gluQuadricDrawStyle(qobj, GLU_FILL); /* smooth shaded */
    gluQuadricNormals(qobj, GLU_SMOOTH);

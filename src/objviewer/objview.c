@@ -16,6 +16,7 @@
 #include "readtex.h"
 #include "skybox.h"
 #include "trackball.h"
+#include "shaderutil.h"
 
 
 static char *Model_file = NULL;		/* name of the obect file */

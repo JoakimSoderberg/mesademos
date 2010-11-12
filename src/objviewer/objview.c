@@ -455,6 +455,10 @@ DoFeatureChecks(void)
          exit(1);
       }
    }
+   if (!ShadersSupported()) {
+      printf("Sorry, GLSL is required\n");
+      exit(1);
+   }
 }
 
 

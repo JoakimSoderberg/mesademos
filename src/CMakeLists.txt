@@ -6,6 +6,7 @@ add_subdirectory (trivial)
 add_subdirectory (redbook)
 add_subdirectory (samples)
 add_subdirectory (perf)
+add_subdirectory (objviewer)
 
 add_subdirectory (fp)
 add_subdirectory (fpglsl)

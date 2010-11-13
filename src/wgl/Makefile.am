@@ -24,6 +24,6 @@
 
 EXTRA_DIST = \
 	wglinfo.c \
-	wglthreads/wglthreads.c \
-	sharedtex_mt/sharedtex_mt.c
+	wglthreads.c \
+	sharedtex_mt.c
 

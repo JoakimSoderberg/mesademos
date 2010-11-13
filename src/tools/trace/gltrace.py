@@ -33,7 +33,8 @@ def create_argument_string(parameters):
 
 	list = []
 	for p in parameters:
-		list.append( p.name )
+		if not p.is_padding:
+			list.append( p.name )
 	#if len(list) == 0: list = ["void"]
 
 	return string.join(list, ", ")
@@ -45,10 +46,11 @@ def create_logfunc_string(func, name):
 	list.append('"gl' + name + '("')
 	sep = None
 	for p in func.parameters:
-		if (sep):
-			list.append(sep)
-		list.append( p.name )
-		sep = '", "'
+		if not p.is_padding:
+			if (sep):
+				list.append(sep)
+			list.append( p.name )
+			sep = '", "'
 	list.append('");"')
 	#if len(list) == 0: list = ["void"]
 

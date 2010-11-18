@@ -308,6 +308,9 @@ create3Dtexture(void)
    glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA,
 		tex_width, tex_height, tex_depth,
 		0, GL_RGBA, GL_UNSIGNED_BYTE, voxels);
+   if (glGetError() == GL_OUT_OF_MEMORY)
+      printf("stex3d: Out of memory allocating %d x %d x %d RGBA texture",
+             tex_width, tex_height, tex_depth);
 
    free(voxels);
 
@@ -578,6 +581,9 @@ create3Dgradient(void)
    glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA,
 		tex_width, tex_height, tex_depth,
 		0, GL_RGBA, GL_UNSIGNED_BYTE, voxels);
+   if (glGetError() == GL_OUT_OF_MEMORY)
+      printf("stex3d: Out of memory allocating %d x %d x %d RGBA texture",
+             tex_width, tex_height, tex_depth);
 
    free(voxels);
 }

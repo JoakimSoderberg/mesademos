@@ -14,4 +14,4 @@ set_target_properties (wgl_sharedtex_mt PROPERTIES OUTPUT_NAME sharedtex_mt)
 
 add_executable (wglinfo wglinfo.c)
 
-install (TARGETS wglthreads wgl_sharedtex_mt wglthreads DESTINATION wgl)
+install (TARGETS wglthreads wgl_sharedtex_mt wglinfo DESTINATION wgl)

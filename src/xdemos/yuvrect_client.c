@@ -101,7 +101,7 @@ static void Init( int argc, char *argv[] , Display *dpy, int screen, Window win)
 {
    GLuint texObj = 100;
    const char *file;
-   void *glx_memory;
+   void *glx_memory = NULL;
 
    if (!query_extension("GL_NV_texture_rectangle")) {
       printf("Sorry, GL_NV_texture_rectangle is required\n");
@@ -140,13 +140,15 @@ static void Init( int argc, char *argv[] , Display *dpy, int screen, Window win)
       exit(0);
    }
    
+#ifdef GLX_MESA_allocate_memory
    glx_memory = glXAllocateMemoryMESA(dpy, screen, ImgWidth * ImgHeight * 2, 0, 0 ,0);
+#endif
    if (!glx_memory)
    {
      fprintf(stderr,"Failed to allocate MESA memory\n");
      exit(-1);
    }
-   
+
    memcpy(glx_memory, ImageYUV, ImgWidth * ImgHeight * 2);
    
    printf("Image: %dx%d\n", ImgWidth, ImgHeight);
@@ -317,7 +319,9 @@ main(int argc, char *argv[])
    glXSwapBuffers(dpy, win);
    event_loop(dpy, win);
 
+#ifdef GLX_MESA_allocate_memory
    glXFreeMemoryMESA(dpy, DefaultScreen(dpy), glx_memory);
+#endif
    glXDestroyContext(dpy, ctx);
    XDestroyWindow(dpy, win);
    XCloseDisplay(dpy);

@@ -69,14 +69,14 @@ make_x_window(Display *x_dpy, EGLDisplay egl_dpy,
 
    assert(config);
 
-   if (!eglGetConfigAttrib(egl_dpy, config, EGL_NATIVE_VISUAL_ID, &vid)) {
+   if (!eglGetConfigAttrib(egl_dpy, config, EGL_BUFFER_SIZE, &vid)) {
       printf("Error: eglGetConfigAttrib() failed\n");
       exit(1);
    }
 
    /* The X window visual must match the EGL config */
-   visTemplate.visualid = vid;
-   visInfo = XGetVisualInfo(x_dpy, VisualIDMask, &visTemplate, &num_visuals);
+   visTemplate.depth = vid;
+   visInfo = XGetVisualInfo(x_dpy, VisualDepthMask, &visTemplate, &num_visuals);
    if (!visInfo) {
       printf("Error: couldn't get X visual\n");
       exit(1);

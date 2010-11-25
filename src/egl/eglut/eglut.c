@@ -100,7 +100,7 @@ _eglutChooseConfig(void)
    config_attribs[i++] = EGL_BLUE_SIZE;
    config_attribs[i++] = 1;
    config_attribs[i++] = EGL_DEPTH_SIZE;
-   config_attribs[i++] = 1;
+   config_attribs[i++] = 0;
 
    config_attribs[i++] = EGL_SURFACE_TYPE;
    config_attribs[i++] = _eglut->surface_type;

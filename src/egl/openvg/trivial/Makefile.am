@@ -53,11 +53,13 @@ noinst_PROGRAMS = \
 	filter \
 	gradorigin \
 	image \
+	layer \
 	lineto \
 	lingrad \
 	lookup \
 	mask4 \
 	mask \
+	mask_render \
 	path3 \
 	radialgrad \
 	readpixels \
@@ -79,11 +81,13 @@ ellipse_LDADD = libcommon.la
 filter_LDADD = libcommon.la
 gradorigin_LDADD = libcommon.la
 image_LDADD = libcommon.la
+layer_LDADD = libcommon.la
 lineto_LDADD = libcommon.la
 lingrad_LDADD = libcommon.la
 lookup_LDADD = libcommon.la
 mask4_LDADD = libcommon.la
 mask_LDADD = libcommon.la
+mask_render_LDADD = libcommon.la
 path3_LDADD = libcommon.la
 radialgrad_LDADD = libcommon.la
 readpixels_LDADD = libcommon.la

@@ -52,6 +52,7 @@ noinst_PROGRAMS = \
 	ellipse \
 	filter \
 	gradorigin \
+	image \
 	lineto \
 	lingrad \
 	lookup \
@@ -77,6 +78,7 @@ dash_LDADD = libcommon.la
 ellipse_LDADD = libcommon.la
 filter_LDADD = libcommon.la
 gradorigin_LDADD = libcommon.la
+image_LDADD = libcommon.la
 lineto_LDADD = libcommon.la
 lingrad_LDADD = libcommon.la
 lookup_LDADD = libcommon.la

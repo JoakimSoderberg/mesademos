@@ -47,6 +47,7 @@ noinst_PROGRAMS = \
 	arc \
 	cap \
 	clear \
+	color_transform \
 	coord \
 	dash \
 	ellipse \
@@ -75,6 +76,7 @@ noinst_PROGRAMS = \
 arc_LDADD = libcommon.la
 cap_LDADD = libcommon.la
 clear_LDADD = libcommon.la
+color_transform_LDADD = libcommon.la
 coord_LDADD = libcommon.la
 dash_LDADD = libcommon.la
 ellipse_LDADD = libcommon.la

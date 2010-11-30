@@ -62,6 +62,7 @@ noinst_PROGRAMS = \
 	mask4 \
 	mask \
 	mask_render \
+	paint \
 	path3 \
 	radialgrad \
 	readpixels \
@@ -92,6 +93,7 @@ lookup_LDADD = libcommon.la
 mask4_LDADD = libcommon.la
 mask_LDADD = libcommon.la
 mask_render_LDADD = libcommon.la
+paint_LDADD = libcommon.la
 path3_LDADD = libcommon.la
 radialgrad_LDADD = libcommon.la
 readpixels_LDADD = libcommon.la

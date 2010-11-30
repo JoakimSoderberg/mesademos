@@ -155,6 +155,8 @@ fi
 DEMO_CFLAGS="$DEMO_CFLAGS $CWARNFLAGS"
 
 PKG_CHECK_MODULES(X11, [x11 xext], [x11_enabled=yes], [enable_x11=no])
+PKG_CHECK_MODULES(FREETYPE2, [freetype2],
+		  [freetype2_enabled=yes], [freetype2_enabled=no])
 
 mesa_source_enabled=no
 AC_ARG_WITH([mesa-source],
@@ -206,6 +208,7 @@ AM_CONDITIONAL(HAVE_GLESV2, test "x$glesv2_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_VG, test "x$vg_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_GLUT, test "x$glut_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_X11, test "x$x11_enabled" = "xyes")
+AM_CONDITIONAL(HAVE_FREETYPE2, test "x$freetype2_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_OSMESA, test "x$osmesa_enabled" = "xyes")
 AM_CONDITIONAL(BUILD_GLTRACE, false)
 AM_CONDITIONAL(HAVE_MESA_SOURCE, test "x$mesa_source_enabled" = "xyes")

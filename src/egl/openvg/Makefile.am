@@ -40,6 +40,11 @@ if HAVE_X11
 EGL_X11_DEMOS = \
 	lion_x11 \
 	sp_x11
+
+if HAVE_FREETYPE2
+EGL_X11_DEMOS += \
+	text
+endif
 endif
 
 if HAVE_EGL
@@ -62,6 +67,10 @@ sp_screen_LDADD = ../eglut/libeglut_screen.la
 
 lion_x11_LDADD = ../eglut/libeglut_x11.la
 sp_x11_LDADD = ../eglut/libeglut_x11.la
+
+text_SOURCES = text.c
+text_CFLAGS = $(AM_CFLAGS) @FREETYPE2_CFLAGS@
+text_LDADD = @FREETYPE2_LIBS@ ../eglut/libeglut_x11.la
 
 SUBDIRS = \
 	trivial

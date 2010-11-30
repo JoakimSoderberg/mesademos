@@ -88,7 +88,6 @@ noinst_PROGRAMS = \
 	fbotest2 \
 	fbotest3 \
 	fillrate \
-	fog \
 	fogcoord \
 	fptest1 \
 	fptexture \

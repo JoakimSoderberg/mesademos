@@ -61,7 +61,6 @@ set (targets
 	fbotest3
 	fillrate
 	floattex
-	fog
 	fogcoord
 	fptest1
 	fptexture

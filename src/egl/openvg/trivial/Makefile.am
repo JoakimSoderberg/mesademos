@@ -46,6 +46,7 @@ libcommon_la_SOURCES = \
 noinst_PROGRAMS = \
 	arc \
 	cap \
+	blend \
 	clear \
 	color_transform \
 	coord \
@@ -74,6 +75,7 @@ noinst_PROGRAMS = \
 #	vguarc
 
 arc_LDADD = libcommon.la
+blend_LDADD = libcommon.la
 cap_LDADD = libcommon.la
 clear_LDADD = libcommon.la
 color_transform_LDADD = libcommon.la

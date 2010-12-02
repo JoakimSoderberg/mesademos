@@ -34,6 +34,7 @@
  */
 
 #define GLX_GLXEXT_PROTOTYPES
+#define GL_GLEXT_PROTOTYPES
 
 #include <assert.h>
 #include <X11/Xlib.h>
@@ -292,6 +293,21 @@ print_shader_limits(GLenum target)
 }
 
 
+/** Is extension 'ext' supported? */
+static int
+extension_supported(const char *ext, const char *extensionsList)
+{
+   const char *p = strstr(extensionsList, ext);
+   if (p) {
+      /* check that next char is a space or end of string */
+      int extLen = strlen(ext);
+      if (p[extLen] == 0 || p[extLen] == ' ')
+         return 1;
+   }
+   return 0;
+}
+
+
 /**
  * Print interesting OpenGL implementation limits.
  */
@@ -302,89 +318,93 @@ print_limits(const char *extensions)
       GLuint count;
       GLenum token;
       const char *name;
+      const char *extension;
    };
    static const struct token_name limits[] = {
-      { 1, GL_MAX_ATTRIB_STACK_DEPTH, "GL_MAX_ATTRIB_STACK_DEPTH" },
-      { 1, GL_MAX_CLIENT_ATTRIB_STACK_DEPTH, "GL_MAX_CLIENT_ATTRIB_STACK_DEPTH" },
-      { 1, GL_MAX_CLIP_PLANES, "GL_MAX_CLIP_PLANES" },
-      { 1, GL_MAX_COLOR_MATRIX_STACK_DEPTH, "GL_MAX_COLOR_MATRIX_STACK_DEPTH" },
-      { 1, GL_MAX_ELEMENTS_VERTICES, "GL_MAX_ELEMENTS_VERTICES" },
-      { 1, GL_MAX_ELEMENTS_INDICES, "GL_MAX_ELEMENTS_INDICES" },
-      { 1, GL_MAX_EVAL_ORDER, "GL_MAX_EVAL_ORDER" },
-      { 1, GL_MAX_LIGHTS, "GL_MAX_LIGHTS" },
-      { 1, GL_MAX_LIST_NESTING, "GL_MAX_LIST_NESTING" },
-      { 1, GL_MAX_MODELVIEW_STACK_DEPTH, "GL_MAX_MODELVIEW_STACK_DEPTH" },
-      { 1, GL_MAX_NAME_STACK_DEPTH, "GL_MAX_NAME_STACK_DEPTH" },
-      { 1, GL_MAX_PIXEL_MAP_TABLE, "GL_MAX_PIXEL_MAP_TABLE" },
-      { 1, GL_MAX_PROJECTION_STACK_DEPTH, "GL_MAX_PROJECTION_STACK_DEPTH" },
-      { 1, GL_MAX_TEXTURE_STACK_DEPTH, "GL_MAX_TEXTURE_STACK_DEPTH" },
-      { 1, GL_MAX_TEXTURE_SIZE, "GL_MAX_TEXTURE_SIZE" },
-      { 1, GL_MAX_3D_TEXTURE_SIZE, "GL_MAX_3D_TEXTURE_SIZE" },
-      { 2, GL_MAX_VIEWPORT_DIMS, "GL_MAX_VIEWPORT_DIMS" },
-      { 2, GL_ALIASED_LINE_WIDTH_RANGE, "GL_ALIASED_LINE_WIDTH_RANGE" },
-      { 2, GL_SMOOTH_LINE_WIDTH_RANGE, "GL_SMOOTH_LINE_WIDTH_RANGE" },
-      { 2, GL_ALIASED_POINT_SIZE_RANGE, "GL_ALIASED_POINT_SIZE_RANGE" },
-      { 2, GL_SMOOTH_POINT_SIZE_RANGE, "GL_SMOOTH_POINT_SIZE_RANGE" },
+      { 1, GL_MAX_ATTRIB_STACK_DEPTH, "GL_MAX_ATTRIB_STACK_DEPTH", NULL },
+      { 1, GL_MAX_CLIENT_ATTRIB_STACK_DEPTH, "GL_MAX_CLIENT_ATTRIB_STACK_DEPTH", NULL },
+      { 1, GL_MAX_CLIP_PLANES, "GL_MAX_CLIP_PLANES", NULL },
+      { 1, GL_MAX_COLOR_MATRIX_STACK_DEPTH, "GL_MAX_COLOR_MATRIX_STACK_DEPTH", "GL_ARB_imaging" },
+      { 1, GL_MAX_ELEMENTS_VERTICES, "GL_MAX_ELEMENTS_VERTICES", NULL },
+      { 1, GL_MAX_ELEMENTS_INDICES, "GL_MAX_ELEMENTS_INDICES", NULL },
+      { 1, GL_MAX_EVAL_ORDER, "GL_MAX_EVAL_ORDER", NULL },
+      { 1, GL_MAX_LIGHTS, "GL_MAX_LIGHTS", NULL },
+      { 1, GL_MAX_LIST_NESTING, "GL_MAX_LIST_NESTING", NULL },
+      { 1, GL_MAX_MODELVIEW_STACK_DEPTH, "GL_MAX_MODELVIEW_STACK_DEPTH", NULL },
+      { 1, GL_MAX_NAME_STACK_DEPTH, "GL_MAX_NAME_STACK_DEPTH", NULL },
+      { 1, GL_MAX_PIXEL_MAP_TABLE, "GL_MAX_PIXEL_MAP_TABLE", NULL },
+      { 1, GL_MAX_PROJECTION_STACK_DEPTH, "GL_MAX_PROJECTION_STACK_DEPTH", NULL },
+      { 1, GL_MAX_TEXTURE_STACK_DEPTH, "GL_MAX_TEXTURE_STACK_DEPTH", NULL },
+      { 1, GL_MAX_TEXTURE_SIZE, "GL_MAX_TEXTURE_SIZE", NULL },
+      { 1, GL_MAX_3D_TEXTURE_SIZE, "GL_MAX_3D_TEXTURE_SIZE", NULL },
+      { 2, GL_MAX_VIEWPORT_DIMS, "GL_MAX_VIEWPORT_DIMS", NULL },
+      { 2, GL_ALIASED_LINE_WIDTH_RANGE, "GL_ALIASED_LINE_WIDTH_RANGE", NULL },
+      { 2, GL_SMOOTH_LINE_WIDTH_RANGE, "GL_SMOOTH_LINE_WIDTH_RANGE", NULL },
+      { 2, GL_ALIASED_POINT_SIZE_RANGE, "GL_ALIASED_POINT_SIZE_RANGE", NULL },
+      { 2, GL_SMOOTH_POINT_SIZE_RANGE, "GL_SMOOTH_POINT_SIZE_RANGE", NULL },
 #if defined(GL_ARB_texture_cube_map)
-      { 1, GL_MAX_CUBE_MAP_TEXTURE_SIZE_ARB, "GL_MAX_CUBE_MAP_TEXTURE_SIZE_ARB" },
+      { 1, GL_MAX_CUBE_MAP_TEXTURE_SIZE_ARB, "GL_MAX_CUBE_MAP_TEXTURE_SIZE_ARB", "GL_ARB_texture_cube_map" },
 #endif
-#if defined(GLX_NV_texture_rectangle)
-      { 1, GL_MAX_RECTANGLE_TEXTURE_SIZE_NV, "GL_MAX_RECTANGLE_TEXTURE_SIZE_NV" },
+#if defined(GL_NV_texture_rectangle)
+      { 1, GL_MAX_RECTANGLE_TEXTURE_SIZE_NV, "GL_MAX_RECTANGLE_TEXTURE_SIZE_NV", "GL_NV_texture_rectangle" },
 #endif
 #if defined(GL_ARB_texture_compression)
-      { 1, GL_NUM_COMPRESSED_TEXTURE_FORMATS_ARB, "GL_NUM_COMPRESSED_TEXTURE_FORMATS_ARB" },
+      { 1, GL_NUM_COMPRESSED_TEXTURE_FORMATS_ARB, "GL_NUM_COMPRESSED_TEXTURE_FORMATS_ARB", "GL_ARB_texture_compression" },
 #endif
 #if defined(GL_ARB_multitexture)
-      { 1, GL_MAX_TEXTURE_UNITS_ARB, "GL_MAX_TEXTURE_UNITS_ARB" },
+      { 1, GL_MAX_TEXTURE_UNITS_ARB, "GL_MAX_TEXTURE_UNITS_ARB", "GL_ARB_multitexture" },
 #endif
 #if defined(GL_EXT_texture_lod_bias)
-      { 1, GL_MAX_TEXTURE_LOD_BIAS_EXT, "GL_MAX_TEXTURE_LOD_BIAS_EXT" },
+      { 1, GL_MAX_TEXTURE_LOD_BIAS_EXT, "GL_MAX_TEXTURE_LOD_BIAS_EXT", "GL_EXT_texture_lod_bias" },
 #endif
 #if defined(GL_EXT_texture_filter_anisotropic)
-      { 1, GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, "GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT" },
+      { 1, GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, "GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT", "GL_EXT_texture_filter_anisotropic" },
 #endif
 #if defined(GL_ARB_draw_buffers)
-      { 1, GL_MAX_DRAW_BUFFERS_ARB, "GL_MAX_DRAW_BUFFERS_ARB" },
+      { 1, GL_MAX_DRAW_BUFFERS_ARB, "GL_MAX_DRAW_BUFFERS_ARB", "GL_ARB_draw_buffers" },
 #endif
-      { 0, (GLenum) 0, NULL }
+      { 0, (GLenum) 0, NULL, NULL }
    };
    GLint i, max[2];
 
    printf("OpenGL limits:\n");
    for (i = 0; limits[i].count; i++) {
-      glGetIntegerv(limits[i].token, max);
-      if (glGetError() == GL_NO_ERROR) {
-         if (limits[i].count == 1)
-            printf("    %s = %d\n", limits[i].name, max[0]);
-         else /* XXX fix if we ever query something with more than 2 values */
-            printf("    %s = %d, %d\n", limits[i].name, max[0], max[1]);
+      if (!limits[i].extension ||
+          extension_supported(limits[i].extension, extensions)) {
+         glGetIntegerv(limits[i].token, max);
+         if (glGetError() == GL_NO_ERROR) {
+            if (limits[i].count == 1)
+               printf("    %s = %d\n", limits[i].name, max[0]);
+            else /* XXX fix if we ever query something with more than 2 values */
+               printf("    %s = %d, %d\n", limits[i].name, max[0], max[1]);
+         }
       }
    }
 
    /* these don't fit into the above mechanism, unfortunately */
-   glGetConvolutionParameteriv(GL_CONVOLUTION_2D, GL_MAX_CONVOLUTION_WIDTH, max);
-   glGetConvolutionParameteriv(GL_CONVOLUTION_2D, GL_MAX_CONVOLUTION_HEIGHT, max+1);
-   if (glGetError() == GL_NONE) {
+   if (extension_supported("GL_ARB_imaging", extensions)) {
+      glGetConvolutionParameteriv(GL_CONVOLUTION_2D, GL_MAX_CONVOLUTION_WIDTH, max);
+      glGetConvolutionParameteriv(GL_CONVOLUTION_2D, GL_MAX_CONVOLUTION_HEIGHT, max+1);
       printf("    GL_MAX_CONVOLUTION_WIDTH/HEIGHT = %d, %d\n", max[0], max[1]);
    }
 
 #if defined(GL_ARB_vertex_program)
-   if (strstr(extensions, "GL_ARB_vertex_program")) {
+   if (extension_supported("GL_ARB_vertex_program", extensions)) {
       print_program_limits(GL_VERTEX_PROGRAM_ARB);
    }
 #endif
 #if defined(GL_ARB_fragment_program)
-   if (strstr(extensions, "GL_ARB_fragment_program")) {
+   if (extension_supported("GL_ARB_fragment_program", extensions)) {
       print_program_limits(GL_FRAGMENT_PROGRAM_ARB);
    }
 #endif
 #if defined(GL_ARB_vertex_shader)
-   if (strstr(extensions, "GL_ARB_vertex_shader")) {
+   if (extension_supported("GL_ARB_vertex_shader", extensions)) {
       print_shader_limits(GL_VERTEX_SHADER_ARB);
    }
 #endif
 #if defined(GL_ARB_fragment_shader)
-   if (strstr(extensions, "GL_ARB_fragment_shader")) {
+   if (extension_supported("GL_ARB_fragment_shader", extensions)) {
       print_shader_limits(GL_FRAGMENT_SHADER_ARB);
    }
 #endif

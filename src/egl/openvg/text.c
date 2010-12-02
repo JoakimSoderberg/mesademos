@@ -360,7 +360,6 @@ display(void)
 {
    vgClear(0, 0, width, height);
    glyph_string_draw(10.0, 10.0);
-   eglutPostRedisplay();
 }
 
 

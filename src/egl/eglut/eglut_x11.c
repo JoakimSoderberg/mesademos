@@ -183,11 +183,18 @@ next_event(struct eglut_window *win)
    XEvent event;
 
    if (!XPending(_eglut->native_dpy)) {
-      if (_eglut->idle_cb)
+      /* there is an idle callback */
+      if (_eglut->idle_cb) {
          _eglut->idle_cb();
-      return;
+         return;
+      }
+
+      /* the app requests re-display */
+      if (_eglut->redisplay)
+         return;
    }
 
+   /* block for next event */
    XNextEvent(_eglut->native_dpy, &event);
 
    switch (event.type) {

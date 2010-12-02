@@ -57,13 +57,13 @@ _eglutNativeInitWindow(struct eglut_window *win, const char *title,
    EGLint vid;
 
    if (!eglGetConfigAttrib(_eglut->dpy,
-            win->config, EGL_BUFFER_SIZE, &vid))
+            win->config, EGL_NATIVE_VISUAL_ID, &vid))
       _eglutFatal("failed to get visual id");
 
    /* The X window visual must match the EGL config */
-   visTemplate.depth = vid;
+   visTemplate.visualid = vid;
    visInfo = XGetVisualInfo(_eglut->native_dpy,
-         VisualDepthMask, &visTemplate, &num_visuals);
+         VisualIDMask, &visTemplate, &num_visuals);
    if (!visInfo)
       _eglutFatal("failed to get an visual of id 0x%x", vid);
 

@@ -217,6 +217,18 @@ test_blend(VGint x, VGint y, VGint width, VGint height, VGboolean check)
    }
    x += width + 5;
 
+   vgSeti(VG_BLEND_MODE, VG_BLEND_ADDITIVE);
+   rectangle(x, y, width, height);
+   if (check) {
+      for (i = 0; i < 4; i++) {
+         out[i] = src[i] + dst[i];
+         if (out[i] > 1.0f)
+            out[i] = 1.0f;
+      }
+      CHECK("VG_BLEND_ADDITIVE");
+   }
+   x += width + 5;
+
    if (check)
       printf("done\n");
 }

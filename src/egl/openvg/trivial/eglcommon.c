@@ -18,7 +18,13 @@ static draw_func    draw = 0;
 static reshape_func reshape = 0;
 static key_func     keyPress = 0;
 static VGint width = 300, height = 300;
+static EGLint alpha_size = 0;
 
+
+void set_window_alpha_size(int size)
+{
+   alpha_size = size;
+}
 
 void set_window_size(int w, int h)
 {
@@ -38,10 +44,11 @@ make_x_window(Display *x_dpy, EGLDisplay egl_dpy,
               EGLContext *ctxRet,
               EGLSurface *surfRet)
 {
-   static const EGLint attribs[] = {
+   EGLint attribs[] = {
       EGL_RED_SIZE, 1,
       EGL_GREEN_SIZE, 1,
       EGL_BLUE_SIZE, 1,
+      EGL_ALPHA_SIZE, alpha_size,
       EGL_RENDERABLE_TYPE, EGL_OPENVG_BIT,
       EGL_NONE
    };

@@ -145,6 +145,7 @@ draw(void)
 int main(int argc, char **argv)
 {
    set_window_size(300, 300);
+   set_window_alpha_size(1);
    return run(argc, argv, init, reshape,
               draw, 0);
 }

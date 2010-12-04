@@ -7,6 +7,7 @@ typedef void (*draw_func)();
 typedef int  (*key_func)(unsigned key);
 
 
+void set_window_alpha_size(int size);
 void set_window_size(int width, int height);
 int window_width(void);
 int window_height(void);

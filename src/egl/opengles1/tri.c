@@ -25,7 +25,7 @@
  * 5 June 2008
  */
 
-#define USE_FIXED_POINT 0
+#define USE_FIXED_POINT 1
 
 
 #include <assert.h>

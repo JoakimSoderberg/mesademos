@@ -49,19 +49,29 @@ draw(void)
    fn_Clear(GL_COLOR_BUFFER_BIT);
 }
 
+static void *
+get_proc(const char *name)
+{
+   void *proc;
+
+   proc = (void *) eglGetProcAddress(name);
+   if (!proc) {
+      /*
+       * note that eglGetProcAddress is not required to support non-extension
+       * functions
+       */
+      printf("failed to find %s (not necessarily a bug)\n", name);
+      exit(1);
+   }
+
+   return proc;
+}
+
 static void
 init(void)
 {
-   fn_ClearColor = (type_ClearColor) eglGetProcAddress("glClearColor");
-   if (!fn_ClearColor) {
-      printf("failed to find glClearColor\n");
-      exit(1);
-   }
-   fn_Clear = (type_Clear) eglGetProcAddress("glClear");
-   if (!fn_Clear) {
-      printf("failed to find glClear\n");
-      exit(1);
-   }
+   fn_ClearColor = (type_ClearColor) get_proc("glClearColor");
+   fn_Clear = (type_Clear) get_proc("glClear");
 
    fn_ClearColor(1.0, 0.4, 0.4, 0.0);
 }

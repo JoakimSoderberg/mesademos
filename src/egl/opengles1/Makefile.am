@@ -66,6 +66,7 @@ render_tex_LDADD = $(X11_LIBS)
 texture_from_pixmap_LDADD = $(X11_LIBS)
 two_win_LDADD = $(X11_LIBS)
 
+# intentionally not link to GLESV1_LIBS
 clear_LDADD = ../eglut/libeglut_x11.la $(EGL_LIBS) $(X11_LIBS)
 clear_LDFLAGS =
 

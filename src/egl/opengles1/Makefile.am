@@ -40,6 +40,7 @@ if HAVE_EGL
 if HAVE_GLESV1
 noinst_PROGRAMS = \
 	bindtex \
+	clear \
 	drawtex_screen \
 	drawtex_x11 \
 	es1_info \
@@ -64,6 +65,9 @@ pbuffer_LDADD = $(X11_LIBS)
 render_tex_LDADD = $(X11_LIBS)
 texture_from_pixmap_LDADD = $(X11_LIBS)
 two_win_LDADD = $(X11_LIBS)
+
+clear_LDADD = ../eglut/libeglut_x11.la $(EGL_LIBS) $(X11_LIBS)
+clear_LDFLAGS =
 
 drawtex_screen_SOURCES = drawtex.c
 gears_screen_SOURCES = gears.c

@@ -88,6 +88,18 @@ Redisplay(void)
    glWindowPos2iARB(80, 20);
    PrintString("white   black   white   black");
 
+   {
+      GLfloat pix[4];
+      glReadPixels(120, 150, 1, 1, GL_RGBA, GL_FLOAT, pix);
+      printf("Pixel(120, 150): %f %f %f %f\n", pix[0], pix[1], pix[2], pix[3]);
+      glReadPixels(180, 150, 1, 1, GL_RGBA, GL_FLOAT, pix);
+      printf("Pixel(180, 150): %f %f %f %f\n", pix[0], pix[1], pix[2], pix[3]);
+      glReadPixels(220, 150, 1, 1, GL_RGBA, GL_FLOAT, pix);
+      printf("Pixel(220, 150): %f %f %f %f\n", pix[0], pix[1], pix[2], pix[3]);
+      glReadPixels(280, 150, 1, 1, GL_RGBA, GL_FLOAT, pix);
+      printf("Pixel(280, 150): %f %f %f %f\n", pix[0], pix[1], pix[2], pix[3]);
+   }
+
    glutSwapBuffers();
 }
 
@@ -258,7 +270,7 @@ Init(void)
 #endif
 
    version = (const char *) glGetString(GL_VERSION);
-   if (version[0] != '2' || version[1] != '.') {
+   if (version[0] * 10 + version[2] <= 20) {
       printf("This program requires OpenGL 2.x, found %s\n", version);
       exit(1);
    }

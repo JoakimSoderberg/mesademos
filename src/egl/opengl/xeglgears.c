@@ -786,19 +786,19 @@ main(int argc, char *argv[])
       }
       else if (strcmp(argv[i], "-pixmap") == 0) {
          surface_type = GEARS_PIXMAP;
-	 attribs[1] = EGL_PIXMAP_BIT;
+	 attribs[1] |= EGL_PIXMAP_BIT;
       }
       else if (strcmp(argv[i], "-pixmap-texture") == 0) {
          surface_type = GEARS_PIXMAP_TEXTURE;
-	 attribs[1] = EGL_PIXMAP_BIT;
+	 attribs[1] |= EGL_PIXMAP_BIT;
       }
       else if (strcmp(argv[i], "-pbuffer") == 0) {
          surface_type = GEARS_PBUFFER;
-	 attribs[1] = EGL_PBUFFER_BIT;
+	 attribs[1] |= EGL_PBUFFER_BIT;
       }
       else if (strcmp(argv[i], "-pbuffer-texture") == 0) {
          surface_type = GEARS_PBUFFER_TEXTURE;
-	 attribs[1] = EGL_PBUFFER_BIT;
+	 attribs[1] |= EGL_PBUFFER_BIT;
       }
       else if (strcmp(argv[i], "-renderbuffer") == 0) {
          surface_type = GEARS_RENDERBUFFER;

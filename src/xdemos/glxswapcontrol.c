@@ -707,6 +707,14 @@ make_extension_table( const char * string )
 
 	 string_tab[ idx ] = malloc( sizeof( char ) * (i + 1) );
 	 if ( string_tab[ idx ] == NULL ) {
+            unsigned j = 0;
+
+            for ( j = 0; j < idx; j++ ) {
+               free( string_tab[j] );
+            }
+
+            free( string_tab );
+
 	    return;
 	 }
 

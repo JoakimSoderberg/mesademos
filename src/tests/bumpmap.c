@@ -106,7 +106,7 @@ static void Key( unsigned char key, int x, int y )
 
 static void Init( void )
 {
-   const char * const ver_string = (const char * const)
+   const char * const ver_string = (const char *)
        glGetString( GL_VERSION );
    GLfloat temp[16][16][2];
    GLubyte *image = NULL;

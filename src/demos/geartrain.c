@@ -538,7 +538,6 @@ process (void)
 {
     GLfloat x, y, z, D, dist;
     GLint axle_index, i, j, g1, g2, k;
-    char error[80];
 
     for (i = 0; i < number_of_gears; i++)
     {
@@ -576,9 +575,7 @@ process (void)
 		    D = sqrt (pow (g[i].position[0] - g[j].position[0], 2) + pow (g[i].position[1] - g[j].position[1], 2) + pow (g[i].position[2] - g[j].position[2], 2));
 		    if (D < 1.1 * (g[i].radius - g[i].tooth_depth + g[j].radius - g[j].tooth_depth))
 		    {
-			printf (error, "Gear %s and %s are too close to each other.", g[i].name, g[j].name);
-
-                        /*MessageBox(NULL,error,windowName,MB_ICONEXCLAMATION|MB_OK);*/
+			printf ("Gear %s and %s are too close to each other.", g[i].name, g[j].name);
 			exit (1);
 		    }
 
@@ -602,8 +599,7 @@ process (void)
 			    axle_index = axle_find (g[j].axle_name);
 			    if ((a[axle_index].direction != 0) && (g[j].angular_velocity != g[i].angular_velocity * g[i].teeth / g[j].teeth * g[i].radius / g[j].radius))
 			    {
-				printf (error, "Error in tooth linkage of gears %s and %s.", g[i].name, g[j].name);
-                                /*MessageBox(NULL,error,windowName,MB_ICONEXCLAMATION|MB_OK);*/
+				printf ("Error in tooth linkage of gears %s and %s.", g[i].name, g[j].name);
 				exit (1);
 			    }
 
@@ -618,8 +614,7 @@ process (void)
 			    axle_index = axle_find (g[i].axle_name);
 			    if ((a[axle_index].direction != 0) && (g[i].angular_velocity != g[j].angular_velocity * g[j].teeth / g[i].teeth * g[j].radius / g[i].radius))
 			    {
-				printf (error, "Error in tooth linkage of gears %s and %s.", g[i].name, g[j].name);
-                                /*MessageBox(NULL,error,windowName,MB_ICONEXCLAMATION|MB_OK);*/
+				printf ("Error in tooth linkage of gears %s and %s.", g[i].name, g[j].name);
 				exit (1);
 			    }
 
@@ -640,8 +635,7 @@ process (void)
 			axle_index = axle_find (g[j].axle_name);
 			if ((a[axle_index].direction != 0) && (g[j].angular_velocity != g[i].angular_velocity * g[i].teeth / g[j].teeth * g[i].radius / g[j].radius))
 			{
-			    printf (error, "Error in tooth linkage of gears %s and %s.", g[i].name, g[j].name);
-                            /*MessageBox(NULL,error,windowName,MB_ICONEXCLAMATION|MB_OK);*/
+			    printf ("Error in tooth linkage of gears %s and %s.", g[i].name, g[j].name);
 			    exit (1);
 			}
 			g[j].motored = (a[axle_index].motored = 1);
@@ -656,8 +650,7 @@ process (void)
 			axle_index = axle_find (g[i].axle_name);
 			if ((a[axle_index].direction != 0) && (g[i].angular_velocity != g[j].angular_velocity * g[j].teeth / g[i].teeth * g[j].radius / g[i].radius))
 			{
-			    printf (error, "Error in tooth linkage of gears %s and %s.", g[i].name, g[j].name);
-                            /*MessageBox(NULL,error,windowName,MB_ICONEXCLAMATION|MB_OK);*/
+			    printf ("Error in tooth linkage of gears %s and %s.", g[i].name, g[j].name);
 			    exit (1);
 			}
 			g[i].motored = (a[axle_index].motored = 1);
@@ -687,8 +680,7 @@ process (void)
 	    D = sqrt (pow (g[g1].position[0] - g[g2].position[0], 2) + pow (g[g1].position[1] - g[g2].position[1], 2) + pow (g[g1].position[2] - g[g2].position[2], 2));
 	    if (!((g[g1].axis == g[g2].axis) && (!strcmp (g[g1].type, g[g2].type)) && (!strcmp (g[g1].type, "NORMAL"))))
 	    {
-		printf (error, "Belt %s invalid.", b[i].name);
-                /*MessageBox(NULL,error,windowName,MB_ICONEXCLAMATION|MB_OK);*/
+		printf ("Belt %s invalid.", b[i].name);
 		exit (1);
 	    }
 
@@ -698,8 +690,7 @@ process (void)
 	         if((g[g1].motored)&&(g[g2].motored))
 	         if(g[g2].angular_velocity!=(g[g1].angular_velocity*g[g1].radius/g[g2].radius))
 	         {
-	         printf(error,"Error in belt linkage of gears %s and %s".,g[g1].name,g[g2].name);
-	         MessageBox(NULL,error,windowName,MB_ICONEXCLAMATION|MB_OK);
+	         printf("Error in belt linkage of gears %s and %s".,g[g1].name,g[g2].name);
 	         exit(1);
 	         }
               */
@@ -718,8 +709,7 @@ process (void)
 
 		if (dist > (g[g1].width / 2 + g[g2].width / 2))
 		{
-		    printf (error, "Belt %s invalid.", b[i].name);
-                    /*MessageBox(NULL,error,windowName,MB_ICONEXCLAMATION|MB_OK);*/
+		    printf ("Belt %s invalid.", b[i].name);
 		    exit (1);
 		}
 
@@ -727,8 +717,7 @@ process (void)
 		{
 		    if (D < g[g1].radius + g[g2].radius)
 		    {
-			printf (error, "Gears %s and %s too close to be linked with belts", g[g1].name, g[g2].name);
-                        /*MessageBox(NULL,error,windowName,MB_ICONEXCLAMATION|MB_OK);*/
+			printf ("Gears %s and %s too close to be linked with belts", g[g1].name, g[g2].name);
 			exit (1);
 		    }
 

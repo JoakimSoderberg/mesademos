@@ -13,7 +13,6 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include "glm.h"
-#include "readtex.h"
 #include "skybox.h"
 #include "trackball.h"
 #include "shaderutil.h"

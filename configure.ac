@@ -81,17 +81,15 @@ AC_CHECK_LIB([glut],
 		[],
 		[glut_enabled=no])
 
-GLEW_CFLAGS=""
-GLEW_LIBS="-lGLEW"
 dnl Include a fallback path for GLEW for the moment while not all distros
 dnl have picked up the .pc file.
 PKG_CHECK_MODULES(GLEW, [glew], [], [
 		  AC_CHECK_HEADER([GL/glew.h],
-		  [],
-		  AC_MSG_ERROR([GLEW required]))
+				  [GLEW_CFLAGS=""],
+				  AC_MSG_ERROR([GLEW required]))
 		  AC_CHECK_LIB([GLEW],
 			       [glewInit],
-			       [],
+			       [GLEW_LIBS="-lGLEW"],
 			       AC_MSG_ERROR([GLEW required]))
 		  ])
 DEMO_CFLAGS="$DEMO_CFLAGS $GLEW_CFLAGS"

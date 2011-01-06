@@ -41,11 +41,11 @@ if HAVE_GLESV2
 noinst_PROGRAMS = \
 	es2_info \
 	es2gears \
-	tri
+	es2tri
 endif
 endif
 
 es2_info_LDADD = $(X11_LIBS)
-tri_LDADD = $(X11_LIBS)
+es2tri_LDADD = $(X11_LIBS)
 
 es2gears_LDADD = ../eglut/libeglut_x11.la

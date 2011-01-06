@@ -59,6 +59,7 @@ mipgen
 mipmap_comp
 mipmap_comp_tests
 mipmap_limits
+mipmap_tunnel
 mipmap_view
 multipal
 multitexarray

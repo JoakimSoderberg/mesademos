@@ -1,4 +1,5 @@
 clear
+clear-color
 clear-fbo
 clear-fbo-scissor
 clear-fbo-tex
@@ -34,6 +35,7 @@ line-userclip-clip
 line-userclip-nop
 line-userclip-nop-clip
 line-wide
+line-xor
 lineloop
 lineloop-clip
 lineloop-elts
@@ -96,6 +98,7 @@ tri-cull
 tri-cull-both
 tri-dlist
 tri-edgeflag
+tri-edgeflag-array
 tri-fbo
 tri-fbo-tex
 tri-fbo-tex-mip
@@ -119,6 +122,7 @@ tri-square
 tri-stencil
 tri-stipple
 tri-tex
+tri-tex-1d
 tri-tex-3d
 tri-tri
 tri-unfilled

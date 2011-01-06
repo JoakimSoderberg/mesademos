@@ -1,5 +1,5 @@
 /**************************************************************************
- * 
+ *
  * Copyright 2008 Tungsten Graphics, Inc., Cedar Park, Texas.
  * All Rights Reserved.
  *
@@ -416,7 +416,7 @@ usage(void)
    printf("  -display <displayname>  set the display to run on\n");
    printf("  -info                   display OpenGL renderer info\n");
 }
- 
+
 
 int
 main(int argc, char *argv[])

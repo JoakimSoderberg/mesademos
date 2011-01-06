@@ -29,7 +29,7 @@
 static void
 print_extension_list(const char *ext)
 {
-   const char *indentString = "    ";
+   const char indentString[] = "    ";
    const int indent = 4;
    const int max = 79;
    int width, i, j;

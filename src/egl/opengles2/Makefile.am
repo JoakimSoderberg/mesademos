@@ -22,9 +22,6 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-# These programs aren't intended to be included with the normal distro.
-# They're not too interesting but they're good for testing.
-
 AM_CFLAGS = \
 	$(GLESV2_CFLAGS) \
 	$(EGL_CFLAGS) \
@@ -38,7 +35,7 @@ AM_LDFLAGS = \
 
 if HAVE_EGL
 if HAVE_GLESV2
-noinst_PROGRAMS = \
+bin_PROGRAMS = \
 	es2_info \
 	es2gears \
 	es2tri

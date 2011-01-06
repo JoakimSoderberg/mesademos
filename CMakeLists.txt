@@ -6,6 +6,8 @@ find_package (OpenGL REQUIRED)
 find_package (GLUT REQUIRED)
 find_package (X11)
 
+find_library(EGL_egl_LIBRARY EGL /usr/lib)
+
 find_library (GLEW_glew_LIBRARY GLEW
 	/usr/lib
 )

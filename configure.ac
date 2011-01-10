@@ -117,6 +117,7 @@ PKG_CHECK_MODULES(GLESV1, [glesv1_cm], [glesv1_enabled=yes], [glesv1_enabled=no]
 PKG_CHECK_MODULES(GLESV2, [glesv2], [glesv2_enabled=yes], [glesv2_enabled=no])
 PKG_CHECK_MODULES(VG, [vg], [vg_enabled=yes], [vg_enabled=no])
 PKG_CHECK_MODULES(OSMESA, [osmesa], [osmesa_enabled=yes], [osmesa_enabled=no])
+PKG_CHECK_MODULES(DRM, [libdrm], [drm_enabled=yes], [drm_enabled=no])
 dnl The OSMesa .pc uses OSMesa32, while we want to build with other versions
 dnl too.
 OSMESA32_LIBS=$OSMESA_LIBS
@@ -210,6 +211,7 @@ AM_CONDITIONAL(HAVE_GLUT, test "x$glut_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_X11, test "x$x11_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_FREETYPE2, test "x$freetype2_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_OSMESA, test "x$osmesa_enabled" = "xyes")
+AM_CONDITIONAL(HAVE_DRM, test "x$drm_enabled" = "xyes")
 AM_CONDITIONAL(BUILD_GLTRACE, false)
 AM_CONDITIONAL(HAVE_MESA_SOURCE, test "x$mesa_source_enabled" = "xyes")
 

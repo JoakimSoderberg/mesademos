@@ -42,6 +42,11 @@ EGL_X11_DEMOS = \
 	xeglthreads
 endif
 
+if HAVE_DRM
+EGL_DRM_DEMOS = \
+	eglkms
+endif
+
 if HAVE_EGL
 noinst_PROGRAMS = \
 	demo1 \
@@ -51,6 +56,7 @@ noinst_PROGRAMS = \
 	eglgears_screen \
 	egltri_screen \
 	peglgears \
+	$(EGL_DRM_DEMOS) \
 	$(EGL_X11_DEMOS)
 endif
 
@@ -70,3 +76,7 @@ egltri_screen_LDADD = ../eglut/libeglut_screen.la
 
 eglgears_x11_LDADD = ../eglut/libeglut_x11.la
 egltri_x11_LDADD = ../eglut/libeglut_x11.la
+
+eglkms_SOURCES = eglkms.c
+eglkms_CFLAGS = $(DRM_CFLAGS)
+eglkms_LDADD = $(AM_LDFLAGS) $(DRM_LIBS)

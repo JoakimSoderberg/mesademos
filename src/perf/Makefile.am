@@ -50,7 +50,8 @@ bin_PROGRAMS = \
 	swapbuffers \
 	teximage \
 	vbo \
-	vertexrate
+	vertexrate \
+	glslstateschange
 endif
 
 copytex_LDADD = libperf.la
@@ -63,3 +64,4 @@ swapbuffers_LDADD = libperf.la
 teximage_LDADD = libperf.la
 vbo_LDADD = libperf.la
 vertexrate_LDADD = libperf.la
+glslstateschange_LDADD = libperf.la ../util/libutil.la

@@ -371,6 +371,7 @@ main(int argc, char *argv[])
 	EGLint numConfigs, i;
 	EGLBoolean b;
 	EGLDisplay d;
+	EGLint configAttribs[10];
 	EGLint screenAttribs[10];
 	GLboolean printInfo = GL_FALSE;
 	EGLint width = 300, height = 300;
@@ -398,7 +399,19 @@ main(int argc, char *argv[])
 	printf("peglgears: EGL version = %d.%d\n", major, minor);
 	printf("peglgears: EGL_VENDOR = %s\n", eglQueryString(d, EGL_VENDOR));
 
-	eglGetConfigs(d, configs, MAX_CONFIGS, &numConfigs);
+	i = 0;
+	configAttribs[i++] = EGL_RENDERABLE_TYPE;
+	configAttribs[i++] = EGL_OPENGL_BIT;
+	configAttribs[i++] = EGL_SURFACE_TYPE;
+	configAttribs[i++] = EGL_PBUFFER_BIT;
+	configAttribs[i++] = EGL_NONE;
+
+	numConfigs = 0;
+	if (!eglChooseConfig(d, configAttribs, configs, MAX_CONFIGS, &numConfigs) ||
+	    !numConfigs) {
+		printf("peglgears: failed to choose a config\n");
+		return 0;
+	}
 
 	eglBindAPI(EGL_OPENGL_API);
 

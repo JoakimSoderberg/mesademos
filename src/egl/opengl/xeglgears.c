@@ -47,6 +47,10 @@
 
 #include <EGL/eglext.h>
 
+#ifdef GL_OES_EGL_image
+static PFNGLEGLIMAGETARGETTEXTURE2DOESPROC glEGLImageTargetTexture2DOES_func;
+#endif
+
 
 #define BENCHMARK
 
@@ -395,6 +399,11 @@ egl_manager_new(EGLNativeDisplayType xdpy, const EGLint *attrib_list,
       free(eman);
       return NULL;
    }
+
+#ifdef GL_OES_EGL_image
+   glEGLImageTargetTexture2DOES_func = (PFNGLEGLIMAGETARGETTEXTURE2DOESPROC)
+      eglGetProcAddress("glEGLImageTargetTexture2DOES");
+#endif
 
    return eman;
 }
@@ -913,7 +922,11 @@ main(int argc, char *argv[])
    case GEARS_RENDERBUFFER:
 	   glGenTextures(1, &texture);
    	   glBindTexture(GL_TEXTURE_2D, texture);
-	   glEGLImageTargetTexture2DOES(GL_TEXTURE_2D, eman->image);
+#ifdef GL_OES_EGL_image
+	   glEGLImageTargetTexture2DOES_func(GL_TEXTURE_2D, eman->image);
+#else
+           fprintf(stderr, "GL_OES_EGL_image not found at compile time.\n");
+#endif
 	   break;
    case GEARS_PBUFFER_TEXTURE:
 	   glGenTextures(1, &texture);

@@ -14,6 +14,10 @@
 #include <unistd.h>
 #include <string.h>
 
+#ifdef GL_OES_EGL_image
+static PFNGLEGLIMAGETARGETRENDERBUFFERSTORAGEOESPROC glEGLImageTargetRenderbufferStorageOES_func;
+#endif
+
 struct kms {
    drmModeConnector *connector;
    drmModeEncoder *encoder;
@@ -179,6 +183,14 @@ int main(int argc, char *argv[])
 
    eglMakeCurrent(dpy, EGL_NO_SURFACE, EGL_NO_SURFACE, ctx);
 
+#ifdef GL_OES_EGL_image
+   glEGLImageTargetRenderbufferStorageOES_func =
+      (PFNGLEGLIMAGETARGETRENDERBUFFERSTORAGEOESPROC)
+      eglGetProcAddress("glEGLImageTargetRenderbufferStorageOES");
+#else
+   fprintf(stderr, "GL_OES_EGL_image not supported at compile time\n");
+#endif
+
    glGenFramebuffers(1, &fb);
    glBindFramebuffer(GL_FRAMEBUFFER_EXT, fb);
 
@@ -190,7 +202,11 @@ int main(int argc, char *argv[])
 
    glGenRenderbuffers(1, &color_rb);
    glBindRenderbuffer(GL_RENDERBUFFER_EXT, color_rb);
+#ifdef GL_OES_EGL_image
    glEGLImageTargetRenderbufferStorageOES(GL_RENDERBUFFER, image);
+#else
+   fprintf(stderr, "GL_OES_EGL_image was not found at compile time\n");
+#endif
    glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,
 				GL_COLOR_ATTACHMENT0_EXT,
 				GL_RENDERBUFFER_EXT,

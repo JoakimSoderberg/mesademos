@@ -110,7 +110,7 @@ struct visual_attribs
  * Print a list of extensions, with word-wrapping.
  */
 static void
-print_extension_list(const char *ext)
+print_extension_list(const char *ext, Bool singleLine)
 {
    const char *indentString = "    ";
    const int indent = 4;
@@ -127,7 +127,7 @@ print_extension_list(const char *ext)
       if (ext[j] == ' ' || ext[j] == 0) {
          /* found end of an extension name */
          const int len = j - i;
-         if (width + len > max) {
+         if ((!singleLine) && (width + len > max)) {
             /* start a new line */
             printf("\n");
             width = indent;
@@ -148,8 +148,15 @@ print_extension_list(const char *ext)
             j++;
             if (ext[j] == 0)
                break;
-            printf(", ");
-            width += 2;
+            if (singleLine) {
+               printf("\n");
+               width = indent;
+               printf("%s", indentString);
+            }
+            else {
+               printf(", ");
+               width += 2;
+            }
          }
       }
       j++;
@@ -412,7 +419,7 @@ print_limits(const char *extensions)
 
 
 static void
-print_screen_info(Display *dpy, int scrnum, Bool allowDirect, GLboolean limits)
+print_screen_info(Display *dpy, int scrnum, Bool allowDirect, GLboolean limits, Bool singleLine)
 {
    Window win;
    int attribSingle[] = {
@@ -555,14 +562,14 @@ print_screen_info(Display *dpy, int scrnum, Bool allowDirect, GLboolean limits)
       printf("server glx vendor string: %s\n", serverVendor);
       printf("server glx version string: %s\n", serverVersion);
       printf("server glx extensions:\n");
-      print_extension_list(serverExtensions);
+      print_extension_list(serverExtensions, singleLine);
       printf("client glx vendor string: %s\n", clientVendor);
       printf("client glx version string: %s\n", clientVersion);
       printf("client glx extensions:\n");
-      print_extension_list(clientExtensions);
+      print_extension_list(clientExtensions, singleLine);
       printf("GLX version: %u.%u\n", glxVersionMajor, glxVersionMinor);
       printf("GLX extensions:\n");
-      print_extension_list(glxExtensions);
+      print_extension_list(glxExtensions, singleLine);
       printf("OpenGL vendor string: %s\n", glVendor);
       printf("OpenGL renderer string: %s\n", glRenderer);
       printf("OpenGL version string: %s\n", glVersion);
@@ -574,7 +581,7 @@ print_screen_info(Display *dpy, int scrnum, Bool allowDirect, GLboolean limits)
 #endif
 
       printf("OpenGL extensions:\n");
-      print_extension_list(glExtensions);
+      print_extension_list(glExtensions, singleLine);
       if (limits)
          print_limits(glExtensions);
    }
@@ -1201,7 +1208,7 @@ find_best_visual(Display *dpy, int scrnum)
 static void
 usage(void)
 {
-   printf("Usage: glxinfo [-v] [-t] [-h] [-i] [-b] [-display <dname>]\n");
+   printf("Usage: glxinfo [-v] [-t] [-h] [-i] [-b] [-s] ][-display <dname>]\n");
    printf("\t-v: Print visuals info in verbose form.\n");
    printf("\t-t: Print verbose table.\n");
    printf("\t-display <dname>: Print GLX visuals on specified server.\n");
@@ -1209,6 +1216,7 @@ usage(void)
    printf("\t-i: Force an indirect rendering context.\n");
    printf("\t-b: Find the 'best' visual and print its number.\n");
    printf("\t-l: Print interesting OpenGL limits.\n");
+   printf("\t-s: Print a single extension per line.\n");
 }
 
 
@@ -1222,6 +1230,7 @@ main(int argc, char *argv[])
    GLboolean findBest = GL_FALSE;
    GLboolean limits = GL_FALSE;
    Bool allowDirect = True;
+   Bool singleLine = False;
    int i;
 
    for (i = 1; i < argc; i++) {
@@ -1248,6 +1257,9 @@ main(int argc, char *argv[])
          usage();
          return 0;
       }
+      else if(strcmp(argv[i], "-s") == 0) {
+         singleLine = True;
+      }
       else {
          printf("Unknown option `%s'\n", argv[i]);
          usage();
@@ -1272,7 +1284,7 @@ main(int argc, char *argv[])
       print_display_info(dpy);
       for (scrnum = 0; scrnum < numScreens; scrnum++) {
          mesa_hack(dpy, scrnum);
-         print_screen_info(dpy, scrnum, allowDirect, limits);
+         print_screen_info(dpy, scrnum, allowDirect, limits, singleLine);
          printf("\n");
          print_visual_info(dpy, scrnum, mode);
 #ifdef GLX_VERSION_1_3

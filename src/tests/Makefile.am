@@ -127,6 +127,7 @@ noinst_PROGRAMS = \
 	sharedtex \
 	stencilreaddraw \
 	stencilwrap \
+	step \
 	streaming_rect \
 	subtex \
 	subtexrate \

@@ -100,6 +100,7 @@ set (targets
 	shader_api
 	stencilreaddraw
 	stencilwrap
+	step
 	streaming_rect
 	subtex
 	subtexrate

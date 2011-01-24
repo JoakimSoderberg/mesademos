@@ -83,6 +83,7 @@ stencilreaddraw
 stencil_twoside
 stencilwrap
 stencil_wrap
+step
 streaming_rect
 subtex
 subtexrate

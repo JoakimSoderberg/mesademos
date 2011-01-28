@@ -40,7 +40,7 @@
 GLenum doubleBuffer;
 int W = 400, H = 400;
 
-char *imageFileName = "../images/reflect.rgb";
+char *imageFileName = DEMOS_DATA_DIR "reflect.rgb";
 
 float *minFilter, *magFilter, *sWrapMode, *tWrapMode;
 float decal[] = {GL_DECAL};

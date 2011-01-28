@@ -14,8 +14,8 @@
 #include <GL/glut.h>
 #include "readtex.h"
 
-#define FILE1 "../images/bw.rgb"
-#define FILE2 "../images/arch.rgb"
+#define FILE1 DEMOS_DATA_DIR "bw.rgb"
+#define FILE2 DEMOS_DATA_DIR "arch.rgb"
 
 
 static int Win;

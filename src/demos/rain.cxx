@@ -309,7 +309,8 @@ static void inittextures(void)
   glGenTextures(1,&groundid);
   glBindTexture(GL_TEXTURE_2D,groundid);
 
-  if(!(img=LoadRGBImage("../images/s128.rgb",&width,&height,&format))){
+  if(!(img=LoadRGBImage(DEMOS_DATA_DIR "s128.rgb",
+			&width,&height,&format))){
   	fprintf(stderr,"Error reading a texture.\n");
   	exit(-1);
   }

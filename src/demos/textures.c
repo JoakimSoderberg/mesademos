@@ -32,10 +32,10 @@ static float TexPos[MAX_TEXTURES][3];
 static float TexAspect[MAX_TEXTURES];
 
 static const char *DefaultFiles[] = {
-   "../images/arch.rgb",
-   "../images/reflect.rgb",
-   "../images/tree2.rgba",
-   "../images/tile.rgb"
+   DEMOS_DATA_DIR "arch.rgb",
+   DEMOS_DATA_DIR "reflect.rgb",
+   DEMOS_DATA_DIR "tree2.rgba",
+   DEMOS_DATA_DIR "tile.rgb"
 };
 
 

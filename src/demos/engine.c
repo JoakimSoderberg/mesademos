@@ -21,7 +21,7 @@
 
 #define DEG_TO_RAD(DEG)  ((DEG) * M_PI / 180.0)
 
-#define TEXTURE_FILE "../images/reflect.rgb"
+#define TEXTURE_FILE DEMOS_DATA_DIR "reflect.rgb"
 
 /* Target engine speed: */
 const int RPM = 100.0;

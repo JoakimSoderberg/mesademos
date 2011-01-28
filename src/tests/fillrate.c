@@ -13,8 +13,8 @@
 #include <GL/glut.h>
 #include "readtex.h"
 
-#define TEXTURE_1_FILE "../images/tile.rgb"
-#define TEXTURE_2_FILE "../images/reflect.rgb"
+#define TEXTURE_1_FILE DEMOS_DATA_DIR "tile.rgb"
+#define TEXTURE_2_FILE DEMOS_DATA_DIR "reflect.rgb"
 
 static int Win;
 static int Width = 1010, Height = 1010;

@@ -9,7 +9,7 @@
 #include <GL/glut.h>
 #include "readtex.c"
 
-#define IMAGE_FILE "../images/arch.rgb"
+#define IMAGE_FILE DEMOS_DATA_DIR "arch.rgb"
 
 static int ImgWidth, ImgHeight;
 static GLenum ImgFormat;

@@ -1003,7 +1003,7 @@ main (int argc, char *argv[])
       exit (1);
 
     if (argc < 2)
-       file = "geartrain.dat";
+       file = DEMOS_DATA_DIR "geartrain.dat";
     else
        file = argv[1];
 

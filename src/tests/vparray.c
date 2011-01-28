@@ -208,7 +208,7 @@ static void init(void)
    glEnable( GL_DEPTH_TEST );
    glEnable(GL_NORMALIZE);
    InitMaterials();
-   read_surface( "../demos/isosurf.dat" );
+   read_surface(DEMOS_DATA_DIR "isosurf.dat");
    init_program();
 }
 

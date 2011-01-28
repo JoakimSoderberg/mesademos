@@ -60,10 +60,10 @@ static GLint P2TexCoord0_attr = -1, P2TexCoord1_attr = -1;
 
 static const char *TexFiles[4] =
    {
-      "../images/tile.rgb",
-      "../images/tree2.rgba",
-      "../images/tile.rgb",
-      "../images/tree2.rgba"
+      DEMOS_DATA_DIR "tile.rgb",
+      DEMOS_DATA_DIR "tree2.rgba",
+      DEMOS_DATA_DIR "tile.rgb",
+      DEMOS_DATA_DIR "tree2.rgba"
    };
 GLuint texObj[4];
 

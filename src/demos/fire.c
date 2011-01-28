@@ -626,7 +626,7 @@ inittextures(void)
    glBindTexture(GL_TEXTURE_2D, groundid);
 
    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-   if (!LoadRGBMipmaps("../images/s128.rgb", GL_RGB)) {
+   if (!LoadRGBMipmaps(DEMOS_DATA_DIR "s128.rgb", GL_RGB)) {
       fprintf(stderr, "Error reading a texture.\n");
       exit(-1);
    }
@@ -648,7 +648,8 @@ inittextures(void)
       int w, h;
       GLenum format;
       int x, y;
-      GLubyte *image = LoadRGBImage("../images/tree3.rgb", &w, &h, &format);
+      GLubyte *image = LoadRGBImage(DEMOS_DATA_DIR "tree3.rgb",
+				    &w, &h, &format);
 
       if (!image) {
 	 fprintf(stderr, "Error reading a texture.\n");
@@ -674,7 +675,7 @@ inittextures(void)
       }
    }
    else {
-      if (!LoadRGBMipmaps("../images/tree2.rgba", GL_RGBA)) {
+      if (!LoadRGBMipmaps(DEMOS_DATA_DIR "tree2.rgba", GL_RGBA)) {
 	 fprintf(stderr, "Error reading a texture.\n");
 	 exit(-1);
       }

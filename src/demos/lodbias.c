@@ -36,7 +36,7 @@
 
 #include "readtex.h"
 
-#define TEXTURE_FILE "../images/girl.rgb"
+#define TEXTURE_FILE DEMOS_DATA_DIR "girl.rgb"
 
 static GLfloat Xrot = 0, Yrot = -30, Zrot = 0;
 static GLboolean Anim = GL_TRUE;

@@ -51,10 +51,10 @@ GLboolean showProjection = GL_TRUE;
 GLboolean linearFilter = GL_TRUE;
 
 char *texFilename[MAX_TEX] = {
-   "../images/girl.rgb",
-   "../images/tile.rgb",
-   "../images/bw.rgb",
-   "../images/reflect.rgb"
+   DEMOS_DATA_DIR "girl.rgb",
+   DEMOS_DATA_DIR "tile.rgb",
+   DEMOS_DATA_DIR "bw.rgb",
+   DEMOS_DATA_DIR "reflect.rgb"
 };
 
 

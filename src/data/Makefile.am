@@ -22,7 +22,8 @@
 # Authors:
 #    Eric Anholt <eric@anholt.net>
 
-EXTRA_DIST = \
+demosdatadir=$(datadir)/$(PACKAGE)/
+dist_demosdata_DATA= \
 	arch.rgb \
 	bw.rgb \
 	girl2.rgb \
@@ -32,4 +33,8 @@ EXTRA_DIST = \
 	tile.rgb \
 	tree2.rgba \
 	tree3.rgb \
-	wrs_logo.rgb
+	wrs_logo.rgb \
+	\
+	geartrain.dat \
+	isosurf.dat \
+	terrain.dat

@@ -26,4 +26,4 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 	add_subdirectory (wgl)
 endif (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 
-add_subdirectory (images)
+add_subdirectory (data)

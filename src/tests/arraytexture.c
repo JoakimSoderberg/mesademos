@@ -53,15 +53,15 @@
     } while (0)
 
 static const char *const textures[] = {
-   "../images/girl.rgb",
-   "../images/girl2.rgb",
-   "../images/arch.rgb",
-   "../images/s128.rgb",
+   DEMOS_DATA_DIR "girl.rgb",
+   DEMOS_DATA_DIR "girl2.rgb",
+   DEMOS_DATA_DIR "arch.rgb",
+   DEMOS_DATA_DIR "s128.rgb",
 
-   "../images/tree3.rgb",
-   "../images/bw.rgb",
-   "../images/reflect.rgb",
-   "../images/wrs_logo.rgb",
+   DEMOS_DATA_DIR "tree3.rgb",
+   DEMOS_DATA_DIR "bw.rgb",
+   DEMOS_DATA_DIR "reflect.rgb",
+   DEMOS_DATA_DIR "wrs_logo.rgb",
    NULL
 };
 

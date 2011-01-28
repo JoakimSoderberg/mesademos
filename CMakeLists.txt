@@ -49,4 +49,6 @@ if (MSVC)
 	add_definitions (-wd4244) # conversion' conversion from 'type1' to 'type2', possible loss of data
 endif (MSVC)
 
+add_definitions(-DDEMOS_DATA_DIR=\"../data/\")
+
 add_subdirectory (src)

@@ -36,7 +36,7 @@
 #include "GL/glut.h"
 
 #include "readtex.h"
-#define TEXTURE_FILE "../images/reflect.rgb"
+#define TEXTURE_FILE DEMOS_DATA_DIR "reflect.rgb"
 
 #define LIT		0x00000001
 #define UNLIT		0x00000002
@@ -1060,7 +1060,7 @@ int main(int argc, char **argv)
    if (arg_mode & QUIT)
       exit(0);
 
-   read_surface( "isosurf.dat" );
+   read_surface(DEMOS_DATA_DIR "isosurf.dat");
 
    glutInitWindowSize(400, 400);
    glutInit( &argc, argv);

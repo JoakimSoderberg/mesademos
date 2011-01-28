@@ -24,13 +24,13 @@
 
 SUBDIRS = \
 	util \
+	data \
 	demos \
 	egl \
 	fp \
 	fpglsl \
 	glsl \
         gs \
-	images \
 	objviewer \
 	osdemos \
 	perf \

@@ -14,7 +14,7 @@
 
 #include "readtex.h"
 
-#define IMAGE_FILE "../images/girl.rgb"
+#define IMAGE_FILE DEMOS_DATA_DIR "girl.rgb"
 
 static int ImgWidth, ImgHeight;
 static int WinWidth, WinHeight;

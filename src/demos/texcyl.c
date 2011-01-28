@@ -17,7 +17,7 @@
 
 #include "readtex.h"
 
-#define TEXTURE_FILE "../images/reflect.rgb"
+#define TEXTURE_FILE DEMOS_DATA_DIR "reflect.rgb"
 
 #define LIT 1
 #define TEXTURED 2

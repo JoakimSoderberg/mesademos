@@ -29,8 +29,8 @@
 #include "trackball.h"
 
 
-#define SPECULAR_TEXTURE_FILE "../images/reflect.rgb"
-#define BASE_TEXTURE_FILE "../images/tile.rgb"
+#define SPECULAR_TEXTURE_FILE DEMOS_DATA_DIR "reflect.rgb"
+#define BASE_TEXTURE_FILE DEMOS_DATA_DIR "tile.rgb"
 
 /* Menu items */
 #define DO_SPEC_TEXTURE 1

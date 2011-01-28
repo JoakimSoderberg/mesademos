@@ -56,7 +56,7 @@
 
 #include "readtex.h"
 
-#define TEXTURE_FILE "../images/girl.rgb"
+#define TEXTURE_FILE DEMOS_DATA_DIR "girl.rgb"
 
 static GLint BaseLevel = 0, MaxLevel = 9;
 static GLfloat MinLod = -1, MaxLod = 9;

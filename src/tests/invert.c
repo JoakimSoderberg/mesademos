@@ -40,7 +40,7 @@
 
 #include "readtex.h"
 
-#define IMAGE_FILE "../images/tree3.rgb"
+#define IMAGE_FILE DEMOS_DATA_DIR "tree3.rgb"
 
 static int Width = 420;
 static int Height = 150;

@@ -35,7 +35,7 @@
 
 #include "readtex.h"
 
-static const char *TexFile = "../images/arch.rgb";
+static const char *TexFile = DEMOS_DATA_DIR "arch.rgb";
 
 static const GLfloat Near = 5.0, Far = 25.0;
 

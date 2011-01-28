@@ -38,6 +38,8 @@ AC_PROG_CXX
 AC_PROG_LIBTOOL
 AM_PROG_CC_C_O
 
+AC_CONFIG_MACRO_DIR([m4])
+
 # Enable quiet compiles on automake 1.11.
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
@@ -166,6 +168,20 @@ AC_ARG_WITH([mesa-source],
 	[mesa_source_enabled="no"])
 MESA_GLAPI="$mesa_source_dir/src/mesa/glapi"
 
+use_system_data=no
+AC_ARG_WITH([system-data-files],
+	    [AS_HELP_STRING([--with-system-data-files],
+			    [Use system data files for demos (default: no)])],
+	    [use_system_data=yes], [])
+if test "x$use_system_data" = xyes; then
+    demos_data_dir="${datadir}/${PACKAGE}/"
+else
+    demos_data_dir="../data/"
+fi
+AC_DEFINE_DIR(DEMOS_DATA_DIR, demos_data_dir, [Data dir for demos])
+AC_DEFINE_UNQUOTED([DEMOS_DATA_DIR], "$DEMOS_DATA_DIR",
+		   [Directory for demos data files])
+
 dnl
 dnl Program library dependencies
 dnl    Only libm is added here if necessary as the libraries should
@@ -228,7 +244,7 @@ AC_OUTPUT([
 	src/fpglsl/Makefile
 	src/glsl/Makefile
 	src/gs/Makefile
-	src/images/Makefile
+	src/data/Makefile
 	src/objviewer/Makefile
 	src/osdemos/Makefile
 	src/perf/Makefile

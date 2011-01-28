@@ -18,7 +18,7 @@
 static char *FragProgFile = "CH11-bumpmap.frag";
 static char *FragTexProgFile = "CH11-bumpmaptex.frag";
 static char *VertProgFile = "CH11-bumpmap.vert";
-static char *TextureFile = "../images/tile.rgb";
+static char *TextureFile = DEMOS_DATA_DIR "tile.rgb";
 
 /* program/shader objects */
 static GLuint fragShader;

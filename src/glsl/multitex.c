@@ -40,8 +40,8 @@ static const char *FragFile = "multitex.frag";
 
 static const char *TexFiles[2] = 
    {
-      "../images/tile.rgb",
-      "../images/tree2.rgba"
+      DEMOS_DATA_DIR "tile.rgb",
+      DEMOS_DATA_DIR "tree2.rgba"
    };
 
 

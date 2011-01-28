@@ -37,7 +37,7 @@
 
 
 #define DEG2RAD (3.14159/180.0)
-#define TABLE_TEXTURE "../images/tile.rgb"
+#define TABLE_TEXTURE DEMOS_DATA_DIR "tile.rgb"
 #define MAX_OBJECTS 2
 #define INIT_WIDTH 400
 #define INIT_HEIGHT 300

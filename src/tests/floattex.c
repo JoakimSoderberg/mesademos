@@ -13,7 +13,7 @@
 #include "shaderutil.h"
 
 
-static const char *TexFile = "../images/arch.rgb";
+static const char *TexFile = DEMOS_DATA_DIR "arch.rgb";
 
 static const char *FragShaderText = 
    "uniform sampler2D tex1; \n"

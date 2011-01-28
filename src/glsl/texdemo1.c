@@ -41,7 +41,7 @@ static const char *CubeFragFile = "cubemap.frag";
 static const char *SimpleVertFile = "simple.vert";
 static const char *SimpleTexFragFile = "shadowtex.frag";
 
-static const char *GroundImage = "../images/tile.rgb";
+static const char *GroundImage = DEMOS_DATA_DIR "tile.rgb";
 
 static GLuint Program1, Program2;
 

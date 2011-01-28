@@ -14,7 +14,7 @@
 #include "readtex.c"
 
 
-#define TEXTURE_FILE "../images/bw.rgb"
+#define TEXTURE_FILE DEMOS_DATA_DIR "bw.rgb"
 
 unsigned show_fps = 0;
 unsigned int frame_cnt = 0;

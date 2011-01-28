@@ -84,7 +84,3 @@ endforeach (target)
 add_executable (rain rain.cxx particles.cxx)
 
 install (TARGETS rain DESTINATION demos)
-
-file (GLOB data *.dat)
-
-install (FILES ${data} DESTINATION demos)

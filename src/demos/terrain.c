@@ -563,7 +563,7 @@ loadpic(void)
    GLenum gluerr;
    size_t result;
 
-   if ((FilePic = fopen("terrain.dat", "r")) == NULL) {
+   if ((FilePic = fopen(DEMOS_DATA_DIR "terrain.dat", "r")) == NULL) {
       fprintf(stderr, "Error loading terrain.dat\n");
       exit(-1);
    }

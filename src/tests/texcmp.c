@@ -11,7 +11,7 @@
 #include <GL/glut.h>
 
 #include "readtex.c" /* I know, this is a hack. */
-#define TEXTURE_FILE "../images/tree2.rgba"
+#define TEXTURE_FILE DEMOS_DATA_DIR "tree2.rgba"
 
 
 static float Rot = 0.0;

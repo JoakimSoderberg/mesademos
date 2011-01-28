@@ -9,7 +9,7 @@
 #include "readtex.c"
 
 
-#define TEXTURE_FILE "../images/girl.rgb"
+#define TEXTURE_FILE DEMOS_DATA_DIR "girl.rgb"
 
 
 

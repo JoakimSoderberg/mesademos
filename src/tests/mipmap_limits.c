@@ -63,6 +63,22 @@ static GLfloat MinLod = -1, MaxLod = 9;
 static GLfloat LodBias = 0.0;
 static GLboolean NearestFilter = GL_TRUE;
 static GLuint texImage, texColor, texCurrent;
+static unsigned int min_filter;
+
+static const struct
+{
+   GLint value;
+   const char *name;
+}
+min_filters[] =
+{
+   {GL_LINEAR_MIPMAP_LINEAR,   "LINEAR_MIPMAP_LINEAR"},
+   {GL_NEAREST_MIPMAP_LINEAR,  "NEAREST_MIPMAP_LINEAR"},
+   {GL_LINEAR_MIPMAP_NEAREST,  "LINEAR_MIPMAP_NEAREST"},
+   {GL_NEAREST_MIPMAP_NEAREST, "NEAREST_MIPMAP_NEAREST"},
+   {GL_LINEAR,                 "LINEAR"},
+   {GL_NEAREST,                "NEAREST"},
+};
 
 
 static void
@@ -203,8 +219,8 @@ display(void)
    glBindTexture(GL_TEXTURE_2D, texCurrent);
 
    printf
-      ("BASE_LEVEL=%d  MAX_LEVEL=%d  MIN_LOD=%.2g  MAX_LOD=%.2g  Bias=%.2g  Filter=%s\n",
-       BaseLevel, MaxLevel, MinLod, MaxLod, LodBias,
+      ("BASE_LEVEL=%d  MAX_LEVEL=%d  MIN_LOD=%.2g  MAX_LOD=%.2g  Bias=%.2g  Filter=%s/%s\n",
+       BaseLevel, MaxLevel, MinLod, MaxLod, LodBias, min_filters[min_filter].name,
        NearestFilter ? "NEAREST" : "LINEAR");
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, BaseLevel);
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, MaxLevel);
@@ -212,16 +228,8 @@ display(void)
    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_LOD, MinLod);
    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_LOD, MaxLod);
 
-   if (NearestFilter) {
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                      GL_NEAREST_MIPMAP_NEAREST);
-   }
-   else {
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                      GL_LINEAR_MIPMAP_LINEAR);
-   }
+   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min_filters[min_filter].value);
+   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, NearestFilter ? GL_NEAREST : GL_LINEAR);
 
    glTexEnvf(GL_TEXTURE_FILTER_CONTROL_EXT, GL_TEXTURE_LOD_BIAS_EXT, LodBias);
 
@@ -260,7 +268,8 @@ usage(void)
    printf("  n/N    decrease/increase GL_TEXTURE_MIN_LOD\n");
    printf("  x/X    decrease/increase GL_TEXTURE_MAX_LOD\n");
    printf("  l/L    decrease/increase GL_TEXTURE_LOD_BIAS\n");
-   printf("  f      toggle nearest/linear filtering\n");
+   printf("  f/F    cycle minification filter\n");
+   printf("  g      toggle nearest/linear magnification filter\n");
    printf("  t      toggle texture color/image\n");
    printf("  SPACE  reset values\n");
 }
@@ -310,6 +319,16 @@ key(unsigned char k, int x, int y)
       MaxLod += 0.25;
       break;
    case 'f':
+      if (!min_filter)
+         min_filter = sizeof(min_filters) / sizeof(*min_filters);
+      min_filter--;
+      break;
+   case 'F':
+      min_filter++;
+      if (min_filter == sizeof(min_filters) / sizeof(*min_filters))
+         min_filter = 0;
+      break;
+   case 'g':
       NearestFilter = !NearestFilter;
       break;
    case 't':

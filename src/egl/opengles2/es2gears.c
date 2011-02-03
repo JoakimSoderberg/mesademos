@@ -607,9 +607,6 @@ gears_idle(void)
 }
 
 static const char vertex_shader[] =
-"#ifdef GL_ES\n"
-"precision mediump float;\n"
-"#endif\n"
 "attribute vec3 position;\n"
 "attribute vec3 normal;\n"
 "\n"
@@ -638,6 +635,7 @@ static const char vertex_shader[] =
 "}";
 
 static const char fragment_shader[] =
+"precision mediump float;\n"
 "varying vec4 Color;\n"
 "\n"
 "void main(void)\n"

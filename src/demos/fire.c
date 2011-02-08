@@ -568,6 +568,7 @@ key(unsigned char key, int x, int y)
 {
    switch (key) {
    case 27:
+      glutDestroyWindow(win);
       exit(0);
       break;
 

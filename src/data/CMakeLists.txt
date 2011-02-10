@@ -1,3 +1,3 @@
 file (GLOB data *.rgb *.rgba *.dat)
 
-install (FILES ${data} DESTINATION images)
+install (FILES ${data} DESTINATION data)

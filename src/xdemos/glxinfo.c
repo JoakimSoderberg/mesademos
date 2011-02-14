@@ -73,7 +73,8 @@ typedef enum
 struct visual_attribs
 {
    /* X visual attribs */
-   int id;
+   int id;		/* May be visual ID or FBConfig ID */
+   int vis_id;		/* Visual ID.  Only set for FBConfigs */
    int klass;
    int depth;
    int redMask, greenMask, blueMask;
@@ -826,6 +827,7 @@ get_fbconfig_attribs(Display *dpy, GLXFBConfig fbconfig,
    vInfo = glXGetVisualFromFBConfig(dpy, fbconfig);
 
    if (vInfo != NULL) {
+      attribs->vis_id = vInfo->visualid;
       attribs->depth = vInfo->depth;
       attribs->redMask = vInfo->red_mask;
       attribs->greenMask = vInfo->green_mask;
@@ -899,11 +901,19 @@ get_fbconfig_attribs(Display *dpy, GLXFBConfig fbconfig,
 
 
 static void
-print_visual_attribs_verbose(const struct visual_attribs *attribs)
+print_visual_attribs_verbose(const struct visual_attribs *attribs,
+			     int fbconfigs)
 {
-   printf("Visual ID: %x  depth=%d  class=%s, type=%s\n",
-          attribs->id, attribs->depth, visual_class_name(attribs->klass),
+   if (fbconfigs) {
+   printf("FBConfig ID: %x  Visual ID=%x  depth=%d  class=%s, type=%s\n",
+          attribs->id, attribs->vis_id, attribs->depth,
+	  visual_class_name(attribs->klass),
 	  visual_drawable_type(attribs->drawableType));
+   } else {
+      printf("Visual ID: %x  depth=%d  class=%s, type=%s\n",
+	     attribs->id, attribs->depth, visual_class_name(attribs->klass),
+	     visual_drawable_type(attribs->drawableType));
+   }
    printf("    bufferSize=%d level=%d renderType=%s doubleBuffer=%d stereo=%d\n",
           attribs->bufferSize, attribs->level,
 	  visual_render_type_name(attribs->render_type),
@@ -1061,7 +1071,7 @@ print_visual_info(Display *dpy, int scrnum, InfoMode mode)
 	 continue;
 
       if (mode == Verbose)
-	 print_visual_attribs_verbose(&attribs);
+	 print_visual_attribs_verbose(&attribs, False);
       else if (mode == Normal)
          print_visual_attribs_short(&attribs);
       else if (mode == Wide) 
@@ -1100,7 +1110,7 @@ print_fbconfig_info(Display *dpy, int scrnum, InfoMode mode)
       get_fbconfig_attribs(dpy, fbconfigs[i], &attribs);
 
       if (mode == Verbose) 
-         print_visual_attribs_verbose(&attribs);
+         print_visual_attribs_verbose(&attribs, True);
       else if (mode == Normal)
 	 print_visual_attribs_short(&attribs);
       else if (mode == Wide)

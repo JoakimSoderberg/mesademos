@@ -114,7 +114,6 @@ set (targets
 	texline
 	texobj
 	texrect
-	texwrap
 	unfilledclip
 	vparray
 	vpeval

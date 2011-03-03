@@ -143,7 +143,6 @@ noinst_PROGRAMS = \
 	texobj \
 	texobjshare \
 	texrect \
-	texwrap \
 	unfilledclip \
 	vparray \
 	vpeval \

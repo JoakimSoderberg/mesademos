@@ -891,6 +891,8 @@ get_fbconfig_attribs(Display *dpy, GLXFBConfig fbconfig,
          attribs->floatComponents = True;
       }
    }
+#endif
+#if defined(GLX_EXT_fbconfig_packed_float)
    if (ext && strstr(ext, "GLX_EXT_fbconfig_packed_float")) {
       if (attribs->render_type & GLX_RGBA_UNSIGNED_FLOAT_BIT_EXT) {
          attribs->packedfloatComponents = True;

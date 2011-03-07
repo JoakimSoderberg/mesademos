@@ -103,6 +103,7 @@ struct visual_attribs
    int numSamples, numMultisample;
    int visualCaveat;
    int floatComponents;
+   int packedfloatComponents;
    int srgb;
 };
 
@@ -665,6 +666,10 @@ static const char *
 visual_render_type_name(int type)
 {
    switch (type) {
+      case GLX_RGBA_UNSIGNED_FLOAT_BIT_EXT:
+         return "ufloat";
+      case GLX_RGBA_FLOAT_BIT_ARB:
+         return "float";
       case GLX_RGBA_BIT:
          return "rgba";
       case GLX_COLOR_INDEX_BIT:
@@ -886,6 +891,11 @@ get_fbconfig_attribs(Display *dpy, GLXFBConfig fbconfig,
          attribs->floatComponents = True;
       }
    }
+   if (ext && strstr(ext, "GLX_EXT_fbconfig_packed_float")) {
+      if (attribs->render_type & GLX_RGBA_UNSIGNED_FLOAT_BIT_EXT) {
+         attribs->packedfloatComponents = True;
+      }
+   }
 #endif
 
 #if defined(GLX_EXT_framebuffer_sRGB)
@@ -921,7 +931,7 @@ print_visual_attribs_verbose(const struct visual_attribs *attribs,
    printf("    rgba: redSize=%d greenSize=%d blueSize=%d alphaSize=%d float=%c sRGB=%c\n",
           attribs->redSize, attribs->greenSize,
           attribs->blueSize, attribs->alphaSize,
-          attribs->floatComponents ? 'Y' : 'N',
+          attribs->packedfloatComponents ? 'P' : attribs->floatComponents ? 'Y' : 'N',
           attribs->srgb ? 'Y' : 'N');
    printf("    auxBuffers=%d depthSize=%d stencilSize=%d\n",
           attribs->auxBuffers, attribs->depthSize, attribs->stencilSize);
@@ -977,7 +987,7 @@ print_visual_attribs_short(const struct visual_attribs *attribs)
           attribs->stereo ? 'y' : '.',
           attribs->redSize, attribs->greenSize,
           attribs->blueSize, attribs->alphaSize,
-          attribs->floatComponents ? 'f' : '.',
+          attribs->packedfloatComponents ? 'u' : attribs->floatComponents ? 'f' : '.',
           attribs->srgb ? 's' : '.',
           attribs->auxBuffers,
           attribs->depthSize,

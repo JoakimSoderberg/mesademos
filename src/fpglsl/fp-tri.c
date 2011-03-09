@@ -386,7 +386,7 @@ static void Display(void)
 
    glColor3f(0,0,1);
    glTexCoord3f(1,1,0);
-   glVertex3f( 0.9, -0.9, -30.0);
+   glVertex3f( 0.9, -0.9, -970.0);
 
    glColor3f(1,0,0);
    glTexCoord3f(1,-1,0);

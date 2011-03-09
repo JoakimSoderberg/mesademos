@@ -417,9 +417,14 @@ LoadTexture(GLint unit, GLenum target, const char *texFileName)
    glBindTexture(objTarget, tex);
 
    if (target == GL_TEXTURE_3D) {
+#ifdef GLU_VERSION_1_3
       /* depth=1 */
       gluBuild3DMipmaps(target, 4, imgWidth, imgHeight, 1,
                         imgFormat, GL_UNSIGNED_BYTE, image);
+#else
+      fprintf(stderr, "Error: GLU 1.3 not available\n");
+      exit(1);
+#endif
    }
    else if (target == GL_TEXTURE_1D) {
       gluBuild1DMipmaps(target, 4, imgWidth,

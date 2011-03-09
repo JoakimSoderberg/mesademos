@@ -238,12 +238,12 @@ deg2rad(const float degree)
 static void
 rotate_xy(float* mat3, const float degreesAroundX, const float degreesAroundY)
 {
-  const float rad1 = deg2rad(degreesAroundX);
-  const float c1 = cosf(rad1);
-  const float s1 = sinf(rad1);
-  const float rad2 = deg2rad(degreesAroundY);
-  const float c2 = cosf(rad2);
-  const float s2 = sinf(rad2);
+  const float radX = deg2rad(degreesAroundX);
+  const float c1 = cosf(radX);
+  const float s1 = sinf(radX);
+  const float radY = deg2rad(degreesAroundY);
+  const float c2 = cosf(radY);
+  const float s2 = sinf(radY);
   mat3[0] = c2;    mat3[3] = 0.0F; mat3[6] = s2;
   mat3[1] = s1*s2; mat3[4] = c1;   mat3[7] = -s1*c2;
   mat3[2] = -c1*s2;mat3[5] = s1;   mat3[8] = c1*c2;

@@ -8,6 +8,7 @@ add_subdirectory (samples)
 add_subdirectory (perf)
 add_subdirectory (objviewer)
 
+add_subdirectory (glsl)
 add_subdirectory (fp)
 add_subdirectory (fpglsl)
 add_subdirectory (vp)

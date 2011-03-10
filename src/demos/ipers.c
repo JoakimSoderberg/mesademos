@@ -252,6 +252,8 @@ cleanup(void)
       glDeleteLists(LODdlist[i], 1);
       glDeleteLists(LODnumpoly[i], 1);
    }
+
+   glutDestroyWindow(glutGetWindow());
 }
 
 

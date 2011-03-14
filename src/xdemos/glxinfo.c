@@ -109,61 +109,113 @@ struct visual_attribs
 
    
 /*
+ * qsort callback for string comparison.
+ */
+static int
+compare_string_ptr(const void *p1, const void *p2)
+{
+   return strcmp(* (char * const *) p1, * (char * const *) p2);
+}
+
+
+/*
  * Print a list of extensions, with word-wrapping.
  */
 static void
 print_extension_list(const char *ext, Bool singleLine)
 {
+   char **extensions;
+   int num_extensions;
    const char *indentString = "    ";
    const int indent = 4;
    const int max = 79;
-   int width, i, j;
+   int width, i, j, k;
 
    if (!ext || !ext[0])
       return;
 
-   width = indent;
-   printf("%s", indentString);
-   i = j = 0;
+   /* count the number of extensions, ignoring successive spaces */
+   num_extensions = 0;
+   j = 1;
+   do {
+      if ((ext[j] == ' ' || ext[j] == 0) && ext[j - 1] != ' ') {
+         ++num_extensions;
+      }
+   } while(ext[j++]);
+
+   /* copy individual extensions to an array */
+   extensions = malloc(num_extensions * sizeof *extensions);
+   if (!extensions) {
+      fprintf(stderr, "Error: malloc() failed\n");
+      exit(1);
+   }
+   i = j = k = 0;
    while (1) {
       if (ext[j] == ' ' || ext[j] == 0) {
          /* found end of an extension name */
          const int len = j - i;
-         if ((!singleLine) && (width + len > max)) {
-            /* start a new line */
-            printf("\n");
-            width = indent;
-            printf("%s", indentString);
-         }
-         /* print the extension name between ext[i] and ext[j] */
-         while (i < j) {
-            printf("%c", ext[i]);
-            i++;
-         }
-         /* either we're all done, or we'll continue with next extension */
-         width += len + 1;
+
+         if (len) {
+            assert(k < num_extensions);
+
+            extensions[k] = malloc(len + 1);
+            if (!extensions[k]) {
+               fprintf(stderr, "Error: malloc() failed\n");
+               exit(1);
+            }
+
+            memcpy(extensions[k], ext + i, len);
+            extensions[k][len] = 0;
+
+            ++k;
+         };
+
+         i += len + 1;
+
          if (ext[j] == 0) {
             break;
-         }
-         else {
-            i++;
-            j++;
-            if (ext[j] == 0)
-               break;
-            if (singleLine) {
-               printf("\n");
-               width = indent;
-               printf("%s", indentString);
-            }
-            else {
-               printf(", ");
-               width += 2;
-            }
          }
       }
       j++;
    }
+   assert(k == num_extensions);
+
+   /* sort extensions alphabetically */
+   qsort(extensions, num_extensions, sizeof extensions[0], compare_string_ptr);
+
+   /* print the extensions */
+   width = indent;
+   printf("%s", indentString);
+   for (k = 0; k < num_extensions; ++k) {
+      const int len = strlen(extensions[k]);
+      if ((!singleLine) && (width + len > max)) {
+         /* start a new line */
+         printf("\n");
+         width = indent;
+         printf("%s", indentString);
+      }
+      /* print the extension name */
+      printf("%s", extensions[k]);
+
+      /* either we're all done, or we'll continue with next extension */
+      width += len + 1;
+
+      if (singleLine) {
+         printf("\n");
+         width = indent;
+         printf("%s", indentString);
+      }
+      else {
+         printf(", ");
+         width += 2;
+      }
+   }
    printf("\n");
+
+   for (k = 0; k < num_extensions; ++k) {
+      free(extensions[k]);
+   }
+   free(extensions);
 }
 
 

@@ -16,7 +16,11 @@ find_path (GLEW_INCLUDE_DIR GL/glew.h
       /usr/include/GL
 )
 
-if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+if (UNIX)
+	link_libraries(m)
+endif (UNIX)
+
+if (WIN32)
 	# Nobody likes to include windows.h:
 	# - Microsoft's GL/gl.h header depends on windows.h but doesn't include it;
 	# - GLEW temporarily defines the necessary defines but undefines them later
@@ -37,7 +41,7 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 	add_definitions (-DGLAPIENTRY=__stdcall)
 
 	link_libraries (winmm)
-endif (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+endif (WIN32)
 
 if (MSVC)
 	# Enable math constants defines

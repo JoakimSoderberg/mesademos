@@ -54,6 +54,7 @@ bin_PROGRAMS = \
 	samplers_array \
 	shadow_sampler \
 	shtest \
+	simplex-noise \
 	skinning \
 	texaaline \
 	texdemo1 \
@@ -82,6 +83,7 @@ linktest_LDADD = ../util/libutil.la
 mandelbrot_LDADD = ../util/libutil.la
 multitex_LDADD = ../util/libutil.la
 noise_LDADD = ../util/libutil.la
+simplex_noise_LDADD = ../util/libutil.la
 pointcoord_LDADD = ../util/libutil.la
 points_LDADD = ../util/libutil.la
 samplers_LDADD = ../util/libutil.la

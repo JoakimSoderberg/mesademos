@@ -124,6 +124,7 @@ noinst_PROGRAMS = \
 	scissor-viewport \
 	seccolor \
 	shader_api \
+	shader-interp \
 	sharedtex \
 	stencilreaddraw \
 	stencilwrap \
@@ -171,6 +172,7 @@ jkrahntest_LDADD = -lX11
 mipmap_limits_LDADD = ../util/libutil.la
 mipmap_view_LDADD = ../util/libutil.la
 sharedtex_LDADD = -lX11
+shader_interp_LDADD = ../util/libutil.la
 texobjshare_LDADD = -lX11
 texrect_LDADD = ../util/libutil.la
 

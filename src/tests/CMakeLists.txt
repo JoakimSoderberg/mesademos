@@ -98,6 +98,7 @@ set (targets
 	scissor-viewport
 	seccolor
 	shader_api
+	shader-interp
 	stencilreaddraw
 	stencilwrap
 	step

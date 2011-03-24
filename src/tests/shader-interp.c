@@ -152,17 +152,19 @@ Init(void)
 
    /**
     * Perspective interpolation, converted to linear interpolation
+    * (put window position W in texcoord.w)
     */
    static const char *VertShaderText2 =
       "void main() {\n"
       "   vec4 pos = ftransform();\n"
       "   gl_TexCoord[0] = gl_MultiTexCoord0 * pos.w; \n"
+      "   gl_TexCoord[0].w = pos.w; \n"
       "   gl_Position = pos;\n"
       "}\n";
 
    static const char *FragShaderText2 =
       "void main() {\n"
-      "   float gray = gl_TexCoord[0].y * gl_FragCoord.w; \n"
+      "   float gray = gl_TexCoord[0].y / gl_TexCoord[0].w; \n"
       "   gl_FragColor = vec4(gray); \n"
       "}\n";
 

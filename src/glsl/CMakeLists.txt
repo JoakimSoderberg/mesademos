@@ -28,6 +28,8 @@ set (targets
 	deriv
 	fragcoord
 	fsraytrace
+	geom-sprites
+	geom-wide-lines
 	identity
 	linktest
 	mandelbrot

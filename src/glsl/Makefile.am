@@ -41,6 +41,8 @@ bin_PROGRAMS = \
 	deriv \
 	fragcoord \
 	fsraytrace \
+	geom-sprites \
+	geom-wide-lines \
 	identity \
 	linktest \
 	mandelbrot \
@@ -76,6 +78,8 @@ brick_LDADD = ../util/libutil.la
 bump_LDADD = ../util/libutil.la
 convolutions_LDADD = ../util/libutil.la
 deriv_LDADD = ../util/libutil.la
+geom_sprites_LDADD = ../util/libutil.la
+geom_wide_lines_LDADD = ../util/libutil.la
 fsraytrace_LDADD = ../util/libutil.la
 fragcoord_LDADD = ../util/libutil.la
 identity_LDADD = ../util/libutil.la

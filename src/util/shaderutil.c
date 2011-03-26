@@ -176,15 +176,24 @@ CompileShaderFile(GLenum shaderType, const char *filename)
 GLuint
 LinkShaders(GLuint vertShader, GLuint fragShader)
 {
+   return LinkShaders3(vertShader, 0, fragShader);
+}
+
+
+GLuint
+LinkShaders3(GLuint vertShader, GLuint geomShader, GLuint fragShader)
+{
    GLuint program = CreateProgram();
    GLdouble t0, t1;
 
    assert(vertShader || fragShader);
 
-   if (fragShader)
-      AttachShader(program, fragShader);
    if (vertShader)
       AttachShader(program, vertShader);
+   if (geomShader)
+      AttachShader(program, geomShader);
+   if (fragShader)
+      AttachShader(program, fragShader);
 
    t0 = glutGet(GLUT_ELAPSED_TIME) * 0.001;
    LinkProgram(program);

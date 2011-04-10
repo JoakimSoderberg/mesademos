@@ -81,6 +81,7 @@ noinst_PROGRAMS = \
 	cylwrap \
 	drawbuffers \
 	drawbuffers2 \
+	drawstencil \
 	exactrast \
 	ext422square \
 	floattex \

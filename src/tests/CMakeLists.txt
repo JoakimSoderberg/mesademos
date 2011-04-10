@@ -54,6 +54,7 @@ set (targets
 	#debugger
 	drawbuffers2
 	drawbuffers
+	drawstencil
 	exactrast
 	ext422square
 	fbotest1

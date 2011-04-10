@@ -99,6 +99,7 @@ set (targets
 	seccolor
 	shader_api
 	shader-interp
+	shadow-sample
 	stencilreaddraw
 	stencilwrap
 	step

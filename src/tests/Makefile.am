@@ -125,6 +125,7 @@ noinst_PROGRAMS = \
 	seccolor \
 	shader_api \
 	shader-interp \
+	shadow-sample \
 	sharedtex \
 	stencilreaddraw \
 	stencilwrap \

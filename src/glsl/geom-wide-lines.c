@@ -14,17 +14,14 @@
 #include <GL/glut.h>
 #include "shaderutil.h"
 
-#ifndef M_PI
-#define M_PI 3.1415926535
-#endif
 
 static GLint WinWidth = 500, WinHeight = 500;
-static char *FragProgFile = NULL;
-static char *VertProgFile = NULL;
-static GLuint VertShader, GeomShader, FragShader;
-static GLuint Program;
 static GLint Win = 0;
+static GLuint VertShader, GeomShader, FragShader, Program;
 static GLboolean Anim = GL_TRUE;
+static GLboolean UseGeomShader = GL_TRUE;
+static GLfloat LineWidth = 10.0;
+static GLfloat MaxLineWidth;
 static GLfloat Xrot = 0, Yrot = 0;
 static int uLineWidth = -1, uInverseViewportSize = -1;
 
@@ -56,6 +53,15 @@ Redisplay(void)
    glPushMatrix();
    glRotatef(Xrot, 1, 0, 0);
    glRotatef(Yrot, 0, 0, 1);
+
+   if (UseGeomShader) {
+      glUseProgram(Program);
+      glUniform1f(uLineWidth, LineWidth);
+   }
+   else {
+      glUseProgram(0);
+      glLineWidth(LineWidth);
+   }
 
    glBegin(GL_LINES);
    for (i = 0; i < NumPoints; i++) {
@@ -127,6 +133,23 @@ Key(unsigned char key, int x, int y)
       else
          glutIdleFunc(NULL);
       break;
+   case 'g':
+      UseGeomShader = !UseGeomShader;
+      printf("Use geometry shader? %d\n", UseGeomShader);
+      break;
+   case 'w':
+      LineWidth -= 0.5;
+      if (LineWidth < 1.0)
+         LineWidth = 1.0;
+      printf("Line width: %f\n", LineWidth);
+      break;
+   case 'W':
+      LineWidth += 0.5;
+      if (LineWidth > MaxLineWidth)
+         LineWidth = MaxLineWidth;
+      printf("Line width: %f\n", LineWidth);
+      break;
+
    case 27:
       CleanUp();
       exit(0);
@@ -154,7 +177,6 @@ static void
 Init(void)
 {
    static const char *fragShaderText =
-      "uniform sampler2D tex; \n"
       "void main() \n"
       "{ \n"
       "   gl_FragColor = gl_Color; \n"
@@ -224,7 +246,7 @@ Init(void)
    CheckError(__LINE__);
 
    /*
-    * The geometry shader will convert incoming points to quads (4-vertex
+    * The geometry shader will convert incoming lines to quads (4-vertex
     * triangle strips).
     */
    glProgramParameteriARB(Program, GL_GEOMETRY_INPUT_TYPE_ARB,
@@ -256,8 +278,6 @@ Init(void)
    uInverseViewportSize = glGetUniformLocation(Program, "InverseViewportSize");
    uLineWidth = glGetUniformLocation(Program, "LineWidth");
 
-   glUniform1f(uLineWidth, 12.0);
-
    glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
 
    printf("GL_RENDERER = %s\n",(const char *) glGetString(GL_RENDERER));
@@ -269,22 +289,13 @@ Init(void)
 
    glEnable(GL_DEPTH_TEST);
 
-   MakePoints();
-}
-
-
-static void
-ParseOptions(int argc, char *argv[])
-{
-   int i;
-   for (i = 1; i < argc; i++) {
-      if (strcmp(argv[i], "-fs") == 0) {
-         FragProgFile = argv[i+1];
-      }
-      else if (strcmp(argv[i], "-vs") == 0) {
-         VertProgFile = argv[i+1];
-      }
+   {
+      GLfloat r[2];
+      glGetFloatv(GL_LINE_WIDTH_RANGE, r);
+      MaxLineWidth = r[1];
    }
+
+   MakePoints();
 }
 
 
@@ -301,7 +312,6 @@ main(int argc, char *argv[])
    glutDisplayFunc(Redisplay);
    if (Anim)
       glutIdleFunc(Idle);
-   ParseOptions(argc, argv);
 
    Init();
    glutMainLoop();

@@ -15,16 +15,9 @@
 #include <GL/glut.h>
 #include "shaderutil.h"
 
-#ifndef M_PI
-#define M_PI 3.1415926535
-#endif
-
 static GLint WinWidth = 500, WinHeight = 500;
-static char *FragProgFile = NULL;
-static char *VertProgFile = NULL;
-static GLuint VertShader, GeomShader, FragShader;
-static GLuint Program;
 static GLint Win = 0;
+static GLuint VertShader, GeomShader, FragShader, Program;
 static GLboolean Anim = GL_TRUE;
 static GLfloat Xrot = 0, Yrot = 0;
 static int uPointSize = -1, uInverseViewportSize = -1;
@@ -294,21 +287,6 @@ Init(void)
 }
 
 
-static void
-ParseOptions(int argc, char *argv[])
-{
-   int i;
-   for (i = 1; i < argc; i++) {
-      if (strcmp(argv[i], "-fs") == 0) {
-         FragProgFile = argv[i+1];
-      }
-      else if (strcmp(argv[i], "-vs") == 0) {
-         VertProgFile = argv[i+1];
-      }
-   }
-}
-
-
 int
 main(int argc, char *argv[])
 {
@@ -322,7 +300,6 @@ main(int argc, char *argv[])
    glutDisplayFunc(Redisplay);
    if (Anim)
       glutIdleFunc(Idle);
-   ParseOptions(argc, argv);
 
    Init();
    glutMainLoop();

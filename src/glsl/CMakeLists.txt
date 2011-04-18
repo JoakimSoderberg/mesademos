@@ -29,6 +29,7 @@ set (targets
 	fragcoord
 	fsraytrace
 	geom-sprites
+	geom-stipple-lines
 	geom-wide-lines
 	identity
 	linktest

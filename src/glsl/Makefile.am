@@ -42,6 +42,7 @@ bin_PROGRAMS = \
 	fragcoord \
 	fsraytrace \
 	geom-sprites \
+	geom-stipple-lines \
 	geom-wide-lines \
 	identity \
 	linktest \
@@ -79,6 +80,7 @@ bump_LDADD = ../util/libutil.la
 convolutions_LDADD = ../util/libutil.la
 deriv_LDADD = ../util/libutil.la
 geom_sprites_LDADD = ../util/libutil.la
+geom_stipple_lines_LDADD = ../util/libutil.la
 geom_wide_lines_LDADD = ../util/libutil.la
 fsraytrace_LDADD = ../util/libutil.la
 fragcoord_LDADD = ../util/libutil.la

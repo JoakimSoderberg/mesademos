@@ -4,6 +4,7 @@
 #define EGL_EGLEXT_PROTOTYPES
 #define GL_GLEXT_PROTOTYPES
 
+#include <gbm.h>
 #include "gl_wrap.h"
 #include <GL/glext.h>
 #include <EGL/egl.h>
@@ -134,17 +135,11 @@ int main(int argc, char *argv[])
    EGLint major, minor;
    const char *ver, *extensions;
    GLuint fb, color_rb, depth_rb;
-   EGLint handle, stride;
+   uint32_t handle, stride;
    struct kms kms;
    int ret, fd;
-
-   EGLint image_attribs[] = {
-      EGL_WIDTH,			0,
-      EGL_HEIGHT,			0,
-      EGL_DRM_BUFFER_FORMAT_MESA,	EGL_DRM_BUFFER_FORMAT_ARGB32_MESA,
-      EGL_DRM_BUFFER_USE_MESA,		EGL_DRM_BUFFER_USE_SCANOUT_MESA,
-      EGL_NONE
-   };
+   struct gbm_device *gbm;
+   struct gbm_bo *bo;
 
    fd = open(device_name, O_RDWR);
    if (fd < 0) {
@@ -153,7 +148,9 @@ int main(int argc, char *argv[])
       return -1;
    }
 
-   dpy = eglGetDRMDisplayMESA(fd);
+   gbm = gbm_create_device(fd);
+
+   dpy = eglGetDisplay(gbm);
    if (dpy == EGL_NO_DISPLAY) {
       fprintf(stderr, "eglGetDisplay() failed\n");
       return -1;
@@ -194,11 +191,13 @@ int main(int argc, char *argv[])
    glGenFramebuffers(1, &fb);
    glBindFramebuffer(GL_FRAMEBUFFER_EXT, fb);
 
-   image_attribs[1] = kms.mode.hdisplay;
-   image_attribs[3] = kms.mode.vdisplay;
-   image = eglCreateDRMImageMESA (dpy, image_attribs);
+   bo = gbm_bo_create(gbm, kms.mode.hdisplay, kms.mode.vdisplay,
+		      GBM_BO_FORMAT_XRGB8888,
+		      GBM_BO_USE_SCANOUT | GBM_BO_USE_RENDERING);
+   handle = gbm_bo_get_handle(bo).u32;
+   stride = gbm_bo_get_pitch(bo);
 
-   eglExportDRMImageMESA(dpy, image, NULL, &handle, &stride);
+   image = eglCreateImageKHR(dpy, NULL, EGL_NATIVE_PIXMAP_KHR, bo, NULL);
 
    glGenRenderbuffers(1, &color_rb);
    glBindRenderbuffer(GL_RENDERBUFFER_EXT, color_rb);

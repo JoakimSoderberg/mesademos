@@ -681,13 +681,15 @@ visual_drawable_type(int type)
    };
    int i;
 
+   strcpy(buffer, "(none)");
    p = buffer;
    for (i = 0; i < 3; i++) {
-      if (p > buffer)
-	 *p++ = ',';
-      if (type & bits[i].bit)
-	 strcpy(p, bits[i].name);
-      p += strlen(bits[i].name);
+      if (type & bits[i].bit) {
+         if (p > buffer)
+            *p++ = ',';
+         strcpy(p, bits[i].name);
+         p += strlen(bits[i].name);
+      }
    }
 
    return buffer;

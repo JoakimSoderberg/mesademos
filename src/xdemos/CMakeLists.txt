@@ -13,8 +13,9 @@ link_libraries (
 	util
 	${OPENGL_gl_LIBRARY}
 	${OPENGL_glu_LIBRARY}
-	${X11_X11_LIBRARY}
 	${GLEW_glew_LIBRARY}
+	${X11_X11_LIB}
+	${X11_Xext_LIB}
 )
 
 add_library (pbutil pbutil.c)

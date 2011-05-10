@@ -150,7 +150,8 @@ if (X11_FOUND)
 	)
 
 	link_libraries (
-		${X11_X11_LIBRARY}
+		${X11_Xext_LIB}
+		${X11_X11_LIB}
 	)
 
 	set (xtargets

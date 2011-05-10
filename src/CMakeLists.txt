@@ -14,6 +14,7 @@ add_subdirectory (fpglsl)
 add_subdirectory (vp)
 add_subdirectory (vpglsl)
 add_subdirectory (gs)
+add_subdirectory (slang)
 
 if(EGL_egl_LIBRARY)
   add_subdirectory(egl)

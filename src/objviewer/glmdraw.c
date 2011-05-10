@@ -258,18 +258,18 @@ glmDrawVBO(GLMmodel *model)
    glBindBufferARB(GL_ARRAY_BUFFER_ARB, model->vbo);
 
    glVertexPointer(3, GL_FLOAT, model->vertexSize * sizeof(float),
-                   (void *) model->posOffset);
+                   (const void *) (size_t) model->posOffset);
    glEnableClientState(GL_VERTEX_ARRAY);
 
    if (model->numnormals > 0) {
       glNormalPointer(GL_FLOAT, model->vertexSize * sizeof(float),
-                      (void *) model->normOffset);
+                      (const void *) (size_t) model->normOffset);
       glEnableClientState(GL_NORMAL_ARRAY);
    }
 
    if (model->numtexcoords > 0) {
       glTexCoordPointer(2, GL_FLOAT, model->vertexSize * sizeof(float),
-                        (void *) model->texOffset);
+                        (const void *) (size_t) model->texOffset);
       glEnableClientState(GL_TEXTURE_COORD_ARRAY);
    }
 

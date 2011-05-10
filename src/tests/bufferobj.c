@@ -74,7 +74,7 @@ static void DrawObject( const struct object *obj )
       /* no vertex array objects, must set vertex/color pointers per draw */
 
       glBindBufferARB(GL_ARRAY_BUFFER_ARB, obj->VertexBufferID);
-      glVertexPointer(3, GL_FLOAT, obj->VertexStride, (void *) obj->VertexOffset);
+      glVertexPointer(3, GL_FLOAT, obj->VertexStride, (const void *) (size_t) obj->VertexOffset);
       glEnableClientState(GL_VERTEX_ARRAY);
 
       /* test push/pop attrib */
@@ -83,13 +83,13 @@ static void DrawObject( const struct object *obj )
       if (1)
       {
          glPushClientAttrib(GL_CLIENT_VERTEX_ARRAY_BIT);
-         /*glVertexPointer(3, GL_FLOAT, 0, (void *) (obj->VertexOffset + 10000));*/
+         /*glVertexPointer(3, GL_FLOAT, 0, (const void *) (size_t) (obj->VertexOffset + 10000));*/
          glBindBufferARB(GL_ARRAY_BUFFER_ARB, 999999);
          glPopClientAttrib();
       }
 #endif
       glBindBufferARB(GL_ARRAY_BUFFER_ARB, obj->ColorBufferID);
-      glColorPointer(3, GL_FLOAT, obj->ColorStride, (void *) obj->ColorOffset);
+      glColorPointer(3, GL_FLOAT, obj->ColorStride, (const void *) (size_t) obj->ColorOffset);
       glEnableClientState(GL_COLOR_ARRAY);
 
       if (obj->NumElements > 0) {
@@ -224,11 +224,11 @@ CreateVertexArrayObject(struct object *obj)
    glBindVertexArray(obj->ArrayObjectID);
 
    glBindBufferARB(GL_ARRAY_BUFFER_ARB, obj->VertexBufferID);
-   glVertexPointer(3, GL_FLOAT, obj->VertexStride, (void *) obj->VertexOffset);
+   glVertexPointer(3, GL_FLOAT, obj->VertexStride, (const void *) (size_t) obj->VertexOffset);
    glEnableClientState(GL_VERTEX_ARRAY);
 
    glBindBufferARB(GL_ARRAY_BUFFER_ARB, obj->ColorBufferID);
-   glColorPointer(3, GL_FLOAT, obj->ColorStride, (void *) obj->ColorOffset);
+   glColorPointer(3, GL_FLOAT, obj->ColorStride, (const void *) (size_t) obj->ColorOffset);
    glEnableClientState(GL_COLOR_ARRAY);
 
    glBindVertexArray(0);

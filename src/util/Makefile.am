@@ -40,7 +40,6 @@ SHADERUTIL_SRC = \
 endif
 
 libutil_la_SOURCES = \
-	extfuncs.h \
 	readtex.c \
 	readtex.h \
 	showbuffer.c \

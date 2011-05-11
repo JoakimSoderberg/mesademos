@@ -10,7 +10,6 @@ dinoshade
 dissolve
 drawpix
 engine
-extfuncs.h
 fbo_firecube
 fbotexture
 fire

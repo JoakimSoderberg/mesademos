@@ -5,7 +5,6 @@ brick
 bump
 convolutions
 deriv
-extfuncs.h
 fragcoord
 fsraytrace
 identity

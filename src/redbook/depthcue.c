@@ -44,7 +44,7 @@
  *  Fog is used to achieve this effect.
  */
 #include <stdlib.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 /*  Initialize linear fog for depth cueing.
  */

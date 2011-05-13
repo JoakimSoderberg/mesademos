@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 #define MAX_POINTS	256
 #define MAX_CONTOURS	32

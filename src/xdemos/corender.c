@@ -14,7 +14,7 @@
  */
 
 
-#include <GL/gl.h>
+#include "gl_wrap.h"
 #include <GL/glx.h>
 #include <assert.h>
 #include <math.h>

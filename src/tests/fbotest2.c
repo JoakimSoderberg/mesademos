@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 static int Win = 0;
 static int Width = 400, Height = 400;

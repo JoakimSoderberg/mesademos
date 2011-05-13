@@ -30,7 +30,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 static GLenum Target = GL_TEXTURE_2D;
 static GLenum Filter = GL_NEAREST;

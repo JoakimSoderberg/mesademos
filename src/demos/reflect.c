@@ -31,7 +31,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "GL/glut.h"
+#include "glut_wrap.h"
 #include "showbuffer.h"
 #include "readtex.h"
 

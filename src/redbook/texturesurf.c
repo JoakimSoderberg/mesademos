@@ -43,7 +43,7 @@
  */
 
 #include <stdlib.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <math.h>
 
 GLfloat ctrlpoints[4][4][3] = {

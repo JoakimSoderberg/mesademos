@@ -42,7 +42,7 @@
  *  using two-dimensional evaluators.
  */
 #include <stdlib.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 GLfloat ctrlpoints[4][4][3] =
 {

@@ -48,7 +48,7 @@
  *  star.  Also note that removing the TessProperty for the
  *  star will make the interior unshaded (WINDING_ODD).
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 #include <stdio.h>
 

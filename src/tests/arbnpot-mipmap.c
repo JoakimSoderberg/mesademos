@@ -47,7 +47,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 GLubyte mipmapImage32[40][46][3];
 GLubyte mipmapImage16[20][23][3];

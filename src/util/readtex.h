@@ -4,7 +4,7 @@
 #define READTEX_H
 
 
-#include <GL/gl.h>
+#include "gl_wrap.h"
 
 
 extern GLboolean

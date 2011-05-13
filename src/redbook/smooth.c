@@ -40,7 +40,7 @@
  * This program demonstrates smooth shading.
  * A smooth shaded polygon is drawn in a 2-D projection.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 
 static void init(void) 

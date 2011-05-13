@@ -28,7 +28,7 @@
  */
 
 #include <math.h>
-#include <GL/gl.h>
+#include "gl_wrap.h"
 #include <EGL/egl.h>
 
 #include "eglut.h"

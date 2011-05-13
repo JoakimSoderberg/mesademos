@@ -50,7 +50,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <GL/glew.h> /* for GL_BGRA */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 #undef max
 #undef min

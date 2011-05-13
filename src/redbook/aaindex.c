@@ -42,7 +42,7 @@
  *  is typed in the window, the lines are rotated in opposite 
  *  directions.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include "stdlib.h"
 
 #define RAMPSIZE 16

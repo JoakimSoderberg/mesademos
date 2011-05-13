@@ -50,7 +50,7 @@
  *  the modeling transformation (x rotation) by 30 degrees.
  *  The scene is then redrawn with the light in a new position.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 
 static int spin = 0;

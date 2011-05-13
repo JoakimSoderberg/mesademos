@@ -41,7 +41,7 @@
  *  Pressing the left mouse button rotates the rectangle.
  *  Pressing the middle mouse button stops the rotation.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 
 static GLfloat spin = 0.0;

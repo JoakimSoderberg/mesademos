@@ -54,7 +54,7 @@
  *  Note that some of the control points are hidden by the  
  *  surface itself.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 #include <stdio.h>
 

@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 #ifndef M_PI
 #define M_PI 3.14159265

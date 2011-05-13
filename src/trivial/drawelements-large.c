@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 #define NR_VERTS 20000
 GLfloat verts[NR_VERTS][4];

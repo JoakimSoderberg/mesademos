@@ -42,7 +42,7 @@
  * Interaction:  pressing the s and e keys (shoulder and elbow)
  * alters the rotation of the robot arm.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 
 static int shoulder = 0, elbow = 0;

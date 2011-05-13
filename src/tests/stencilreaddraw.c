@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 static GLint WinWidth = 500, WinHeight = 500;
 static GLboolean TestPacking = GL_FALSE;

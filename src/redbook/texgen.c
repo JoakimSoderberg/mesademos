@@ -49,7 +49,7 @@
  *  Pressing the 'x' key switches it back to x = 0.
  */
 
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 #include <stdio.h>
 

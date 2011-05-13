@@ -40,7 +40,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 #ifndef RAND_MAX
 #  define RAND_MAX 32767

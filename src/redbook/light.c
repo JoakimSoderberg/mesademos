@@ -41,7 +41,7 @@
  *  model.  A sphere is drawn using a grey material characteristic.
  *  A single light source illuminates the object.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 
 /*  Initialize material property, light source, lighting model,

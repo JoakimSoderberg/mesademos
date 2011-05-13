@@ -41,7 +41,7 @@
  *  ColorMaterial mode.  Interaction:  pressing the 
  *  mouse buttons will change the diffuse reflection values.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 
 GLfloat diffuseMaterial[4] = { 0.5, 0.5, 0.5, 1.0 };

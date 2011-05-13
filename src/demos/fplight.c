@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 
 static GLfloat Diffuse[4] = { 0.5, 0.5, 1.0, 1.0 };

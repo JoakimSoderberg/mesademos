@@ -16,7 +16,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 
 GLint size;

@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 static int Win;
 static int WinWidth = 400, WinHeight = 400;

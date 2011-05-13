@@ -41,7 +41,7 @@
  *  to demonstrate the effect order has on alpha blending results.
  *  Use the 't' key to toggle the order of drawing polygons.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 
 static int leftFirst = GL_TRUE;

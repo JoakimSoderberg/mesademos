@@ -43,7 +43,7 @@
  */
 #include <stdlib.h>
 #include <stdio.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 /*  Initialize antialiasing for RGBA mode, including alpha
  *  blending, hint, and line width.  Print out implementation

@@ -28,7 +28,7 @@
 
 #include <stdio.h>
 #include "glmain.h"
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 
 static int Win;

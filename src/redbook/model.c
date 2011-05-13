@@ -39,7 +39,7 @@
  *  model.c
  *  This program demonstrates modeling transformations
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 
 static void init(void) 

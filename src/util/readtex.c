@@ -7,8 +7,7 @@
 
 
 
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include "gl_wrap.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h> 

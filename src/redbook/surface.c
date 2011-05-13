@@ -42,7 +42,7 @@
  *  symmetrical hill.
  */
 #include <stdlib.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 GLfloat ctlpoints[4][4][3];
 int showPoints = 0;

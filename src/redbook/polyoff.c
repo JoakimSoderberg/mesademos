@@ -41,7 +41,7 @@
  *  polygon and its wireframe counterpart without ugly visual
  *  artifacts ("stitching").
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

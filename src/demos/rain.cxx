@@ -11,7 +11,7 @@
 #include <string.h>
 #include <math.h>
 #include <time.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #ifndef M_PI
 #define M_PI 3.14159265
 #endif

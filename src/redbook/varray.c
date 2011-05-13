@@ -39,7 +39,7 @@
  *  varray.c
  *  This program demonstrates vertex arrays.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdio.h>
 #include <stdlib.h>
 

@@ -36,7 +36,7 @@
 #define GLSTATE_H
 
 
-#include <GL/gl.h>
+#include "gl_wrap.h"
 
 
 extern const char *GetNameString( GLenum var );

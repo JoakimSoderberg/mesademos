@@ -23,7 +23,7 @@
 #include <windows.h>
 #endif
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 /* Some <math.h> files do not define M_PI... */
 #ifndef M_PI

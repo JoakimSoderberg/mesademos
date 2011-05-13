@@ -41,7 +41,7 @@
  *  two diagonal lines to form an X; when 'r' is typed in the window, 
  *  the lines are rotated in opposite directions.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 #include <stdio.h>
 

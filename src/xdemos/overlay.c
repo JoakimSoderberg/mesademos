@@ -5,7 +5,7 @@
  * 18 July 2005
  */
 
-#include <GL/gl.h>
+#include "gl_wrap.h"
 #include <GL/glx.h>
 #include <X11/keysym.h>
 #include <assert.h>

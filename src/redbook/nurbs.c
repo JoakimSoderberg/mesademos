@@ -43,7 +43,7 @@
  *  surface, shaped like a heart.
  */
 #include <stdlib.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 #define S_NUMPOINTS 13
 #define S_ORDER     3

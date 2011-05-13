@@ -40,7 +40,7 @@
  *  This program demonstrates geometric primitives and
  *  their attributes.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 
 #define drawOneLine(x1,y1,x2,y2)  glBegin(GL_LINES);  \

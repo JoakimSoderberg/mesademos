@@ -46,7 +46,7 @@
  *  If running this program on OpenGL 1.0, texture objects are
  *  not used.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 #include <stdio.h>
 

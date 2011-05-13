@@ -44,7 +44,7 @@
  */
 #include <stdlib.h>
 #include <stdio.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 int board[3][3];   /*  amount of color for each square	*/
 

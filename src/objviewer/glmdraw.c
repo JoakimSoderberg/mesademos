@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <GL/glew.h>
-#include <GL/glu.h>
 #include "glm.h"
 #include "readtex.h"
 #include "shaderutil.h"

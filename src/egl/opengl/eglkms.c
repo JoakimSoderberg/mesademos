@@ -4,7 +4,7 @@
 #define EGL_EGLEXT_PROTOTYPES
 #define GL_GLEXT_PROTOTYPES
 
-#include <GL/gl.h>
+#include "gl_wrap.h"
 #include <GL/glext.h>
 #include <EGL/egl.h>
 #include <EGL/eglext.h>

@@ -37,7 +37,7 @@
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
 #if USE_FULL_GL
-#include <GL/gl.h>  /* use full OpenGL */
+#include "gl_wrap.h"  /* use full OpenGL */
 #else
 #include <GLES/gl.h>  /* use OpenGL ES 1.x */
 #include <GLES/glext.h>

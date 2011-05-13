@@ -42,7 +42,7 @@
  *  Interaction:  pressing the d and y keys (day and year)
  *  alters the rotation of the planet around the sun.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 
 static int year = 0, day = 0;

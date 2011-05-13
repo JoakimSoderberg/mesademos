@@ -44,7 +44,7 @@
 #endif
 #define GL_GLEXT_LEGACY
 #include <GL/glew.h>    /* OpenGL Utility Toolkit header */
-#include <GL/glut.h>    /* OpenGL Utility Toolkit header */
+#include "glut_wrap.h"    /* OpenGL Utility Toolkit header */
 
 /* Some <math.h> files do not define M_PI... */
 #ifndef M_PI

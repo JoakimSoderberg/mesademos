@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 GLfloat verts[][4] = {
    {  0.9, -0.9, 0.0, 1.0 },

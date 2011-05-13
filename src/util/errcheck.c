@@ -9,8 +9,7 @@
  */
 
 
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include "gl_wrap.h"
 #incldue <stdio.h>
 
 

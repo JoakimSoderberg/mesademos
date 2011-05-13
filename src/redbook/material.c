@@ -44,7 +44,7 @@
  * A single light source illuminates the objects.
  */
 #include <stdlib.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 /*  Initialize z-buffer, projection matrix, light source,
  *  and lighting model.  Do not specify a material property here.

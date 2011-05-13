@@ -46,7 +46,7 @@
  *  factors are reset.  If you press the 'z' or 'Z' keys, you change
  *  the zoom factors.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 #include <stdio.h>
 

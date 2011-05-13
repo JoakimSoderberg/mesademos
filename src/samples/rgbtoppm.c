@@ -8,7 +8,7 @@
 #include <stdlib.h> 
 #include <string.h>
 
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 typedef struct _ImageRec {
     unsigned short imagic;

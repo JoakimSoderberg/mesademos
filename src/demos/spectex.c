@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 
 static GLUquadricObj *Quadric;

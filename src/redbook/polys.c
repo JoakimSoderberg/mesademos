@@ -42,7 +42,7 @@
  *  This program demonstrates polygon stippling.
  */
 #include <stdlib.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 static void display(void)
 {

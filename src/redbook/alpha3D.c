@@ -45,7 +45,7 @@
  */
 #include <stdlib.h>
 #include <stdio.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 #define MAXZ 8.0
 #define MINZ -8.0

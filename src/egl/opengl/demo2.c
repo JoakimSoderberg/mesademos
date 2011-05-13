@@ -12,7 +12,7 @@
 
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
-#include <GL/gl.h>
+#include "gl_wrap.h"
 
 /*#define FRONTBUFFER*/
 

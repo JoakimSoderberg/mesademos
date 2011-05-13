@@ -6,7 +6,7 @@
 
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
-#include <GL/gl.h>
+#include "gl_wrap.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>

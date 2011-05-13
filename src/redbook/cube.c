@@ -41,7 +41,7 @@
  *  glScalef() and a single viewing transformation, gluLookAt().
  *  A wireframe cube is rendered.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 
 static void init(void) 

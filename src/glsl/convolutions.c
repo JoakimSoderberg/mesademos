@@ -10,7 +10,7 @@
 #define GL_GLEXT_PROTOTYPES
 #include "readtex.h"
 
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>

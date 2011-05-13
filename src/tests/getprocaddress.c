@@ -27,7 +27,7 @@
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
-#include <GL/gl.h>
+#include "gl_wrap.h"
 #include <GL/glx.h>
 #include <stdio.h>
 #include <stdlib.h>

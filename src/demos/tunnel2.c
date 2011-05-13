@@ -18,7 +18,7 @@
 #include <windows.h>
 #endif
 
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include "readtex.h"
 #include "tunneldat.h"
 

@@ -135,7 +135,7 @@ So the angle is:
 #ifndef _WIN32
 #include <unistd.h>
 #endif
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <math.h>
 
 #define Scale                      0.3

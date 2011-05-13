@@ -43,7 +43,7 @@
  *  infinite lighting on a flat plane.
  */
 #include <stdlib.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 /*  Initialize material property, light source, and lighting model.
  */

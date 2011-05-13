@@ -14,7 +14,7 @@
 #endif
 #define GL_GLEXT_LEGACY
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 #include "../util/readtex.c"   /* I know, this is a hack. */
 

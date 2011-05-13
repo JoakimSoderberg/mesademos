@@ -37,7 +37,7 @@
 #include <windows.h>
 #endif
 #define GL_GLEXT_LEGACY
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 GLfloat *verts;
 

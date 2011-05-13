@@ -8,7 +8,7 @@
 #include <math.h>
 #include <string.h>
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 #include "readtex.c" /* I know, this is a hack. */
 #define TEXTURE_FILE DEMOS_DATA_DIR "tree2.rgba"

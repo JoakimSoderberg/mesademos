@@ -38,7 +38,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 #define inline __inline__
 #include <asm/timex.h>

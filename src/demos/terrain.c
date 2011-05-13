@@ -19,7 +19,7 @@
 #include <windows.h>
 #endif
 
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 #ifdef XMESA
 #include "GL/xmesa.h"

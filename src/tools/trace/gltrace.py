@@ -83,9 +83,8 @@ class PrintGltrace(glX_proto_common.glx_print_proto): #(gl_XML.gl_print_base):
 		#self.printNoinline()
 
 		print """
-#include <GL/gl.h>
+#include "gl_wrap.h"
 #include <GL/glx.h>
-#include <GL/glu.h>
 #include <dlfcn.h>
 #include "gltrace_support.h"
 

@@ -48,7 +48,7 @@
 #if defined(PTHREADS)   /* defined by Mesa on Linux and other platforms */
 
 #include <assert.h>
-#include <GL/gl.h>
+#include "gl_wrap.h"
 #include <GL/glx.h>
 #include <math.h>
 #include <stdio.h>

@@ -42,7 +42,7 @@
  *  (piecewise linear) curve to trim part of the surface.
  */
 #include <stdlib.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdio.h>
 
 

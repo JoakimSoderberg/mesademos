@@ -46,7 +46,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 
 static GLfloat LodBias = 6.0;   /* make smallest miplevel visible */

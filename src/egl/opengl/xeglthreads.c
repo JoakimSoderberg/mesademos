@@ -52,7 +52,7 @@
 #include <assert.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
-#include <GL/gl.h>
+#include "gl_wrap.h"
 #include <EGL/egl.h>
 #include <math.h>
 #include <stdio.h>

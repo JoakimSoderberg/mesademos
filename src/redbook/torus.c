@@ -40,7 +40,7 @@
  *  This program demonstrates the creation of a display list.
  */
 
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>

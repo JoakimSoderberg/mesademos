@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 static int Width = 250, Height = 250;
 static GLfloat Zoom = 1.0;

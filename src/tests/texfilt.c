@@ -28,7 +28,7 @@
 #include <string.h>
 #include <math.h>
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 const GLenum filter_modes[] = {
      GL_NEAREST,

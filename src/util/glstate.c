@@ -40,7 +40,7 @@
 
 
 #include <assert.h>
-#include <GL/gl.h>
+#include "gl_wrap.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "glstate.h"
@@ -478,7 +478,7 @@ void PrintAttribState( GLbitfield attrib )
 /*#define TEST*/
 #ifdef TEST
 
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 int main( int argc, char *argv[] )
 {

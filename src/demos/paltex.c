@@ -12,7 +12,7 @@
 #include <windows.h>
 #endif
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 
 static float Rot = 0.0;

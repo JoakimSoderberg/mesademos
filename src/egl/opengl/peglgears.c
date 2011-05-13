@@ -34,7 +34,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <GL/gl.h>
+#include "gl_wrap.h"
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 

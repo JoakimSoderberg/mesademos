@@ -45,7 +45,7 @@
  *  A single light source illuminates the objects.
  */
 #include <stdlib.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 /*  Initialize material property and light source.
  */

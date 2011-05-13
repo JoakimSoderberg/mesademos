@@ -10,7 +10,7 @@
 #include <math.h>
 #define GL_GLEXT_PROTOTYPES
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include "shaderutil.h"
 
 static const char *filename = "bezier.geom";

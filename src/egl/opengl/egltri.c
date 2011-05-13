@@ -29,7 +29,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include <GL/gl.h>
+#include "gl_wrap.h"
 
 #include "eglut.h"
 

@@ -43,7 +43,7 @@
  *  Note that the cylinder has no top or bottom and the circle
  *  has a hole in it.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdio.h>
 #include <stdlib.h>
 

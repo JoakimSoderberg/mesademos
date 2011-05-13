@@ -39,7 +39,7 @@
  *  clip.c
  *  This program demonstrates arbitrary clipping planes.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 
 static void init(void) 

@@ -33,7 +33,7 @@
  */
 
 #include <stdio.h>
-#include <GL/gl.h>
+#include "gl_wrap.h"
 
 /***************************************************************************/
 
@@ -1942,7 +1942,7 @@ void dump_opengl_state( FILE* OUT )
 /*#define TEST*/
 #ifdef TEST
 
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 int main( int argc, char *argv[] )
 {

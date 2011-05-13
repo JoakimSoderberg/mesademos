@@ -25,7 +25,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 static GLenum doubleBuffer;
 static GLint cullmode = 0;

@@ -45,7 +45,7 @@
  *  with a color ramp.
  */
 #include <stdlib.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 /*  Initialize color map and fog.  Set screen clear color
  *  to end of color ramp.

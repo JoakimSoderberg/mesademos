@@ -8,7 +8,7 @@
 
 
 #include <stdio.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 
 int main( int argc, char *argv[] )

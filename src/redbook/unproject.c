@@ -41,7 +41,7 @@
  *  reads the mouse position and determines two 3D points 
  *  from which it was transformed.  Very little is displayed.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 #include <stdio.h>
 

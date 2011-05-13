@@ -42,7 +42,7 @@
  *  each with very different contours.  When the w key is pressed, 
  *  the objects are drawn with a different winding rule.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 #include <stdio.h>
 

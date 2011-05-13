@@ -45,7 +45,7 @@
  *  different colors.
  */
 #include <stdlib.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 GLubyte mipmapImage32[32][32][3];
 GLubyte mipmapImage16[16][16][3];

@@ -41,7 +41,7 @@
  *  display list.  Note that attributes, such as current 
  *  color and matrix, are changed.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 
 GLuint listName;

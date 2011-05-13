@@ -14,7 +14,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "GL/osmesa.h"
-#include "GL/glu.h"
 
 
 #define WIDTH 600

@@ -50,7 +50,7 @@
  * the green triangle causes one hit with the name 1, and 
  * the yellow triangles cause one hit with the name 3.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 #include <stdio.h>
 

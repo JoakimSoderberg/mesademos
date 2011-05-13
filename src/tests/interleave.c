@@ -37,7 +37,7 @@
 #include <string.h>
 #include <time.h>
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 static int Width = 400;
 static int Height = 300;

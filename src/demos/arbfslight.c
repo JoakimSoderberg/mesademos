@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 static GLfloat diffuse[4] = { 0.5f, 0.5f, 1.0f, 1.0f };
 static GLfloat specular[4] = { 0.8f, 0.8f, 0.8f, 1.0f };

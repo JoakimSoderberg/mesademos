@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 
 static float MinPeriod = 2.0;   /* 2 seconds */

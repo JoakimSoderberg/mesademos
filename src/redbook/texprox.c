@@ -41,7 +41,7 @@
  *  This program only prints out some messages about whether
  *  certain size textures are supported and then exits.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 #include <stdio.h>
 

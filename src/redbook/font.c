@@ -42,7 +42,7 @@
  *  and other pixel routines.  Also demonstrates use of 
  *  display lists.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 #include <string.h>
 

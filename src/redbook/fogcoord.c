@@ -59,7 +59,7 @@
  */
 
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>

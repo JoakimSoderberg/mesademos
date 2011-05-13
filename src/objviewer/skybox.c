@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <GL/glew.h>
-#include <GL/glu.h>
 #include "readtex.h"
 #include "skybox.h"
 

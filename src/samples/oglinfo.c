@@ -6,9 +6,8 @@
 
 
 
-#include <GL/gl.h>
+#include "gl_wrap.h"
 #include <GL/glx.h>
-#include <GL/glu.h>
 #include <stdio.h>
 #include <string.h>
 

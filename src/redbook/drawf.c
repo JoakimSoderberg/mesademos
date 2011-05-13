@@ -40,7 +40,7 @@
  *  Draws the bitmapped letter F on the screen (several times).
  *  This demonstrates use of the glBitmap() call.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 
 GLubyte rasters[24] = {

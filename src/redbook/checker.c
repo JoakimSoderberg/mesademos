@@ -43,7 +43,7 @@
  *  the texture coordinates fall outside 0.0 and 1.0.
  */
 #include <stdlib.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 /*	Create checkerboard texture	*/
 #define	checkImageWidth 64

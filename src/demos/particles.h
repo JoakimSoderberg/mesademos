@@ -9,7 +9,7 @@
 #ifndef PARTICLES_H
 #define PARTICLES_H
 
-#include <GL/gl.h>
+#include "gl_wrap.h"
 
 class particle {
  protected:

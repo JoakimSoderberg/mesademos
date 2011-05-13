@@ -43,7 +43,7 @@
  *  alter the original texture.  If the r key is pressed,
  *  the original texture is restored.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 #include <stdio.h>
 

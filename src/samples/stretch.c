@@ -26,7 +26,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 
 #define STEPCOUNT 40

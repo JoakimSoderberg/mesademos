@@ -27,7 +27,7 @@
 #include <math.h>
 #include <string.h>
 #include <time.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 
 #define MAXOBJS 10000

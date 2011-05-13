@@ -42,7 +42,7 @@
  *  This program draws lighted objects with flat shading.
  */
 #include <stdlib.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 /*  Initialize light source and shading model (GL_FLAT).
  */

@@ -42,7 +42,7 @@
  * Then feedback mode is entered, and the same lines are 
  * drawn.  The results in the feedback buffer are printed.
  */
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include <stdlib.h>
 #include <stdio.h>
 

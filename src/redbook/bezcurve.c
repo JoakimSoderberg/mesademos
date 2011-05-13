@@ -39,7 +39,7 @@
  *  This program uses evaluators to draw a Bezier curve.
  */
 #include <stdlib.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 GLfloat ctrlpoints[4][3] = {
 	{ -4.0, -4.0, 0.0}, { -2.0, 4.0, 0.0}, 

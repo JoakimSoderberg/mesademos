@@ -28,7 +28,7 @@
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include "readtex.h"
 
 

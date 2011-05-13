@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include "readtex.h"
 
 #define TEXTURE_1_FILE DEMOS_DATA_DIR "tile.rgb"

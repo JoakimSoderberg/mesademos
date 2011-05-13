@@ -40,7 +40,7 @@
 /*  accanti.c
  */
 #include <stdlib.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 #include "jitter.h"
 
 /*  Initialize lighting and other values.

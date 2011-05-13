@@ -25,7 +25,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <X11/Xlib.h>
-#include <GL/gl.h>
+#include "gl_wrap.h"
 #include <GL/glx.h>
 
 /** \file opencloseopen.c

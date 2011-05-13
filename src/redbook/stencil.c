@@ -59,7 +59,7 @@
 
 
 #include <stdlib.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 #define YELLOWMAT   1
 #define BLUEMAT 2

@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include "glut_wrap.h"
 
 static float Xrot = 0.0, Yrot = 0.0, Zrot = 0.0;
 static GLboolean Anim = GL_TRUE;

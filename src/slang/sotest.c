@@ -69,7 +69,7 @@ static void endtest1 (GLuint param1)
       ;
 }
 
-static void endtest ()
+static void endtest (void)
 {
    endtest1 (0);
 }
@@ -78,7 +78,7 @@ static GLhandleARB vert = 0;
 static GLhandleARB frag = 0;
 static GLhandleARB prog = 0;
 
-static GLhandleARB find_invalid_handle ()
+static GLhandleARB find_invalid_handle (void)
 {
    GLhandleARB handle;
 

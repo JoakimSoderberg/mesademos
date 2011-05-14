@@ -79,7 +79,7 @@ static struct ATTRIB_DATA attribs[] = {
    { "gl_Vertex",         V, 16, -1, 4, { 0.25f, -0.14f, 0.01f, 1.0f } }
 };
 
-static void im_render ()
+static void im_render (void)
 {
    GLint i;
 
@@ -118,7 +118,7 @@ static void im_render ()
    glEnd ();
 }
 
-static void va_render ()
+static void va_render (void)
 {
    GLint i;
 
@@ -196,12 +196,12 @@ static void va_render ()
    }
 }
 
-static void dl_start ()
+static void dl_start (void)
 {
    glNewList (GL_COMPILE, 1);
 }
 
-static void dl_end ()
+static void dl_end (void)
 {
    glEndList ();
    glCallList (1);

@@ -37,7 +37,9 @@
 static GLboolean Anim = GL_TRUE;
 static GLfloat Xpos = 0;
 static GLuint OccQuery1;
+#if defined(GL_ARB_occlusion_query2)
 static GLuint OccQuery2;
+#endif
 static GLint Win = 0;
 static GLboolean has_oq2 = GL_FALSE;
 
@@ -85,7 +87,9 @@ static void Idle(void)
 static void Display( void )
 {
    GLuint passed1;
+#if defined(GL_ARB_occlusion_query2)
    GLuint passed2_boolean;
+#endif
    GLint ready;
    char s[100];
 

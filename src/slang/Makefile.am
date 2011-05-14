@@ -24,7 +24,8 @@
 
 AM_CFLAGS = \
 	$(DEMO_CFLAGS) \
-	$(GLUT_CFLAGS)
+	$(GLUT_CFLAGS) \
+	-I$(top_srcdir)/src/util
 
 AM_LDFLAGS = \
 	$(DEMO_LIBS) \

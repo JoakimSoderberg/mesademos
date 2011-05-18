@@ -21,6 +21,8 @@ static GLfloat LodBias = 0.0;
 static GLboolean NearestFilter = GL_FALSE;
 static GLfloat Zpos = -10.0, Zrot = 0.0;
 static GLuint TexObj;
+static GLboolean HaveAniso;
+static GLfloat AnisoMax = 1.0, MaxAnisoMax = 8.0;
 
 #define TEX_SIZE 1024
 
@@ -98,6 +100,12 @@ Init(void)
 
    printf("GL_RENDERER = %s\n", (char *) glGetString(GL_RENDERER));
    printf("GL_VERSION = %s\n", (char *) glGetString(GL_VERSION));
+
+   HaveAniso = glutExtensionSupported("GL_EXT_texture_filter_anisotropic");
+   if (HaveAniso) {
+      glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &MaxAnisoMax);
+      printf("GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT = %f\n", MaxAnisoMax);
+   }
 }
 
 
@@ -153,6 +161,10 @@ Display(void)
                       GL_LINEAR_MIPMAP_LINEAR);
    }
 
+   if (HaveAniso) {
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, AnisoMax);
+   }
+
    glTexEnvf(GL_TEXTURE_FILTER_CONTROL_EXT, GL_TEXTURE_LOD_BIAS_EXT, LodBias);
 
    glClear(GL_COLOR_BUFFER_BIT);
@@ -165,7 +177,10 @@ Display(void)
 
    glColor3f(1, 1, 1);
    glWindowPos2i(10, 10);
-   sprintf(str, "LOD bias (b/B): %.3f", LodBias);
+   if (HaveAniso)
+      sprintf(str, "LOD bias (b/B): %.3f  MaxAnisotropy: %.3f", LodBias, AnisoMax);
+   else
+      sprintf(str, "LOD bias (b/B): %.3f", LodBias);
    PrintString(str);
 
    glutSwapBuffers();
@@ -190,6 +205,16 @@ Key(unsigned char k, int x, int y)
    (void) x;
    (void) y;
    switch (k) {
+   case 'a':
+      AnisoMax -= 0.25;
+      if (AnisoMax <= 1.0)
+         AnisoMax = 1.0;
+      break;
+   case 'A':
+      AnisoMax += 0.25;
+      if (AnisoMax > MaxAnisoMax)
+         AnisoMax = MaxAnisoMax;
+      break;
    case 'b':
       LodBias -= 0.125;
       break;

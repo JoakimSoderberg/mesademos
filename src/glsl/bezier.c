@@ -161,6 +161,11 @@ static void init(void)
    if (!ShadersSupported())
       exit(1);
 
+   if (!glutExtensionSupported("GL_ARB_geometry_shader4")) {
+      printf("This demo requires GL_ARB_geometry_shader4\n");
+      exit(1);
+   }
+
    menu_init();
 
    fragShader = glCreateShader(GL_FRAGMENT_SHADER);

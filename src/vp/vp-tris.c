@@ -87,7 +87,7 @@ static void Init( void )
 {
    GLint errno;
    GLuint prognum;
-   char buf[4096];
+   char buf[16 * 1024];
    GLuint sz;
    FILE *f;
 

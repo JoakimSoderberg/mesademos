@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "GL/osmesa.h"
+#include "gl_wrap.h"
 
 
 #define SAVE_TARGA

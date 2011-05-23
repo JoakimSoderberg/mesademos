@@ -603,12 +603,15 @@ print_screen_info(Display *dpy, int scrnum, Bool allowDirect, GLboolean limits, 
       printf("direct rendering: ");
       if (glXIsDirect(dpy, ctx)) {
          printf("Yes\n");
-      } else {
+      }
+      else {
          if (!allowDirect) {
             printf("No (-i specified)\n");
-         } else if (getenv("LIBGL_ALWAYS_INDIRECT")) {
+         }
+         else if (getenv("LIBGL_ALWAYS_INDIRECT")) {
             printf("No (LIBGL_ALWAYS_INDIRECT set)\n");
-         } else {
+         }
+         else {
             printf("No (If you want to find out why, try setting "
                    "LIBGL_DEBUG=verbose)\n");
          }
@@ -971,11 +974,12 @@ print_visual_attribs_verbose(const struct visual_attribs *attribs,
 			     int fbconfigs)
 {
    if (fbconfigs) {
-   printf("FBConfig ID: %x  Visual ID=%x  depth=%d  class=%s, type=%s\n",
-          attribs->id, attribs->vis_id, attribs->depth,
-	  visual_class_name(attribs->klass),
-	  visual_drawable_type(attribs->drawableType));
-   } else {
+      printf("FBConfig ID: %x  Visual ID=%x  depth=%d  class=%s, type=%s\n",
+             attribs->id, attribs->vis_id, attribs->depth,
+             visual_class_name(attribs->klass),
+             visual_drawable_type(attribs->drawableType));
+   }
+   else {
       printf("Visual ID: %x  depth=%d  class=%s, type=%s\n",
 	     attribs->id, attribs->depth, visual_class_name(attribs->klass),
 	     visual_drawable_type(attribs->drawableType));
@@ -1333,7 +1337,7 @@ main(int argc, char *argv[])
          usage();
          return 0;
       }
-      else if(strcmp(argv[i], "-s") == 0) {
+      else if (strcmp(argv[i], "-s") == 0) {
          singleLine = True;
       }
       else {

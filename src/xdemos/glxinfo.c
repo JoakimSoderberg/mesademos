@@ -473,7 +473,7 @@ print_limits(const char *extensions)
 
 
 static void
-print_screen_info(Display *dpy, int scrnum, Bool allowDirect, GLboolean limits, Bool singleLine)
+print_screen_info(Display *dpy, int scrnum, Bool allowDirect, Bool limits, Bool singleLine)
 {
    Window win;
    int attribSingle[] = {
@@ -520,14 +520,14 @@ print_screen_info(Display *dpy, int scrnum, Bool allowDirect, GLboolean limits, 
 	 GLX_RED_SIZE,      1,
 	 GLX_GREEN_SIZE,    1,
 	 GLX_BLUE_SIZE,     1,
-	 GLX_DOUBLEBUFFER,  GL_FALSE,
+	 GLX_DOUBLEBUFFER,  False,
 	 None };
       int fbAttribDouble[] = {
 	 GLX_RENDER_TYPE,   GLX_RGBA_BIT,
 	 GLX_RED_SIZE,      1,
 	 GLX_GREEN_SIZE,    1,
 	 GLX_BLUE_SIZE,     1,
-	 GLX_DOUBLEBUFFER,  GL_TRUE,
+	 GLX_DOUBLEBUFFER,  True,
 	 None };
       GLXFBConfig *configs = NULL;
       int nConfigs;
@@ -758,7 +758,7 @@ caveat_string(int caveat)
 }
 
 
-static GLboolean
+static Bool
 get_visual_attribs(Display *dpy, XVisualInfo *vInfo,
                    struct visual_attribs *attribs)
 {
@@ -782,7 +782,7 @@ get_visual_attribs(Display *dpy, XVisualInfo *vInfo,
 
    if (glXGetConfig(dpy, vInfo, GLX_USE_GL, &attribs->supportsGL) != 0 ||
        !attribs->supportsGL)
-      return GL_FALSE;
+      return False;
    glXGetConfig(dpy, vInfo, GLX_BUFFER_SIZE, &attribs->bufferSize);
    glXGetConfig(dpy, vInfo, GLX_LEVEL, &attribs->level);
    glXGetConfig(dpy, vInfo, GLX_RGBA, &rgba);
@@ -847,7 +847,7 @@ get_visual_attribs(Display *dpy, XVisualInfo *vInfo,
    }
 #endif
 
-   return GL_TRUE;
+   return True;
 }
 
 #ifdef GLX_VERSION_1_3
@@ -874,7 +874,7 @@ glx_token_to_visual_class(int visual_type)
    }
 }
 
-static GLboolean
+static Bool
 get_fbconfig_attribs(Display *dpy, GLXFBConfig fbconfig,
 		     struct visual_attribs *attribs)
 {
@@ -962,7 +962,7 @@ get_fbconfig_attribs(Display *dpy, GLXFBConfig fbconfig,
       glXGetFBConfigAttrib(dpy, fbconfig, GLX_FRAMEBUFFER_SRGB_CAPABLE_EXT, &attribs->srgb);
    }
 #endif
-   return GL_TRUE;
+   return True;
 }
 
 #endif
@@ -1307,8 +1307,8 @@ main(int argc, char *argv[])
    Display *dpy;
    int numScreens, scrnum;
    InfoMode mode = Normal;
-   GLboolean findBest = GL_FALSE;
-   GLboolean limits = GL_FALSE;
+   Bool findBest = False;
+   Bool limits = False;
    Bool allowDirect = True;
    Bool singleLine = False;
    int i;
@@ -1325,13 +1325,13 @@ main(int argc, char *argv[])
          mode = Verbose;
       }
       else if (strcmp(argv[i], "-b") == 0) {
-         findBest = GL_TRUE;
+         findBest = True;
       }
       else if (strcmp(argv[i], "-i") == 0) {
          allowDirect = False;
       }
       else if (strcmp(argv[i], "-l") == 0) {
-         limits = GL_TRUE;
+         limits = True;
       }
       else if (strcmp(argv[i], "-h") == 0) {
          usage();

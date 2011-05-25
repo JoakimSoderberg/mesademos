@@ -78,5 +78,5 @@ eglgears_x11_LDADD = ../eglut/libeglut_x11.la
 egltri_x11_LDADD = ../eglut/libeglut_x11.la
 
 eglkms_SOURCES = eglkms.c
-eglkms_CFLAGS = $(DRM_CFLAGS)
+eglkms_CFLAGS = $(AM_CFLAGS) $(DRM_CFLAGS)
 eglkms_LDADD = $(AM_LDFLAGS) $(DRM_LIBS)

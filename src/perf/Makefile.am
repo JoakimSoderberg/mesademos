@@ -40,6 +40,8 @@ AM_LDFLAGS = \
 	$(DEMO_LIBS) \
 	$(GLUT_LIBS)
 
+LDADD = libperf.la
+
 bin_PROGRAMS = \
 	copytex \
 	drawoverhead \
@@ -54,14 +56,4 @@ bin_PROGRAMS = \
 	glslstateschange
 endif
 
-copytex_LDADD = libperf.la
-drawoverhead_LDADD = libperf.la
-fbobind_LDADD = libperf.la
-fill_LDADD = libperf.la
-genmipmap_LDADD = libperf.la
-readpixels_LDADD = libperf.la
-swapbuffers_LDADD = libperf.la
-teximage_LDADD = libperf.la
-vbo_LDADD = libperf.la
-vertexrate_LDADD = libperf.la
 glslstateschange_LDADD = libperf.la ../util/libutil.la

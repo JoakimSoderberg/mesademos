@@ -40,6 +40,7 @@ bin_PROGRAMS = \
 	clearspd \
 	copypix \
 	cubemap \
+	cuberender \
 	dinoshade \
 	dissolve \
 	drawpix \
@@ -94,6 +95,7 @@ tunnel_SOURCES = \
 
 copypix_LDADD = ../util/libutil.la
 cubemap_LDADD = ../util/libutil.la
+cuberender_LDADD = ../util/libutil.la
 drawpix_LDADD = ../util/libutil.la
 dissolve_LDADD = ../util/libutil.la
 engine_LDADD = ../util/libutil.la

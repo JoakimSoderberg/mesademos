@@ -163,6 +163,8 @@ static void Draw( void )
 
    if (doubleBuffer) {
       glutSwapBuffers();
+   } else {
+      glFlush();
    }
 
    CheckError();

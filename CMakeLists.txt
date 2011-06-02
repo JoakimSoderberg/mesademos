@@ -37,6 +37,9 @@ if (WIN32)
 		add_definitions (--include windows.h)
 	endif (MSVC)
 
+	# Don't define min/max macros
+	add_definitions (-DNOMINMAX)
+
 	# MSVC & MinGW only define & use APIENTRY
 	add_definitions (-DGLAPIENTRY=__stdcall)
 

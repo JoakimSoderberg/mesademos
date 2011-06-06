@@ -24,7 +24,7 @@ endif (UNIX)
 # from the standard OpenGL framework which provides support for GLUT and native
 # Mac OS X applications.
 if (X11_FOUND)
-	if (X11_FOUND)
+	if (APPLE)
 		find_path (X11_GL_INCLUDE_PATH GL/glx.h ${X11_INC_SEARCH_PATH})
 		if (NOT X11_GL_INCLUDE_PATH)
 			message (WARNING "Could not find GL/glx.h")

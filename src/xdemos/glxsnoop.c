@@ -10,7 +10,7 @@
 
 #define GL_GLEXT_PROTOTYPES
 
-#include "gl_wrap.h"
+#include <GL/gl.h>
 #include <GL/glx.h>
 #include <stdio.h>
 #include <stdlib.h>

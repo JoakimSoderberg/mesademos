@@ -1,5 +1,5 @@
 include_directories(
-	${mesademos_SOURCE_DIR}/src/util
+	${CMAKE_SOURCE_DIR}/src/util
 	${OPENGL_INCLUDE_PATH}
 	${GLUT_INCLUDE_DIR}
 	${GLEW_INCLUDE_DIR}

@@ -37,7 +37,7 @@
 #include <string.h>
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
-#include "gl_wrap.h"
+#include <GL/gl.h>
 #include <GL/glx.h>
 
 

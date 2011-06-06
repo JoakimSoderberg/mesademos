@@ -1,20 +1,16 @@
 include_directories (
-	${mesademos_SOURCE_DIR}/src/util
+	${CMAKE_SOURCE_DIR}/src/util
 	${OPENGL_INCLUDE_PATH}
 	${GLUT_INCLUDE_DIR}
 	${GLEW_INCLUDE_DIR}
 )
 
 link_directories (
-	${mesademos_SOURCE_DIR}/src/util
+	${CMAKE_SOURCE_DIR}/src/util
 )
 
 link_libraries (
 	util
-	${OPENGL_gl_LIBRARY}
-	${OPENGL_glu_LIBRARY}
-	${GLUT_glut_LIBRARY}
-	${GLEW_glew_LIBRARY}
 )
 
 set (subdir tests)
@@ -141,6 +137,12 @@ endif (UNIX)
 foreach (target ${targets})
 	add_executable (${subdir}_${target} ${target}.c)
 	set_target_properties (${subdir}_${target} PROPERTIES OUTPUT_NAME ${target})
+	target_link_libraries (${subdir}_${target}
+		${OPENGL_gl_LIBRARY}
+		${OPENGL_glu_LIBRARY}
+		${GLUT_glut_LIBRARY}
+		${GLEW_glew_LIBRARY}
+	)
 	install (TARGETS ${subdir}_${target} DESTINATION ${subdir})
 endforeach (target)
 
@@ -149,21 +151,23 @@ if (X11_FOUND)
 		${X11_INCLUDE_DIR}
 	)
 
-	link_libraries (
-		${X11_Xext_LIB}
-		${X11_X11_LIB}
-	)
-
-	set (xtargets
+	set (targets
 		auxbuffer
 		jkrahntest
 		sharedtex
 		texobjshare
 	)
 
-	foreach (xtarget ${xtargets})
-		add_executable (${xtarget} ${xtarget}.c)
-	endforeach (xtarget)
-
-	install (TARGETS ${xtargets} DESTINATION ${subdir})
+	foreach (target ${targets})
+		add_executable (${subdir}_${target} ${target}.c)
+		set_target_properties (${subdir}_${target} PROPERTIES OUTPUT_NAME ${target})
+		target_link_libraries (${subdir}_${target}
+			${GLEW_glew_LIBRARY}
+			${X11_GLU_LIB}
+			${X11_GL_LIB}
+			${X11_Xext_LIB}
+			${X11_X11_LIB}
+		)
+		install (TARGETS ${subdir}_${target} DESTINATION ${subdir})
+	endforeach (target)
 endif (X11_FOUND)

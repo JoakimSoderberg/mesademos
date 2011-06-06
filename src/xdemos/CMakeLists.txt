@@ -1,18 +1,17 @@
 include_directories (
-	${mesademos_SOURCE_DIR}/src/util
-	${OPENGL_INCLUDE_PATH}
+	${CMAKE_SOURCE_DIR}/src/util
 	${X11_INCLUDE_DIR}
 	${GLEW_INCLUDE_DIR}
 )
 
 link_directories (
-	${mesademos_SOURCE_DIR}/src/util
+	${CMAKE_SOURCE_DIR}/src/util
 )
 
 link_libraries (
 	util
-	${OPENGL_gl_LIBRARY}
-	${OPENGL_glu_LIBRARY}
+	${X11_GL_LIB}
+	${X11_GLU_LIB}
 	${GLEW_glew_LIBRARY}
 	${X11_X11_LIB}
 	${X11_Xext_LIB}

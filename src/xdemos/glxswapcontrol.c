@@ -45,7 +45,7 @@
 /*# include <stdint.h>*/
 #endif
 # define GLX_GLXEXT_PROTOTYPES
-#include "gl_wrap.h"
+#include <GL/gl.h>
 #include <GL/glx.h>
 
 #ifndef GLX_MESA_swap_control

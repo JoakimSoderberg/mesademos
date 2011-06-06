@@ -18,7 +18,7 @@
  */
 
 #include <GL/glx.h>
-#include "gl_wrap.h"
+#include <GL/gl.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>

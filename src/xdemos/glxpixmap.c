@@ -8,7 +8,7 @@
  */
 
 
-#include "gl_wrap.h"
+#include <GL/gl.h>
 #define GLX_GLXEXT_PROTOTYPES
 #include <GL/glx.h>
 #include <stdio.h>

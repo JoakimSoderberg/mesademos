@@ -89,3 +89,22 @@ endif (MSVC)
 add_definitions(-DDEMOS_DATA_DIR=\"../data/\")
 
 add_subdirectory (src)
+
+
+install (FILES index.html DESTINATION doc)
+
+set (CPACK_PACKAGE_NAME "mesa-demos")
+set (CPACK_PACKAGE_VERSION_MAJOR "8")
+set (CPACK_PACKAGE_VERSION_MINOR "0")
+set (CPACK_PACKAGE_VERSION_PATCH "1")
+
+if (WIN32)
+    set (CPACK_GENERATOR "ZIP")
+elseif (APPLE)
+    set (CPACK_GENERATOR "DragNDrop")
+    set (CPACK_DMG_FORMAT "UDBZ")
+else ()
+    set (CPACK_GENERATOR "TBZ2")
+endif ()
+
+include(CPack)

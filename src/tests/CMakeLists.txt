@@ -48,8 +48,8 @@ set (targets
 	cylwrap
 	# XXX: Depends on Mesa GL header
 	#debugger
-	drawbuffers2
 	drawbuffers
+	drawbuffers2
 	drawstencil
 	exactrast
 	ext422square

@@ -28,6 +28,7 @@ set (targets
 	clearspd
 	copypix
 	cubemap
+	cuberender
 	dinoshade
 	dissolve
 	drawpix
@@ -51,6 +52,7 @@ set (targets
 	morph3d
 	multiarb
 	paltex
+	pixeltest
 	pointblast
 	projtex
 	ray

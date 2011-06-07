@@ -43,6 +43,7 @@ set (targets
 	samplers
 	shadow_sampler
 	shtest
+	simplex-noise
 	skinning
 	texaaline
 	texdemo1

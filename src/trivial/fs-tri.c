@@ -155,11 +155,9 @@ Init(void)
       "   normal = gl_NormalMatrix * gl_Normal;\n"
       "}\n";
 #endif
-   const char *version;
 
-   version = (const char *) glGetString(GL_VERSION);
-   if (version[0] != '2' || version[1] != '.') {
-      printf("This program requires OpenGL 2.x, found %s\n", version);
+   if (!GLEW_VERSION_2_0) {
+      printf("This program requires OpenGL 2.x\n");
       exit(1);
    }
 

@@ -204,7 +204,6 @@ CheckExtensions(void)
       "GL_EXT_draw_buffers2"
    };
 
-   const char *version = (const char *) glGetString(GL_VERSION);
    GLint numBuf;
    GLint i;
 
@@ -214,7 +213,7 @@ CheckExtensions(void)
          exit(1);
       }
    }
-   if (version[0] != '2') {
+   if (!GLEW_VERSION_2_0) {
       printf("Sorry, OpenGL 2.0 is required!\n");
       exit(1);
    }

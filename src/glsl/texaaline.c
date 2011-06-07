@@ -321,15 +321,12 @@ MakeMipmap(void)
 static void
 Init(void)
 {
-   const char *version;
-
    (void) MakeTexture;
    (void) ramp4;
    (void) ramp2;
 
-   version = (const char *) glGetString(GL_VERSION);
-   if (version[0] != '2' || version[1] != '.') {
-      printf("This program requires OpenGL 2.x, found %s\n", version);
+   if (!GLEW_VERSION_2_0) {
+      printf("This program requires OpenGL 2.x\n");
       exit(1);
    }
 

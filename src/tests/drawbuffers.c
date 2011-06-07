@@ -156,18 +156,17 @@ Key(unsigned char key, int x, int y)
 static void
 CheckExtensions(void)
 {
-   const char *version = (const char *) glGetString(GL_VERSION);
    GLint numBuf;
 
-   if (!glutExtensionSupported("GL_EXT_framebuffer_object")) {
+   if (!GLEW_EXT_framebuffer_object) {
       printf("Sorry, GL_EXT_framebuffer_object is required!\n");
       exit(1);
    }
-   if (!glutExtensionSupported("GL_ARB_draw_buffers")) {
+   if (!GLEW_ARB_draw_buffers) {
       printf("Sorry, GL_ARB_draw_buffers is required!\n");
       exit(1);
    }
-   if (version[0] != '2') {
+   if (!GLEW_VERSION_2_0) {
       printf("Sorry, OpenGL 2.0 is required!\n");
       exit(1);
    }

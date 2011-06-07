@@ -462,11 +462,9 @@ Init(void)
       "   gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;\n"
       "   normal = gl_NormalMatrix * gl_Normal;\n"
       "}\n";
-   const char *version;
 
-   version = (const char *) glGetString(GL_VERSION);
-   if (version[0] == '1') {
-      printf("This program requires OpenGL 2.x or higher, found %s\n", version);
+   if (!GLEW_VERSION_2_0) {
+      printf("This program requires OpenGL 2.x or higher\n");
       exit(1);
    }
 

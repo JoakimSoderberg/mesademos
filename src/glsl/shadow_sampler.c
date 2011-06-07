@@ -260,7 +260,6 @@ Init(void)
       "   gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;\n"
       "   gl_TexCoord[0] = gl_MultiTexCoord0; \n"
       "}\n";
-   const char *version;
 
 #if USE_RECT
    if (!glutExtensionSupported("GL_ARB_texture_rectangle")) {
@@ -269,9 +268,8 @@ Init(void)
    }
 #endif
 
-   version = (const char *) glGetString(GL_VERSION);
-   if (version[0] * 10 + version[2] <= 20) {
-      printf("This program requires OpenGL 2.x, found %s\n", version);
+   if (!GLEW_VERSION_2_0) {
+      printf("This program requires OpenGL 2.x\n");
       exit(1);
    }
    printf("GL_RENDERER = %s\n",(const char *) glGetString(GL_RENDERER));

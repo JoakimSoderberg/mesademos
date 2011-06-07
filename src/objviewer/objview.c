@@ -435,22 +435,21 @@ Motion(int x, int y)
 static void
 DoFeatureChecks(void)
 {
-   char *version = (char *) glGetString(GL_VERSION);
-   if (version[0] == '1') {
+   if (!GLEW_VERSION_2_0) {
       /* check for individual extensions */
-      if (!glutExtensionSupported("GL_ARB_texture_cube_map")) {
+      if (!GLEW_ARB_texture_cube_map) {
          printf("Sorry, GL_ARB_texture_cube_map is required.\n");
          exit(1);
       }
-      if (!glutExtensionSupported("GL_ARB_vertex_shader")) {
+      if (!GLEW_ARB_vertex_shader) {
          printf("Sorry, GL_ARB_vertex_shader is required.\n");
          exit(1);
       }
-      if (!glutExtensionSupported("GL_ARB_fragment_shader")) {
+      if (!GLEW_ARB_fragment_shader) {
          printf("Sorry, GL_ARB_fragment_shader is required.\n");
          exit(1);
       }
-      if (!glutExtensionSupported("GL_ARB_vertex_buffer_object")) {
+      if (!GLEW_ARB_vertex_buffer_object) {
          printf("Sorry, GL_ARB_vertex_buffer_object is required.\n");
          exit(1);
       }

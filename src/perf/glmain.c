@@ -119,13 +119,9 @@ PerfShaderProgram(const char *vertShader, const char *fragShader)
    GLuint prog;
    GLint stat;
 
-   {
-      const char *version = (const char *) glGetString(GL_VERSION);
-      if ((version[0] != '2' && 
-           version[0] != '3') || version[1] != '.') {
-         fprintf(stderr, "Error: GL version 2.x or better required\n");
-         exit(1);
-      }
+   if (!GLEW_VERSION_2_0) {
+      fprintf(stderr, "Error: GL version 2.x or better required\n");
+      exit(1);
    }
 
    prog = glCreateProgram();

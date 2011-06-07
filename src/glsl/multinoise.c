@@ -223,11 +223,9 @@ CheckLink(GLuint prog)
 static void
 Init(void)
 {
-   const char *version;
    GLint i;
 
-   version = (const char *) glGetString(GL_VERSION);
-   if (version[0] != '2' || version[1] != '.') {
+   if (!GLEW_VERSION_2_0) {
       printf("Warning: this program expects OpenGL 2.0\n");
       /*exit(1);*/
    }

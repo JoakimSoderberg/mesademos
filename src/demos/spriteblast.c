@@ -111,10 +111,9 @@ static GLboolean HaveShaders = GL_FALSE;
 static void
 makeFragShader(void)
 {
-   const char *version = (const char *) glGetString(GL_VERSION);
    GLint stat;
 
-   HaveShaders = (version[0] >= '2' && version[1] == '.');
+   HaveShaders = GLEW_VERSION_2_0;
    if (!HaveShaders)
       return;
 

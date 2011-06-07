@@ -203,11 +203,11 @@ DrawShinySphere(void)
 static void
 SetupCubeFaceView(GLenum face, const GLfloat centerPos[4])
 {
-   GLfloat near = 0.5, far = 20.0;
+   GLfloat near_val = 0.5, far_val = 20.0;
 
    glMatrixMode(GL_PROJECTION);
    glLoadIdentity();
-   glFrustum(-near, near, -near, near, near, far);
+   glFrustum(-near_val, near_val, -near_val, near_val, near_val, far_val);
 
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();

@@ -74,6 +74,7 @@ noinst_PROGRAMS = \
 	bug_3195 \
 	bug_texstore_i8 \
 	calibrate_rast \
+	clip \
 	condrender \
 	copypixrate \
 	cva \

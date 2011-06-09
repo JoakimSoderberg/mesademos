@@ -41,6 +41,7 @@ set (targets
 	bug_texstore_i8
 	bumpmap
 	calibrate_rast
+	clip
 	condrender
 	copypixrate
 	cva

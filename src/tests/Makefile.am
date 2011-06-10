@@ -100,6 +100,7 @@ noinst_PROGRAMS = \
 	invert \
 	jkrahntest \
 	lineclip \
+	linehacks \
 	manytex \
 	mapbufrange \
 	minmag \
@@ -172,6 +173,7 @@ floattex_LDADD = ../util/libutil.la
 fillrate_LDADD = ../util/libutil.la
 invert_LDADD = ../util/libutil.la
 jkrahntest_LDADD = -lX11
+linehacks_LDADD = ../util/libutil.la
 mipmap_limits_LDADD = ../util/libutil.la
 mipmap_view_LDADD = ../util/libutil.la
 sharedtex_LDADD = -lX11

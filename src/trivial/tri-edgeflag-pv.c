@@ -25,7 +25,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <glew.h>
+#include <GL/glew.h>
 #include "glut_wrap.h"
 
 static GLenum doubleBuffer;

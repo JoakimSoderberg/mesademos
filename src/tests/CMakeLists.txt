@@ -115,6 +115,7 @@ set (targets
 	texobj
 	texrect
 	unfilledclip
+	viewmemory
 	vparray
 	vpeval
 	vptest1

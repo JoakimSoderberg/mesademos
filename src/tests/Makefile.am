@@ -149,6 +149,7 @@ noinst_PROGRAMS = \
 	texobjshare \
 	texrect \
 	unfilledclip \
+	viewmemory \
 	vparray \
 	vpeval \
 	vptest1 \

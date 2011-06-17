@@ -34,6 +34,7 @@ config.status
 config.sub
 configure
 configure.lineno
+core
 cscope*
 depcomp
 depend

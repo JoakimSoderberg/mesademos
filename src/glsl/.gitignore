@@ -7,6 +7,9 @@ convolutions
 deriv
 fragcoord
 fsraytrace
+geom-sprites
+geom-stipple-lines
+geom-wide-lines
 identity
 linktest
 mandelbrot
@@ -20,6 +23,7 @@ samplers
 samplers_array
 shadow_sampler
 shtest
+simplex-noise
 skinning
 texaaline
 texdemo1

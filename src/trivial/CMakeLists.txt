@@ -119,8 +119,9 @@ set (targets
 	tri-cull-both
 	tri-cull
 	tri-dlist
-	tri-edgeflag-array
 	tri-edgeflag
+	tri-edgeflag-array
+	tri-edgeflag-pv
 	trifan
 	trifan-flat
 	trifan-flat-clip

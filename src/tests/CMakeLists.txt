@@ -69,6 +69,7 @@ set (targets
 	interleave
 	invert
 	lineclip
+	linehacks
 	manytex
 	mapbufrange
 	minmag

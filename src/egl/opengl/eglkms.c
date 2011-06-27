@@ -140,6 +140,7 @@ int main(int argc, char *argv[])
    int ret, fd;
    struct gbm_device *gbm;
    struct gbm_bo *bo;
+   drmModeCrtcPtr saved_crtc;
 
    fd = open(device_name, O_RDWR);
    if (fd < 0) {
@@ -269,15 +270,28 @@ int main(int argc, char *argv[])
       goto rm_rb;
    }
 
+   saved_crtc = drmModeGetCrtc(fd, kms.encoder->crtc_id);
+   if (saved_crtc == NULL)
+      goto rm_fb;
+
    ret = drmModeSetCrtc(fd, kms.encoder->crtc_id, kms.fb_id, 0, 0,
 			&kms.connector->connector_id, 1, &kms.mode);
    if (ret) {
       fprintf(stderr, "failed to set mode: %m\n");
-      goto rm_fb;
+      goto free_saved_crtc;
    }
 
    getchar();
 
+   ret = drmModeSetCrtc(fd, saved_crtc->crtc_id, saved_crtc->buffer_id,
+                        saved_crtc->x, saved_crtc->y,
+                        &kms.connector->connector_id, 1, &saved_crtc->mode);
+   if (ret) {
+      fprintf(stderr, "failed to restore crtc: %m\n");
+   }
+
+free_saved_crtc:
+   drmModeFreeCrtc(saved_crtc);
 rm_rb:
    glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,
 				GL_COLOR_ATTACHMENT0_EXT,

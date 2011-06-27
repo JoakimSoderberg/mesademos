@@ -43,6 +43,7 @@ noinst_PROGRAMS = \
 	clear \
 	drawtex_screen \
 	drawtex_x11 \
+	eglfbdev \
 	es1_info \
 	gears_screen \
 	gears_x11 \

@@ -149,16 +149,23 @@ int main(int argc, char *argv[])
    }
 
    gbm = gbm_create_device(fd);
+   if (gbm == NULL) {
+      fprintf(stderr, "couldn't create gbm device\n");
+      ret = -1;
+      goto close_fd;
+   }
 
    dpy = eglGetDisplay(gbm);
    if (dpy == EGL_NO_DISPLAY) {
       fprintf(stderr, "eglGetDisplay() failed\n");
-      return -1;
+      ret = -1;
+      goto destroy_gbm_device;
    }
 	
    if (!eglInitialize(dpy, &major, &minor)) {
       printf("eglInitialize() failed\n");
-      return -1;
+      ret = -1;
+      goto egl_terminate;
    }
 
    ver = eglQueryString(dpy, EGL_VERSION);
@@ -169,16 +176,28 @@ int main(int argc, char *argv[])
 
    if (!strstr(extensions, "EGL_KHR_surfaceless_opengl")) {
       printf("No support for EGL_KHR_surfaceless_opengl\n");
-      return -1;
+      ret = -1;
+      goto egl_terminate;
    }
 
-   if (!setup_kms(fd, &kms))
-      return -1;
+   if (!setup_kms(fd, &kms)) {
+      ret = -1;
+      goto egl_terminate;
+   }
 
    eglBindAPI(EGL_OPENGL_API);
    ctx = eglCreateContext(dpy, NULL, EGL_NO_CONTEXT, NULL);
+   if (ctx == NULL) {
+      fprintf(stderr, "failed to create context\n");
+      ret = -1;
+      goto egl_terminate;
+   }
 
-   eglMakeCurrent(dpy, EGL_NO_SURFACE, EGL_NO_SURFACE, ctx);
+   if (!eglMakeCurrent(dpy, EGL_NO_SURFACE, EGL_NO_SURFACE, ctx)) {
+      fprintf(stderr, "failed to make context current\n");
+      ret = -1;
+      goto destroy_context;
+   }
 
 #ifdef GL_OES_EGL_image
    glEGLImageTargetRenderbufferStorageOES_func =
@@ -194,10 +213,20 @@ int main(int argc, char *argv[])
    bo = gbm_bo_create(gbm, kms.mode.hdisplay, kms.mode.vdisplay,
 		      GBM_BO_FORMAT_XRGB8888,
 		      GBM_BO_USE_SCANOUT | GBM_BO_USE_RENDERING);
+   if (bo == NULL) {
+      fprintf(stderr, "failed to create gbm bo\n");
+      ret = -1;
+      goto unmake_current;
+   }
    handle = gbm_bo_get_handle(bo).u32;
    stride = gbm_bo_get_pitch(bo);
 
    image = eglCreateImageKHR(dpy, NULL, EGL_NATIVE_PIXMAP_KHR, bo, NULL);
+   if (image == EGL_NO_IMAGE_KHR) {
+      fprintf(stderr, "failed to create egl image\n");
+      ret = -1;
+      goto destroy_gbm_bo;
+   }
 
    glGenRenderbuffers(1, &color_rb);
    glBindRenderbuffer(GL_RENDERBUFFER_EXT, color_rb);
@@ -223,8 +252,9 @@ int main(int argc, char *argv[])
 
    if (glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT) !=
        GL_FRAMEBUFFER_COMPLETE) {
-	   printf("framebuffer not complete\n");
-	   exit(1);
+      fprintf(stderr, "framebuffer not complete\n");
+      ret = 1;
+      goto rm_rb;
    }
 
    render_stuff(kms.mode.hdisplay, kms.mode.vdisplay);
@@ -236,17 +266,43 @@ int main(int argc, char *argv[])
 		      32, 32, stride, handle, &kms.fb_id);
    if (ret) {
       fprintf(stderr, "failed to create fb\n");
-      return -1;
+      goto rm_rb;
    }
 
    ret = drmModeSetCrtc(fd, kms.encoder->crtc_id, kms.fb_id, 0, 0,
 			&kms.connector->connector_id, 1, &kms.mode);
    if (ret) {
       fprintf(stderr, "failed to set mode: %m\n");
-      return -1;
+      goto rm_fb;
    }
 
    getchar();
 
-   return 0;
+rm_rb:
+   glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,
+				GL_COLOR_ATTACHMENT0_EXT,
+				GL_RENDERBUFFER_EXT, 0);
+   glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,
+				GL_DEPTH_ATTACHMENT_EXT,
+				GL_RENDERBUFFER_EXT, 0);
+   glBindRenderbuffer(GL_RENDERBUFFER_EXT, 0);
+   glDeleteRenderbuffers(1, &color_rb);
+   glDeleteRenderbuffers(1, &depth_rb);
+rm_fb:
+   drmModeRmFB(fd, kms.fb_id);
+   eglDestroyImageKHR(dpy, image);
+destroy_gbm_bo:
+   gbm_bo_destroy(bo);
+unmake_current:
+   eglMakeCurrent(dpy, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
+destroy_context:
+   eglDestroyContext(dpy, ctx);
+egl_terminate:
+   eglTerminate(dpy);
+destroy_gbm_device:
+   gbm_device_destroy(gbm);
+close_fd:
+   close(fd);
+
+   return ret;
 }

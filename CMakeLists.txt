@@ -50,6 +50,21 @@ if (X11_FOUND)
 	endif ()
 endif (X11_FOUND)
 
+if (CMAKE_COMPILER_IS_GNUCC)
+	add_definitions(
+		-Wall
+		-Wpointer-arith
+		-Wstrict-prototypes
+		-Wmissing-prototypes
+		-Wmissing-declarations
+		-Wnested-externs
+		-fno-strict-aliasing
+		-Wbad-function-cast
+		#-Wold-style-definition
+		#-Wdeclaration-after-statement
+        )
+endif (CMAKE_COMPILER_IS_GNUCC)
+
 if (WIN32)
 	# Nobody likes to include windows.h:
 	# - Microsoft's GL/gl.h header depends on windows.h but doesn't include it;

@@ -1,5 +1,5 @@
 /*
- * Test vertex arrays with GL_NV_vertex_program
+ * Test vertex arrays with GL_ARB_vertex_program
  *
  * Based on a stripped-down version of the isosurf demo.
  * The vertex program is trivial: compute the resulting
@@ -58,9 +58,9 @@ static void read_surface( char *filename )
 static void Display(void)
 {
    if (useProgram)
-      glEnable(GL_VERTEX_PROGRAM_NV);
+      glEnable(GL_VERTEX_PROGRAM_ARB);
    else
-      glDisable(GL_VERTEX_PROGRAM_NV);
+      glDisable(GL_VERTEX_PROGRAM_ARB);
 
    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
@@ -70,10 +70,10 @@ static void Display(void)
       glScalef(2, 2, 2);
       if (useArrays) {
          if (useProgram) {
-            glVertexAttribPointerNV( 0, 3, GL_FLOAT, 6 * sizeof(GLfloat), data );
-            glEnableClientState( GL_VERTEX_ATTRIB_ARRAY0_NV );
-            glVertexAttribPointerNV( 2, 3, GL_FLOAT, 6 * sizeof(GLfloat), ((GLfloat *) data) + 3);
-            glEnableClientState( GL_VERTEX_ATTRIB_ARRAY2_NV);
+            glVertexAttribPointerARB( 0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), data );
+            glEnableVertexAttribArrayARB( 0 );
+            glVertexAttribPointerARB( 2, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), ((GLfloat *) data) + 3);
+            glEnableVertexAttribArrayARB( 2 );
          }
          else {
             glVertexPointer( 3, GL_FLOAT, 6 * sizeof(GLfloat), data );
@@ -93,8 +93,8 @@ static void Display(void)
             glDrawArrays(GL_TRIANGLE_STRIP, 0, numverts);
          }
 
-         glDisableClientState( GL_VERTEX_ATTRIB_ARRAY0_NV );
-         glDisableClientState( GL_VERTEX_ATTRIB_ARRAY2_NV);
+         glDisableVertexAttribArrayARB( 0 );
+         glDisableVertexAttribArrayARB( 2 );
          glDisableClientState( GL_VERTEX_ARRAY );
          glDisableClientState( GL_NORMAL_ARRAY );
       }
@@ -156,47 +156,52 @@ static void InitMaterials(void)
 static void init_program(void)
 {
    /*
-    * c[0..3] = modelview matrix
-    * c[4..7] = inverse modelview matrix
     * c[30] = color scale
     * c[31] = color bias
     */
-   static const char prog[] = 
-      "!!VP1.0\n"
+   static const char prog[] =
+      "!!ARBvp1.0\n"
+
+      "TEMP R0, R1, R2, R3;\n"
 
       "# RGB is proportional to XYZ \n"
-
-      "MUL R0, v[OPOS], c[30]; \n"
-      "ADD o[COL0], R0, c[31]; \n"
+      "MUL R0, vertex.position, program.local[30]; \n"
+      "ADD result.color.primary, R0, program.local[31]; \n"
 
       "# Continue with typical modelview/projection\n"
-      "MOV R3, v[OPOS]; \n"
-      "DP4   o[HPOS].x, c[0], R3 ;	# object x MVP -> clip\n"
-      "DP4   o[HPOS].y, c[1], R3 ;\n"
-      "DP4   o[HPOS].z, c[2], R3 ;\n"
-      "DP4   o[HPOS].w, c[3], R3 ;\n"
+      "MOV R3, vertex.position; \n"
+      "DP4   result.position.x, state.matrix.mvp.row[0], R3 ;	# object x MVP -> clip\n"
+      "DP4   result.position.y, state.matrix.mvp.row[1], R3 ;\n"
+      "DP4   result.position.z, state.matrix.mvp.row[2], R3 ;\n"
+      "DP4   result.position.w, state.matrix.mvp.row[3], R3 ;\n"
 
       "END";
 
    static const GLfloat scale[4] = {2.0, 2.0, 2.0, 0.0};
    static const GLfloat bias[4] = {1.0, 1.0, 1.0, 0.0};
 
-   if (!GLEW_NV_vertex_program) {
-      printf("Sorry, this program requires GL_NV_vertex_program\n");
+   if (!GLEW_ARB_vertex_program) {
+      printf("Sorry, this program requires GL_ARB_vertex_program\n");
       exit(1);
    }
 
-   glLoadProgramNV(GL_VERTEX_PROGRAM_NV, 1,
-                   strlen(prog), (const GLubyte *) prog);
-   assert(glIsProgramNV(1));
-   glBindProgramNV(GL_VERTEX_PROGRAM_NV, 1);
+   glBindProgramARB(GL_VERTEX_PROGRAM_ARB, 1);
+   glProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
+                      strlen(prog), (const GLubyte *) prog);
+   assert(glIsProgramARB(1));
+
+   if (glGetError() != GL_NO_ERROR)
+   {
+      GLint errorpos = 0;
+      glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorpos);
+      printf("errorpos: %d\n", errorpos);
+      printf("%s\n", (char *)glGetString(GL_PROGRAM_ERROR_STRING_ARB));
+      exit(1);
+   }
 
    /* Load the program registers */
-   glTrackMatrixNV(GL_VERTEX_PROGRAM_NV, 0, GL_MODELVIEW_PROJECTION_NV, GL_IDENTITY_NV);
-   glTrackMatrixNV(GL_VERTEX_PROGRAM_NV, 4, GL_MODELVIEW, GL_INVERSE_TRANSPOSE_NV);
-
-   glProgramParameter4fvNV(GL_VERTEX_PROGRAM_NV, 30, scale);
-   glProgramParameter4fvNV(GL_VERTEX_PROGRAM_NV, 31, bias);
+   glProgramLocalParameter4fvARB(GL_VERTEX_PROGRAM_ARB, 30, scale);
+   glProgramLocalParameter4fvARB(GL_VERTEX_PROGRAM_ARB, 31, bias);
 }
 
 

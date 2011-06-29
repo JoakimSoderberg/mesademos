@@ -59,6 +59,7 @@ noinst_PROGRAMS = \
 	arbgpuprog \
 	arbnpot \
 	arbnpot-mipmap \
+	arbvparray \
 	arbvptest1 \
 	arbvptest3 \
 	arbvptorus \

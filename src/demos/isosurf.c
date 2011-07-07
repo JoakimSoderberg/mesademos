@@ -397,7 +397,6 @@ static void draw_surface( unsigned int with_state )
    }
 
    switch (with_state & (RENDER_STYLE_MASK|PRIMITIVE_MASK)) {
-#ifdef GL_EXT_vertex_array
 
    case (DRAW_ELTS|TRIANGLES):
       if (with_state & MATERIALS) {
@@ -414,7 +413,7 @@ static void draw_surface( unsigned int with_state )
       break;
 
    case (DRAW_ARRAYS|TRIANGLES):
-      glDrawArraysEXT( GL_TRIANGLES, 0, (numverts-2)*3 );
+      glDrawArrays( GL_TRIANGLES, 0, (numverts-2)*3 );
       break;
 
    case (ARRAY_ELT|TRIANGLES):
@@ -442,7 +441,7 @@ static void draw_surface( unsigned int with_state )
       /* Uses the original arrays (including duplicate elements):
        */
    case (DRAW_ARRAYS|STRIPS):
-      glDrawArraysEXT( GL_TRIANGLE_STRIP, 0, numverts );
+      glDrawArrays( GL_TRIANGLE_STRIP, 0, numverts );
       break;
    case (DRAW_ELTS|STRIPS):
       glDrawElements( GL_TRIANGLE_STRIP, numverts,
@@ -459,7 +458,7 @@ static void draw_surface( unsigned int with_state )
       break;
 
    case (DRAW_ARRAYS|POINTS):
-      glDrawArraysEXT( GL_POINTS, 0, numuniq );
+      glDrawArrays( GL_POINTS, 0, numuniq );
       break;
    case (DRAW_ELTS|POINTS):
       /* can use numuniq with strip_indices as strip_indices[i] == i.
@@ -475,7 +474,6 @@ static void draw_surface( unsigned int with_state )
 	 glArrayElement( i );
       glEnd();
       break;
-#endif
 
    case (GLVERTEX|TRIANGLES):
       if (with_state & MATERIALS) {
@@ -737,7 +735,6 @@ static void ModeMenu(int m)
       }
    }
 
-#ifdef GL_EXT_vertex_array
    if (CHANGED(state, m, (LOCK_MASK|RENDER_STYLE_MASK|PRIMITIVE_MASK)))
    {
       if (m & (PRIMITIVE_MASK)) {
@@ -766,10 +763,8 @@ static void ModeMenu(int m)
 	  *  --> Can't do strips here as ordering has been lost in
 	  *  compaction process...
 	  */
-	 glVertexPointerEXT( 3, GL_FLOAT, sizeof(data[0]), numuniq,
-			     compressed_data );
-	 glNormalPointerEXT( GL_FLOAT, sizeof(data[0]), numuniq,
-			     &compressed_data[0][3]);
+	 glVertexPointer( 3, GL_FLOAT, sizeof(data[0]), compressed_data );
+	 glNormalPointer( GL_FLOAT, sizeof(data[0]), &compressed_data[0][3] );
 #ifdef GL_EXT_compiled_vertex_array
 	 if (allowed & LOCKED) {
 	    if (state & LOCKED) {
@@ -785,10 +780,8 @@ static void ModeMenu(int m)
 	 fprintf(stderr, "enabling big arrays\n");
 	 /* Only get here for TRIANGLES and drawarrays
 	  */
-	 glVertexPointerEXT( 3, GL_FLOAT, sizeof(data[0]), (numverts-2) * 3,
-			     expanded_data );
-	 glNormalPointerEXT( GL_FLOAT, sizeof(data[0]), (numverts-2) * 3,
-			     &expanded_data[0][3]);
+	 glVertexPointer( 3, GL_FLOAT, sizeof(data[0]), expanded_data );
+	 glNormalPointer( GL_FLOAT, sizeof(data[0]), &expanded_data[0][3] );
 
 #ifdef GL_EXT_compiled_vertex_array
 	 if (allowed & LOCKED) {
@@ -802,8 +795,8 @@ static void ModeMenu(int m)
       }
       else {
 	 fprintf(stderr, "enabling normal arrays\n");
-	 glVertexPointerEXT( 3, GL_FLOAT, sizeof(data[0]), numverts, data );
-	 glNormalPointerEXT( GL_FLOAT, sizeof(data[0]), numverts, &data[0][3]);
+	 glVertexPointer( 3, GL_FLOAT, sizeof(data[0]), data );
+	 glNormalPointer( GL_FLOAT, sizeof(data[0]), &data[0][3] );
 #ifdef GL_EXT_compiled_vertex_array
 	 if (allowed & LOCKED) {
 	    if (state & LOCKED) {
@@ -816,7 +809,6 @@ static void ModeMenu(int m)
       }
 
    }
-#endif
 
 
    if (m & DLIST_MASK) {
@@ -1076,8 +1068,8 @@ int main(int argc, char **argv)
 
    glewInit();
 
-   /* Make sure server supports the vertex array extension */
-   if (!GLEW_EXT_vertex_array)
+   /* Make sure server supports vertex arrays */
+   if (!GLEW_VERSION_1_1)
    {
       printf("Vertex arrays not supported by this renderer\n");
       allowed &= ~(LOCKED|DRAW_ARRAYS|DRAW_ELTS|ARRAY_ELT);

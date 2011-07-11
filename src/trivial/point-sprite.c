@@ -29,19 +29,18 @@
 #include "glut_wrap.h"
 
 
-#define CI_OFFSET_1 16
-#define CI_OFFSET_2 32
-
-
-GLenum doubleBuffer;
-
-static void Init(void)
+static void
+Init(void)
 {
    fprintf(stderr, "GL_RENDERER   = %s\n", (char *) glGetString(GL_RENDERER));
    fprintf(stderr, "GL_VERSION    = %s\n", (char *) glGetString(GL_VERSION));
    fprintf(stderr, "GL_VENDOR     = %s\n", (char *) glGetString(GL_VENDOR));
    fflush(stderr);
 
+   if (!glutExtensionSupported("GL_ARB_point_sprite")) {
+      printf("GL_ARB_point_sprite not supported\n");
+      exit(1);
+   }
 
 #define SIZE 16
    {
@@ -49,19 +48,20 @@ static void Init(void)
       GLint s, t;
 
       for (s = 0; s < SIZE; s++) {
-	 for (t = 0; t < SIZE; t++) {
+         for (t = 0; t < SIZE; t++) {
 #if 1
-	    tex2d[t][s][0] = (s < SIZE/2) ? 0 : 255;
-	    tex2d[t][s][1] = (t < SIZE/2) ? 0 : 255;
-	    tex2d[t][s][2] = 0;
+            tex2d[t][s][0] = (s < SIZE / 2) ? 0 : 255;
+            tex2d[t][s][1] = (t < SIZE / 2) ? 0 : 255;
+            tex2d[t][s][2] = 0;
 #else
-	    tex2d[t][s][0] = s*255/(SIZE-1);
-	    tex2d[t][s][1] = t*255/(SIZE-1);
-	    tex2d[t][s][2] = 0;
+            tex2d[t][s][0] = s * 255 / (SIZE - 1);
+            tex2d[t][s][1] = t * 255 / (SIZE - 1);
+            tex2d[t][s][2] = 0;
 #endif
-	 }
+         }
       }
 
+      glTexEnvi(GL_POINT_SPRITE_ARB, GL_COORD_REPLACE_ARB, GL_TRUE);
       glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -69,108 +69,67 @@ static void Init(void)
 
       glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
       glTexImage2D(GL_TEXTURE_2D, 0, 3, SIZE, SIZE, 0,
-		   GL_RGB, GL_UNSIGNED_BYTE, tex2d);
+                   GL_RGB, GL_UNSIGNED_BYTE, tex2d);
       glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
       glEnable(GL_TEXTURE_2D);
    }
 
    glEnable(GL_POINT_SPRITE);
 
-    glClearColor(0.0, 0.0, 1.0, 0.0);
+   glClearColor(0.0, 0.0, 1.0, 0.0);
 }
 
-static void Reshape(int width, int height)
+
+static void
+Reshape(int width, int height)
 {
-
-    glViewport(0, 0, (GLint)width, (GLint)height);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-1.0, 1.0, -1.0, 1.0, -0.5, 1000.0);
-    glMatrixMode(GL_MODELVIEW);
+   glViewport(0, 0, (GLint) width, (GLint) height);
+   glMatrixMode(GL_PROJECTION);
+   glLoadIdentity();
+   glOrtho(-1.0, 1.0, -1.0, 1.0, -0.5, 1000.0);
+   glMatrixMode(GL_MODELVIEW);
 }
 
-static void Key(unsigned char key, int x, int y)
+
+static void
+Key(unsigned char key, int x, int y)
 {
+   if (key == 27)
+      exit(1);
 
-    switch (key) {
-      case 27:
-	exit(1);
-      default:
-	break;
-    }
-
-    glutPostRedisplay();
+   glutPostRedisplay();
 }
 
-static void Draw(void)
-{
-   glClear(GL_COLOR_BUFFER_BIT); 
 
-   glPointSize(16.0);
+static void
+Draw(void)
+{
+   glClear(GL_COLOR_BUFFER_BIT);
+
+   glPointSize(32.0);
 
    glBegin(GL_POINTS);
-   glColor3f(1,0,0); 
-   glVertex3f( 0.6, -0.6, -30.0);
-   glColor3f(1,1,0); 
-   glVertex3f( 0.6,  0.6, -30.0);
-   glColor3f(1,0,1); 
-   glVertex3f(-0.6,  0.6, -30.0);
-   glColor3f(0,1,1); 
-   glVertex3f(-0.6,  -0.6, -30.0);
+   glColor3f(1, 1, 1);
+   glVertex3f(0.0, 0.0, -30.0);
    glEnd();
 
-   glFlush();
+   glutSwapBuffers();
+}
 
-   if (doubleBuffer) {
-      glutSwapBuffers();
+
+int
+main(int argc, char **argv)
+{
+   glutInit(&argc, argv);
+   glutInitWindowSize(250, 250);
+   glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
+   if (glutCreateWindow(*argv) == GL_FALSE) {
+      exit(1);
    }
-}
-
-static GLenum Args(int argc, char **argv)
-{
-    GLint i;
-
-    doubleBuffer = GL_FALSE;
-
-    for (i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "-sb") == 0) {
-	    doubleBuffer = GL_FALSE;
-	} else if (strcmp(argv[i], "-db") == 0) {
-	    doubleBuffer = GL_TRUE;
-	} else {
-	    fprintf(stderr, "%s (Bad option).\n", argv[i]);
-	    return GL_FALSE;
-	}
-    }
-    return GL_TRUE;
-}
-
-int main(int argc, char **argv)
-{
-    GLenum type;
-
-    glutInit(&argc, argv);
-
-    if (Args(argc, argv) == GL_FALSE) {
-	exit(1);
-    }
-
-    glutInitWindowPosition(0, 0); glutInitWindowSize( 250, 250);
-
-    type = GLUT_RGB;
-    type |= (doubleBuffer) ? GLUT_DOUBLE : GLUT_SINGLE;
-    glutInitDisplayMode(type);
-
-    if (glutCreateWindow(*argv) == GL_FALSE) {
-	exit(1);
-    }
-
-    Init();
-
-    glutReshapeFunc(Reshape);
-    glutKeyboardFunc(Key);
-    glutDisplayFunc(Draw);
-    glutMainLoop();
-	return 0;
+   Init();
+   glutReshapeFunc(Reshape);
+   glutKeyboardFunc(Key);
+   glutDisplayFunc(Draw);
+   glutMainLoop();
+   return 0;
 }

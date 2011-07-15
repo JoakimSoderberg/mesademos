@@ -67,6 +67,7 @@ set (targets
 	#getprocaddress
 	getteximage
 	glutfx
+	gremedy
 	interleave
 	invert
 	lineclip

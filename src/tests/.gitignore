@@ -50,6 +50,7 @@ getprocaddress
 getproclist.h
 getteximage
 glutfx
+gremedy
 interleave
 invert
 jkrahntest

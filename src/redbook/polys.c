@@ -44,6 +44,8 @@
 #include <stdlib.h>
 #include "glut_wrap.h"
 
+static int win;
+
 static void display(void)
 {
     GLubyte fly[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -111,6 +113,7 @@ key(unsigned char k, int x, int y)
 {
   switch (k) {
   case 27:  /* Escape */
+    glutDestroyWindow(win);
     exit(0);
     break;
   default:
@@ -128,7 +131,7 @@ int main(int argc, char** argv)
     glutInit(&argc, argv);
     glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize (350, 150);
-    glutCreateWindow (argv[0]);
+    win = glutCreateWindow (argv[0]);
     myinit ();
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);

@@ -45,29 +45,39 @@ noinst_PROGRAMS = \
 	checker \
 	clip \
 	colormat \
+	combiner \
+	convolution \
 	cube \
+	cubemap \
 	depthcue \
 	dof \
 	double \
 	drawf \
 	feedback \
 	fog \
+	fogcoord \
 	fogindex \
 	font \
 	hello \
+	histogram \
 	image \
 	light \
 	lines \
 	list \
 	material \
+	minmax \
 	mipmap \
 	model \
 	movelight \
+	multisamp \
+	multitex \
+	mvarray \
 	nurbs \
 	pickdepth \
 	picksquare \
 	plane \
 	planet \
+	pointp \
 	polyoff \
 	polys \
 	quadric \
@@ -77,10 +87,12 @@ noinst_PROGRAMS = \
 	scenebamb \
 	sceneflat \
 	select \
+	shadowmap \
 	smooth \
 	stencil \
 	stroke \
 	surface \
+	surfpoints \
 	teaambient \
 	teapots \
 	tess \

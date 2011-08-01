@@ -328,9 +328,6 @@ CreateAProgram(const char *vertProgFile, const char *fragProgFile,
 
    glUseProgram(program);
 
-   SetUniformValues(program, uniforms);
-   PrintUniforms(Uniforms);
-
    assert(ValidateShaderProgram(program));
 
    VertCoord_attr = glGetAttribLocation(program, "VertCoord");
@@ -354,6 +351,9 @@ CreateAProgram(const char *vertProgFile, const char *fragProgFile,
    printf("TexCoord0_attr = %d\n", TexCoord0_attr);
    printf("TexCoord1_attr = %d\n", TexCoord1_attr);
    printf("VertCoord_attr = %d\n", VertCoord_attr);
+
+   SetUniformValues(program, uniforms);
+   PrintUniforms(Uniforms);
 
    return program;
 }

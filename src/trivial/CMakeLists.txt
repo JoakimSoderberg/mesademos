@@ -104,6 +104,7 @@ set (targets
 	readpixels
 	sub-tex
 	tex-quads
+	tri-2101010
 	tri-alpha
 	tri-alpha-tex
 	tri-array-interleaved

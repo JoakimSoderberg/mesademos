@@ -112,6 +112,7 @@ bin_PROGRAMS = \
 	quad-unfilled-clip \
 	quad-unfilled-stipple \
 	readpixels \
+	tri-2101010 \
 	tri-alpha \
 	tri-alpha-tex \
 	tri-array-interleaved \

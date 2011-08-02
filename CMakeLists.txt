@@ -16,20 +16,6 @@ find_path (GLEW_INCLUDE_DIR GL/glew.h
       /usr/include/GL
 )
 
-if (APPLE)
-	find_path(GLEXT_INCLUDE_DIR
-		NAMES OpenGL/glext.h
-		PATHS ${OPENGL_INCLUDE_DIR}
-		DOC "Include for OpenGL/glext.h on OSX"
-	)
-else (APPLE)
-	find_path(GLEXT_INCLUDE_DIR
-		NAMES GL/glext.h
-		PATHS ${OPENGL_INCLUDE_DIR}
-		DOC "Include for GL/glext.h"
-	)
-endif (APPLE)
-
 if (UNIX)
 	link_libraries(m)
 endif (UNIX)

@@ -180,6 +180,7 @@ bin_PROGRAMS = \
 	tri-z \
 	tri-z-eq \
 	vbo-drawarrays \
+	vbo-drawarrays-2101010 \
 	vbo-drawelements \
 	vbo-drawrange \
 	vbo-noninterleaved \

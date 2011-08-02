@@ -1,4 +1,5 @@
 include_directories (
+	${GLEXT_INCLUDE_DIR}
 	${OPENGL_INCLUDE_PATH}
 	${GLEW_INCLUDE_DIR}
 )

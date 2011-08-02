@@ -1,5 +1,6 @@
 include_directories(
 	${CMAKE_SOURCE_DIR}/src/util
+	${GLEXT_INCLUDE_DIR}
 	${OPENGL_INCLUDE_PATH}
 	${GLUT_INCLUDE_DIR}
 	${GLEW_INCLUDE_DIR}

@@ -41,6 +41,11 @@ static void Init(void)
    fprintf(stderr, "GL_VENDOR     = %s\n", (char *) glGetString(GL_VENDOR));
    fflush(stderr);
 
+#ifndef GL_ARB_vertex_type_2_10_10_10_rev
+   fprintf(stderr,"built without ARB_vertex_type_2_10_10_10_rev\n");
+   exit(1);
+#endif
+
    if (!glutExtensionSupported("GL_ARB_vertex_type_2_10_10_10_rev")){
      fprintf(stderr,"requires ARB_vertex_type_2_10_10_10_rev\n");
      exit(1);
@@ -91,6 +96,7 @@ static void Draw(void)
 {
    glClear(GL_COLOR_BUFFER_BIT); 
 
+#ifdef GL_ARB_vertex_type_2_10_10_10_rev
    glBegin(GL_TRIANGLES);
    glColorP3ui(GL_UNSIGNED_INT_2_10_10_10_REV, conv(820, 0, 0, 0));
    glVertexP3ui(GL_INT_2_10_10_10_REV, iconv(-90, -90, -30, 0));
@@ -99,6 +105,7 @@ static void Draw(void)
    glColorP3ui(GL_UNSIGNED_INT_2_10_10_10_REV, conv(0, 0, 716, 0));
    glVertexP3ui(GL_INT_2_10_10_10_REV, iconv(0, 90, -30, 0));
    glEnd();
+#endif /* GL_ARB_vertex_type_2_10_10_10_rev */
 
    glFlush();
 

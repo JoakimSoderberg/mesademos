@@ -31,11 +31,6 @@
 #include <GL/glew.h>
 #include "glut_wrap.h"
 
-
-#define CI_OFFSET_1 16
-#define CI_OFFSET_2 32
-
-
 GLenum doubleBuffer = 1;
 int win;
 
@@ -77,8 +72,8 @@ static void Key(unsigned char key, int x, int y)
    }
 }
 
-#define i32to10(x) ((x) > 0 ? (x & 0x1ff) : 1024-(abs((x))& 0x1ff))
-#define i32to2(x) ((x) > 0 ? (x & 0x1) : 3-abs((x)))
+#define i32to10(x) ((x) >= 0 ? (x & 0x1ff) : 1024-(abs((x))& 0x1ff))
+#define i32to2(x) ((x) >= 0 ? (x & 0x1) : 3-abs((x)))
 
 static uint32_t iconv(int x, int y, int z, int w)
 {
@@ -132,7 +127,6 @@ static GLenum Args(int argc, char **argv)
 int main(int argc, char **argv)
 {
    GLenum type;
-
 
    glutInit(&argc, argv);
 

@@ -245,10 +245,17 @@ make_x_window(Display *x_dpy, EGLDisplay egl_dpy,
       EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
       EGL_NONE
    };
+#if USE_FULL_GL
+   static const EGLint ctx_attribs[] = {
+       EGL_NONE
+   };
+#else
    static const EGLint ctx_attribs[] = {
       EGL_CONTEXT_CLIENT_VERSION, 2,
       EGL_NONE
    };
+#endif
+
    int scrnum;
    XSetWindowAttributes attr;
    unsigned long mask;
@@ -321,12 +328,14 @@ make_x_window(Display *x_dpy, EGLDisplay egl_dpy,
       exit(1);
    }
 
+#if !USE_FULL_GL
    /* test eglQueryContext() */
    {
       EGLint val;
       eglQueryContext(egl_dpy, ctx, EGL_CONTEXT_CLIENT_VERSION, &val);
       assert(val == 2);
    }
+#endif
 
    *surfRet = eglCreateWindowSurface(egl_dpy, config, win, NULL);
    if (!*surfRet) {

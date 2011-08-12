@@ -37,7 +37,8 @@ if HAVE_EGL
 if HAVE_GLESV2
 bin_PROGRAMS = \
 	es2_info \
-	es2gears \
+	es2gears_screen \
+	es2gears_x11 \
 	es2tri
 endif
 endif
@@ -45,4 +46,10 @@ endif
 es2_info_LDADD = $(X11_LIBS)
 es2tri_LDADD = $(X11_LIBS)
 
-es2gears_LDADD = ../eglut/libeglut_x11.la
+es2gears_screen_SOURCES = es2gears.c
+
+es2gears_x11_SOURCES = es2gears.c
+
+es2gears_screen_LDADD = ../eglut/libeglut_screen.la
+
+es2gears_x11_LDADD = ../eglut/libeglut_x11.la

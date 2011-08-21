@@ -11,6 +11,7 @@
 #include <GL/glew.h>
 #include "glut_wrap.h"
 
+GLboolean bgra = GL_FALSE;
 #define i32to10(x) ((x) >= 0 ? (x & 0x1ff) : 1024-(abs((x))& 0x1ff))
 #define i32to2(x) ((x) >= 0 ? (x & 0x1) : 3-abs((x)))
 
@@ -54,7 +55,8 @@ static void Init( void )
 {
    GLint errno;
    GLuint prognum;
-   
+   int color_size = 4;
+
    static const char *prog1 =
       "!!ARBvp1.0\n"
       "PARAM mvp[4] = {state.matrix.mvp};\n"
@@ -102,9 +104,12 @@ static void Init( void )
    glBindBufferARB(GL_ARRAY_BUFFER_ARB, arrayObj);
    glBufferDataARB(GL_ARRAY_BUFFER_ARB, sizeof(verts), verts, GL_STATIC_DRAW_ARB);
 
+   if (bgra)
+     color_size = GL_BGRA;
+
 #ifdef GL_ARB_vertex_type_2_10_10_10_rev
    glVertexPointer( 4, GL_INT_2_10_10_10_REV, sizeof(verts[0]), 0 );
-   glColorPointer( 4, GL_UNSIGNED_INT_2_10_10_10_REV, sizeof(verts[0]), (void *)(sizeof(unsigned int)) );
+   glColorPointer( color_size, GL_UNSIGNED_INT_2_10_10_10_REV, sizeof(verts[0]), (void *)(sizeof(unsigned int)) );
 #endif
 }
 
@@ -146,12 +151,29 @@ static void Key( unsigned char key, int x, int y )
    glutPostRedisplay();
 }
 
+static GLenum Args(int argc, char **argv)
+{
+   GLint i;
 
-
+   for (i = 1; i < argc; i++) {
+      if (strcmp(argv[i], "-bgra") == 0) {
+ 	 bgra = GL_TRUE;
+      } else {
+         fprintf(stderr, "%s (Bad option).\n", argv[i]);
+         return GL_FALSE;
+      }
+   }
+   return GL_TRUE;
+}
 
 int main( int argc, char *argv[] )
 {
    glutInit( &argc, argv );
+
+   if (Args(argc, argv) == GL_FALSE) {
+      exit(1);
+   }
+
    glutInitWindowPosition( 0, 0 );
    glutInitWindowSize( 250, 250 );
    glutInitDisplayMode( GLUT_RGB | GLUT_SINGLE | GLUT_DEPTH );

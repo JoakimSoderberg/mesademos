@@ -78,7 +78,7 @@ static void Key(unsigned char key, int x, int y)
 }
 
 #define i32to10(x) ((x) >= 0 ? (x & 0x1ff) : 1024-(abs((x))& 0x1ff))
-#define i32to2(x) ((x) >= 0 ? (x & 0x1) : 3-abs((x)))
+#define i32to2(x) ((x) >= 0 ? (x & 0x1) : 1-abs((x)))
 
 static unsigned iconv(int x, int y, int z, int w)
 {

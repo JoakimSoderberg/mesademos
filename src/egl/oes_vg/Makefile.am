@@ -1,4 +1,4 @@
-# Copyright © 2009 Intel Corporation
+# Copyright © 2011 Cooper Yuan
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -20,12 +20,29 @@
 # IN THE SOFTWARE.
 #
 # Authors:
-#    Eric Anholt <eric@anholt.net>
+#    Cooper Yuan <cooperyuan@gmail.com>
 
-SUBDIRS = \
-	eglut \
-	opengl \
-	openvg \
-	opengles1 \
-	opengles2 \
-	oes_vg
+AM_CFLAGS = \
+	$(GLESV1_CFLAGS) \
+	$(EGL_CFLAGS) \
+	$(VG_CFLAGS) \
+	$(X11_CFLAGS)
+
+AM_LDFLAGS = \
+	$(GLESV1_LIBS) \
+	$(EGL_LIBS) \
+	$(VG_LIBS) \
+	-lm
+
+if HAVE_EGL
+if HAVE_X11
+if HAVE_VG
+bin_PROGRAMS = \
+	vgimage2tex \
+	tex2vgimage
+endif
+endif
+endif
+
+vgimage2tex_LDADD = $(X11_LIBS)
+tex2vgimage_LDADD = $(X11_LIBS)

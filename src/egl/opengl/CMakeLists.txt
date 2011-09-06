@@ -1,5 +1,6 @@
 include_directories(${EGL_INCLUDE_DIR}
   ../eglut
+  ../../util
   )
 
 add_executable(eglinfo eglinfo.c)

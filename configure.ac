@@ -112,12 +112,36 @@ PKG_CHECK_MODULES(GLU, [glu], [],
 DEMO_CFLAGS="$DEMO_CFLAGS $GLU_CFLAGS"
 DEMO_LIBS="$DEMO_LIBS $GLU_LIBS"
 
-PKG_CHECK_MODULES(EGL, [egl], [egl_enabled=yes], [egl_enabled=no])
-PKG_CHECK_MODULES(GLESV1, [glesv1_cm], [glesv1_enabled=yes], [glesv1_enabled=no])
-PKG_CHECK_MODULES(GLESV2, [glesv2], [glesv2_enabled=yes], [glesv2_enabled=no])
-PKG_CHECK_MODULES(VG, [vg], [vg_enabled=yes], [vg_enabled=no])
-PKG_CHECK_MODULES(OSMESA, [osmesa], [osmesa_enabled=yes], [osmesa_enabled=no])
-PKG_CHECK_MODULES(DRM, [libdrm], [drm_enabled=yes], [drm_enabled=no])
+AC_ARG_ENABLE([egl],
+    [AS_HELP_STRING([--disable-egl],
+        [disable EGL library @<:@default=no@:>@])],
+    [egl_enabled="$enableval"],
+    [PKG_CHECK_MODULES(EGL, [egl], [egl_enabled=yes], [egl_enabled=no])])
+AC_ARG_ENABLE([gles1],
+    [AS_HELP_STRING([--disable-gles1],
+        [disable support for OpenGL ES 1.x API @<:@default=no@:>@])],
+    [glesv1_enabled="$enableval"],
+    [PKG_CHECK_MODULES(GLESV1, [glesv1_cm], [glesv1_enabled=yes], [glesv1_enabled=no])])
+AC_ARG_ENABLE([gles2],
+    [AS_HELP_STRING([--disable-gles2],
+        [disable support for OpenGL ES 2.x API @<:@default=no@:>@])],
+    [glesv2_enabled="$enableval"],
+    [PKG_CHECK_MODULES(GLESV2, [glesv2], [glesv2_enabled=yes], [glesv2_enabled=no])])
+AC_ARG_ENABLE([vg],
+    [AS_HELP_STRING([--disable-vg],
+        [disable support for OpenVG API @<:@default=no@:>@])],
+    [vg_enabled="$enableval"],
+    [PKG_CHECK_MODULES(VG, [vg], [vg_enabled=yes], [vg_enabled=no])])
+AC_ARG_ENABLE([osmesa],
+    [AS_HELP_STRING([--disable-osmesa],
+        [disable OSMesa library @<:@default=no@:>@])],
+    [osmesa_enabled="$enableval"],
+    [PKG_CHECK_MODULES(OSMESA, [osmesa], [osmesa_enabled=yes], [osmesa_enabled=no])])
+AC_ARG_ENABLE([libdrm],
+    [AS_HELP_STRING([--disable-libdrm],
+        [disable support for libdrm @<:@default=no@:>@])],
+    [drm_enabled="$enableval"],
+    [PKG_CHECK_MODULES(DRM, [libdrm], [drm_enabled=yes], [drm_enabled=no])])
 dnl The OSMesa .pc uses OSMesa32, while we want to build with other versions
 dnl too.
 OSMESA32_LIBS=$OSMESA_LIBS
@@ -155,9 +179,17 @@ else
 fi
 DEMO_CFLAGS="$DEMO_CFLAGS $CWARNFLAGS"
 
-PKG_CHECK_MODULES(X11, [x11 xext], [x11_enabled=yes], [enable_x11=no])
-PKG_CHECK_MODULES(FREETYPE2, [freetype2],
-		  [freetype2_enabled=yes], [freetype2_enabled=no])
+AC_ARG_ENABLE([x11],
+    [AS_HELP_STRING([--disable-x11],
+        [disable support for X11 @<:@default=no@:>@])],
+    [x11_enabled="$enableval"],
+    [PKG_CHECK_MODULES(X11, [x11 xext], [x11_enabled=yes], [enable_x11=no])])
+AC_ARG_ENABLE([freetype2],
+    [AS_HELP_STRING([--disable-freetype2],
+        [disable support for X11 @<:@default=no@:>@])],
+    [freetype2_enabled="$enableval"],
+    [PKG_CHECK_MODULES(FREETYPE2, [freetype2],
+        [freetype2_enabled=yes], [freetype2_enabled=no])])
 
 mesa_source_enabled=no
 AC_ARG_WITH([mesa-source],

@@ -113,35 +113,53 @@ DEMO_CFLAGS="$DEMO_CFLAGS $GLU_CFLAGS"
 DEMO_LIBS="$DEMO_LIBS $GLU_LIBS"
 
 AC_ARG_ENABLE([egl],
-    [AS_HELP_STRING([--disable-egl],
-        [disable EGL library @<:@default=no@:>@])],
+    [AS_HELP_STRING([--enable-egl],
+        [enable EGL library @<:@default=no@:>@])],
     [egl_enabled="$enableval"],
-    [PKG_CHECK_MODULES(EGL, [egl], [egl_enabled=yes], [egl_enabled=no])])
+    [egl_enabled=auto])
+if test "x$egl_enabled" != "xno"; then
+    PKG_CHECK_MODULES(EGL, [egl], [egl_enabled=yes], [egl_enabled=no])
+fi
 AC_ARG_ENABLE([gles1],
-    [AS_HELP_STRING([--disable-gles1],
-        [disable support for OpenGL ES 1.x API @<:@default=no@:>@])],
+    [AS_HELP_STRING([--enable-gles1],
+        [enable support for OpenGL ES 1.x API @<:@default=no@:>@])],
     [glesv1_enabled="$enableval"],
-    [PKG_CHECK_MODULES(GLESV1, [glesv1_cm], [glesv1_enabled=yes], [glesv1_enabled=no])])
+    [glesv1_enabled=auto])
+if test "x$glesv1_enabled" != "xno"; then
+    PKG_CHECK_MODULES(GLESV1, [glesv1_cm], [glesv1_enabled=yes], [glesv1_enabled=no])
+fi
 AC_ARG_ENABLE([gles2],
-    [AS_HELP_STRING([--disable-gles2],
-        [disable support for OpenGL ES 2.x API @<:@default=no@:>@])],
+    [AS_HELP_STRING([--enable-gles2],
+        [enable support for OpenGL ES 2.x API @<:@default=no@:>@])],
     [glesv2_enabled="$enableval"],
-    [PKG_CHECK_MODULES(GLESV2, [glesv2], [glesv2_enabled=yes], [glesv2_enabled=no])])
+    [glesv2_enabled=auto])
+if test "x$glesv2_enabled" != "xno"; then
+    PKG_CHECK_MODULES(GLESV2, [glesv2], [glesv2_enabled=yes], [glesv2_enabled=no])
+fi
 AC_ARG_ENABLE([vg],
-    [AS_HELP_STRING([--disable-vg],
-        [disable support for OpenVG API @<:@default=no@:>@])],
+    [AS_HELP_STRING([--enable-vg],
+        [enable support for OpenVG API @<:@default=no@:>@])],
     [vg_enabled="$enableval"],
-    [PKG_CHECK_MODULES(VG, [vg], [vg_enabled=yes], [vg_enabled=no])])
+    [vg_enabled=auto])
+if test "x$vg_enabled" != "xno"; then
+    PKG_CHECK_MODULES(VG, [vg], [vg_enabled=yes], [vg_enabled=no])
+fi
 AC_ARG_ENABLE([osmesa],
-    [AS_HELP_STRING([--disable-osmesa],
-        [disable OSMesa library @<:@default=no@:>@])],
+    [AS_HELP_STRING([--enable-osmesa],
+        [enable OSMesa library @<:@default=no@:>@])],
     [osmesa_enabled="$enableval"],
-    [PKG_CHECK_MODULES(OSMESA, [osmesa], [osmesa_enabled=yes], [osmesa_enabled=no])])
+    [osmesa_enabled=auto])
+if test "x$osmesa_enabled" != "xno"; then
+    PKG_CHECK_MODULES(OSMESA, [osmesa], [osmesa_enabled=yes], [osmesa_enabled=no])
+fi
 AC_ARG_ENABLE([libdrm],
-    [AS_HELP_STRING([--disable-libdrm],
-        [disable support for libdrm @<:@default=no@:>@])],
+    [AS_HELP_STRING([--enable-libdrm],
+        [enable support for libdrm @<:@default=no@:>@])],
     [drm_enabled="$enableval"],
-    [PKG_CHECK_MODULES(DRM, [libdrm], [drm_enabled=yes], [drm_enabled=no])])
+    [drm_enabled=auto])
+if test "x$drm_enabled" != "xno"; then
+    PKG_CHECK_MODULES(DRM, [libdrm], [drm_enabled=yes], [drm_enabled=no])
+fi
 dnl The OSMesa .pc uses OSMesa32, while we want to build with other versions
 dnl too.
 OSMESA32_LIBS=$OSMESA_LIBS
@@ -180,17 +198,21 @@ fi
 DEMO_CFLAGS="$DEMO_CFLAGS $CWARNFLAGS"
 
 AC_ARG_ENABLE([x11],
-    [AS_HELP_STRING([--disable-x11],
-        [disable support for X11 @<:@default=no@:>@])],
+    [AS_HELP_STRING([--enable-x11],
+        [enable support for X11 @<:@default=no@:>@])],
     [x11_enabled="$enableval"],
-    [PKG_CHECK_MODULES(X11, [x11 xext], [x11_enabled=yes], [enable_x11=no])])
+    [x11_enabled=auto])
+if test "x$x11_enabled" != "xno"; then
+    PKG_CHECK_MODULES(X11, [x11 xext], [x11_enabled=yes], [x11_enabled=no])
+fi
 AC_ARG_ENABLE([freetype2],
-    [AS_HELP_STRING([--disable-freetype2],
-        [disable support for X11 @<:@default=no@:>@])],
+    [AS_HELP_STRING([--enable-freetype2],
+        [enable support for FreeType2 @<:@default=no@:>@])],
     [freetype2_enabled="$enableval"],
-    [PKG_CHECK_MODULES(FREETYPE2, [freetype2],
-        [freetype2_enabled=yes], [freetype2_enabled=no])])
-
+    [freetype2_enabled=auto])
+if test "x$freetype2_enabled" != "xno"; then
+    PKG_CHECK_MODULES(DRM, [freetype2], [freetype2_enabled=yes], [freetype2_enabled=no])
+fi
 mesa_source_enabled=no
 AC_ARG_WITH([mesa-source],
 	[AS_HELP_STRING([--with-mesa-source=DIR],

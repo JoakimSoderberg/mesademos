@@ -51,6 +51,7 @@ set (targets
 	lodbias
 	morph3d
 	multiarb
+	normal
 	paltex
 	pixeltest
 	pointblast

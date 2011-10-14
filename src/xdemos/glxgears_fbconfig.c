@@ -573,6 +573,7 @@ event_loop(Display *dpy, GLXWindow win)
             GLfloat fps = frames / seconds;
             printf("%d frames in %3.1f seconds = %6.3f FPS\n", frames, seconds,
                    fps);
+            fflush(stdout);
             t0 = t;
             frames = 0;
          }

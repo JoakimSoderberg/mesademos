@@ -155,6 +155,7 @@ _eglutNativeEventLoop(void)
 
          printf("%d frames in %3.1f seconds = %6.3f FPS\n",
                frames, elapsed, frames / elapsed);
+         fflush(stdout);
 
          start = now;
          frames = 0;

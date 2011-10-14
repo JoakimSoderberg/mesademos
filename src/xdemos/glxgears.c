@@ -349,6 +349,7 @@ draw_frame(Display *dpy, Window win)
       GLfloat fps = frames / seconds;
       printf("%d frames in %3.1f seconds = %6.3f FPS\n", frames, seconds,
              fps);
+      fflush(stdout);
       tRate0 = t;
       frames = 0;
    }

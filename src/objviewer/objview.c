@@ -284,8 +284,10 @@ display(void)
    glutSwapBuffers();
 
    fps = ComputeFPS();
-   if (fps)
+   if (fps) {
       printf("%f FPS\n", fps);
+      fflush(stdout);
+   }
 }
 
 

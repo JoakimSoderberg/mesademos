@@ -43,6 +43,7 @@ void alarmhandler (int sig)
    if (sig == SIGALRM) {
       printf("%d frames in 5.0 seconds = %.3f FPS\n", frame_cnt,
              frame_cnt / 5.0);
+      fflush(stdout);
 
       frame_cnt = 0;
    }

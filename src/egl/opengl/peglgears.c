@@ -357,6 +357,7 @@ static void run_gears(EGLDisplay dpy, EGLSurface surf, int ttr)
 	seconds = ct - st;
 	fps = frames / seconds;
 	printf("%d frames in %3.1f seconds = %6.3f FPS\n", frames, seconds, fps);
+	fflush(stdout);
 	
 }
 

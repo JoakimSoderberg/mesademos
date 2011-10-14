@@ -620,6 +620,7 @@ event_loop(Display *dpy, Window win)
 	       printf("%d frames in %3.1f seconds = %6.3f FPS\n",
 		      frames, seconds, fps);
 	    }
+	    fflush(stdout);
 
             t0 = t;
             frames = 0;

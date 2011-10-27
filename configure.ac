@@ -205,14 +205,17 @@ AC_ARG_ENABLE([x11],
 if test "x$x11_enabled" != "xno"; then
     PKG_CHECK_MODULES(X11, [x11 xext], [x11_enabled=yes], [x11_enabled=no])
 fi
+
+dnl FreeType2 is needed by an OpenVG demo
 AC_ARG_ENABLE([freetype2],
     [AS_HELP_STRING([--enable-freetype2],
         [enable support for FreeType2 @<:@default=no@:>@])],
     [freetype2_enabled="$enableval"],
     [freetype2_enabled=auto])
 if test "x$freetype2_enabled" != "xno"; then
-    PKG_CHECK_MODULES(DRM, [freetype2], [freetype2_enabled=yes], [freetype2_enabled=no])
+    PKG_CHECK_MODULES(FREETYPE2, [freetype2], [freetype2_enabled=yes], [freetype2_enabled=no])
 fi
+
 mesa_source_enabled=no
 AC_ARG_WITH([mesa-source],
 	[AS_HELP_STRING([--with-mesa-source=DIR],

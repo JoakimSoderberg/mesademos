@@ -206,6 +206,16 @@ if test "x$x11_enabled" != "xno"; then
     PKG_CHECK_MODULES(X11, [x11 xext], [x11_enabled=yes], [x11_enabled=no])
 fi
 
+dnl GBM is needed for EGL on KMS
+AC_ARG_ENABLE([gbm],
+    [AS_HELP_STRING([--enable-gbm],
+        [enable support for GBM @<:@default=no@:>@])],
+    [gbm_enabled="$enableval"],
+    [gbm_enabled=auto])
+if test "x$gbm_enabled" != "xno"; then
+    PKG_CHECK_MODULES(GBM, [gbm], [gbm_enabled=yes], [gbm_enabled=no])
+fi
+
 dnl FreeType2 is needed by an OpenVG demo
 AC_ARG_ENABLE([freetype2],
     [AS_HELP_STRING([--enable-freetype2],
@@ -280,6 +290,7 @@ AM_CONDITIONAL(HAVE_GLESV2, test "x$glesv2_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_VG, test "x$vg_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_GLUT, test "x$glut_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_X11, test "x$x11_enabled" = "xyes")
+AM_CONDITIONAL(HAVE_GBM, test "x$gbm_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_FREETYPE2, test "x$freetype2_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_OSMESA, test "x$osmesa_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_DRM, test "x$drm_enabled" = "xyes")

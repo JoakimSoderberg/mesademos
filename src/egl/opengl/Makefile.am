@@ -43,8 +43,10 @@ EGL_X11_DEMOS = \
 endif
 
 if HAVE_DRM
+if HAVE_GBM
 EGL_DRM_DEMOS = \
 	eglkms
+endif
 endif
 
 if HAVE_EGL

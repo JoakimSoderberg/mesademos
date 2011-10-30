@@ -787,18 +787,6 @@ special(int k, int x, int y)
   glutPostRedisplay();
 }
 
-static int
-supportsOneDotOne(void)
-{
-  const char *version;
-  int major, minor;
-
-  version = (char *) glGetString(GL_VERSION);
-  if (sscanf(version, "%d.%d", &major, &minor) == 2)
-    return major * 10 + minor >= 11;
-  return 0;            /* OpenGL version string malformed! */
-}
-
 int
 main(int argc, char **argv)
 {
@@ -862,7 +850,7 @@ main(int argc, char **argv)
   makeDinosaur();
 
 #ifdef GL_VERSION_1_1
-  if (supportsOneDotOne() && !forceExtension) {
+  if (GLEW_VERSION_1_1 && !forceExtension) {
     polygonOffsetVersion = ONE_DOT_ONE;
     glPolygonOffset(-2.0, -9.0);
   } else
@@ -870,7 +858,7 @@ main(int argc, char **argv)
   {
 #ifdef GL_EXT_polygon_offset
   /* check for the polygon offset extension */
-  if (glutExtensionSupported("GL_EXT_polygon_offset")) {
+  if (GLEW_EXT_polygon_offset) {
     polygonOffsetVersion = EXTENSION;
     glPolygonOffsetEXT(-2.0, -0.002);
   } else 

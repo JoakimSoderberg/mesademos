@@ -61,11 +61,9 @@ static void init( void )
    glVertexPointer( 3, GL_FLOAT, sizeof(verts[0]), verts );
    glColorPointer( 4, GL_UNSIGNED_BYTE, 0, color );
 
-#ifdef GL_EXT_compiled_vertex_array
-   if ( compiled ) {
+   if ( GLEW_EXT_compiled_vertex_array ) {
       glLockArraysEXT( 0, 4 );
    }
-#endif
 }
 
 static void display( void )
@@ -113,8 +111,6 @@ static GLboolean args( int argc, char **argv )
 int main( int argc, char **argv )
 {
    GLenum type;
-   char *string;
-   double version;
 
    glutInit( &argc, argv );
 
@@ -133,21 +129,15 @@ int main( int argc, char **argv )
 
    /* Make sure the server supports GL 1.2 vertex arrays.
     */
-   string = (char *) glGetString( GL_VERSION );
-
-   version = atof(string);
-   if ( version < 1.2 ) {
+   if ( !GLEW_VERSION_1_2 ) {
       fprintf( stderr, "This program requires OpenGL 1.2 vertex arrays.\n" );
       exit( -1 );
    }
 
    /* See if the server supports compiled vertex arrays.
     */
-   string = (char *) glGetString( GL_EXTENSIONS );
-
-   if ( !strstr( string, "GL_EXT_compiled_vertex_array" ) ) {
+   if ( !GLEW_EXT_compiled_vertex_array ) {
       fprintf( stderr, "Compiled vertex arrays not supported by this renderer.\n" );
-      compiled = GL_FALSE;
    }
 
    init();

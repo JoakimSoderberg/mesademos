@@ -22,9 +22,8 @@
 #include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <GL/gl.h>
-#include <GL/glext.h>
-#include <GL/wglext.h>
+#include <GL/glew.h>
+#include <GL/wglew.h>
 
 static LRESULT CALLBACK
 WndProc(HWND hWnd,
@@ -43,7 +42,7 @@ WndProc(HWND hWnd,
    return 0;
 }
 
-static char *
+static const char *
 context_error_to_string(DWORD error)
 {
    switch (error) {
@@ -72,17 +71,17 @@ profile_mask_to_string(GLint profileMask)
 }
 
 static void
-print_context_infos()
+print_context_infos(void)
 {
    GLint majorVersion;
    GLint minorVersion;
    GLint profileMask;
-   const GLubyte *version;
+   const char *version;
 
    fprintf(stdout, "Context Informations\n");
 
-   version = glGetString(GL_VERSION);
-   fprintf(stdout, "GL_VERSION: %s\n", glGetString(GL_VERSION));
+   version = (const char *)glGetString(GL_VERSION);
+   fprintf(stdout, "GL_VERSION: %s\n", version);
 
    // Request informations with the new 3.x features.
    if (sscanf(version, "%d.%d", &majorVersion, &minorVersion) != 2)
@@ -153,9 +152,9 @@ create_context(int majorVersion, int minorVersion, int profileMask, int contextF
    }
 
    memset(&pfd, 0, sizeof(pfd));
-   pfd.nVersion = 1;
    pfd.nSize = sizeof(pfd);
-   pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL;
+   pfd.nVersion = 1;
+   pfd.dwFlags = PFD_DOUBLEBUFFER | PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL;
    pfd.iPixelType = PFD_TYPE_RGBA;
    pfd.cColorBits = 24;
    pfd.cDepthBits = 24;
@@ -199,7 +198,7 @@ create_context(int majorVersion, int minorVersion, int profileMask, int contextF
    ctx = wglCreateContextAttribsARB(hdc, 0, attribsList);
    if (!ctx) {
       DWORD error = GetLastError();
-      fprintf(stderr, "wglCreateContextAttribsARB failed(): %s (0x%x)\n",
+      fprintf(stderr, "wglCreateContextAttribsARB failed(): %s (0x%lx)\n",
               context_error_to_string(error), error);
       return;
    }
@@ -212,7 +211,7 @@ create_context(int majorVersion, int minorVersion, int profileMask, int contextF
       return;
    }
 
-   print_context_infos(majorVersion);
+   print_context_infos();
 }
 
 static void

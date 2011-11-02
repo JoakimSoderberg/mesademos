@@ -129,32 +129,33 @@ Create a <b>Toolchain.cmake</b> file containing:
 </p>
 <pre>
 # the name of the target operating system
-SET(CMAKE_SYSTEM_NAME Windows)
+set (CMAKE_SYSTEM_NAME Windows)
 
 # which compilers to use for C and C++
-SET(CMAKE_C_COMPILER i586-mingw32msvc-gcc)
-SET(CMAKE_CXX_COMPILER i586-mingw32msvc-g++)
+set (CMAKE_C_COMPILER i586-mingw32msvc-gcc)
+set (CMAKE_CXX_COMPILER i586-mingw32msvc-g++)
+set (CMAKE_RC_COMPILER i586-mingw32msvc-windres)
 
 # here is the target environment located
-SET(CMAKE_FIND_ROOT_PATH /usr/i586-mingw32msvc)
+set (CMAKE_FIND_ROOT_PATH /usr/i586-mingw32msvc)
 
 # adjust the default behaviour of the FIND_XXX() commands:
 # search headers and libraries in the target environment, search
 # programs in the host environment
-set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
-set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
-set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+set (CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set (CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set (CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 </pre>
 
 <p>
 Create a <b>Cache.cmake</b> file containing:
 </p>
 <pre>
-set(GLEW_INCLUDE_DIR "/path/to/glew/include" CACHE PATH "" FORCE)
-set(GLEW_glew_LIBRARY "/path/to/glew/lib/libglew32.a" CACHE FILEPATH "" FORCE)
+set (GLEW_INCLUDE_DIR "/path/to/glew/include" CACHE PATH "" FORCE)
+set (GLEW_glew_LIBRARY "/path/to/glew/lib/libglew32.a" CACHE FILEPATH "" FORCE)
 
-set(GLUT_INCLUDE_DIR "/path/to/glut/include" CACHE PATH "" FORCE)
-set(GLUT_glut_LIBRARY "/path/to/glut/lib/libglut32.a" CACHE FILEPATH "" FORCE)
+set (GLUT_INCLUDE_DIR "/path/to/glut/include" CACHE PATH "" FORCE)
+set (GLUT_glut_LIBRARY "/path/to/glut/lib/libglut32.a" CACHE FILEPATH "" FORCE)
 </pre>
 
 <p>

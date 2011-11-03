@@ -60,6 +60,7 @@ struct app_data {
    EGLImageKHR img;
 
    /* OpenGL ES */
+   GLenum target;
    GLuint texture;
 
    PFNEGLCREATEIMAGEKHRPROC eglCreateImageKHR;
@@ -167,7 +168,7 @@ app_redraw(struct app_data *data)
        * must be re-attached.
        */
       eglWaitNative(EGL_CORE_NATIVE_ENGINE);
-      data->glEGLImageTargetTexture2DOES(GL_TEXTURE_2D,
+      data->glEGLImageTargetTexture2DOES(data->target,
             (GLeglImageOES) data->img);
    }
 
@@ -319,11 +320,11 @@ app_init_gl(struct app_data *data)
 
    glGenTextures(1, &data->texture);
 
-   glBindTexture(GL_TEXTURE_2D, data->texture);
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+   glBindTexture(data->target, data->texture);
+   glTexParameteri(data->target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+   glTexParameteri(data->target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-   glEnable(GL_TEXTURE_2D);
+   glEnable(data->target);
    glEnable(GL_DEPTH_TEST);
 }
 
@@ -343,12 +344,22 @@ app_init_exts(struct app_data *data)
       return False;
    }
 
+   data->target = 0;
    exts = (const char *) glGetString(GL_EXTENSIONS);
    data->glEGLImageTargetTexture2DOES = (PFNGLEGLIMAGETARGETTEXTURE2DOESPROC)
       eglGetProcAddress("glEGLImageTargetTexture2DOES");
-   if (!exts || !strstr(exts, "GL_OES_EGL_image") ||
-       !data->glEGLImageTargetTexture2DOES) {
-      printf("OpenGL ES does not support GL_OES_EGL_image\n");
+   if (exts && data->glEGLImageTargetTexture2DOES) {
+      if (strstr(exts, "GL_OES_EGL_image"))
+         data->target = GL_TEXTURE_2D;
+#ifdef GL_OES_EGL_image_external
+      /* prefer external texture */
+      if (strstr(exts, "GL_OES_EGL_image_external"))
+         data->target = GL_TEXTURE_EXTERNAL_OES;
+#endif
+   }
+
+   if (!data->target) {
+      printf("OpenGL ES does not support sampling from an EGLImage\n");
       return False;
    }
 

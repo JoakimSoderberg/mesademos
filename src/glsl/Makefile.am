@@ -37,6 +37,7 @@ bin_PROGRAMS = \
 	bitmap \
 	brick \
 	bump \
+	blinking-teapot \
 	convolutions \
 	deriv \
 	fragcoord \
@@ -77,6 +78,7 @@ bitmap_LDADD = ../util/libutil.la
 bezier_LDADD = ../util/libutil.la
 brick_LDADD = ../util/libutil.la
 bump_LDADD = ../util/libutil.la
+blinking_teapot_LDADD = ../util/libutil.la
 convolutions_LDADD = ../util/libutil.la
 deriv_LDADD = ../util/libutil.la
 geom_sprites_LDADD = ../util/libutil.la

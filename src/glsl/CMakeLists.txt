@@ -24,6 +24,7 @@ set (targets
 	bitmap
 	brick
 	bump
+	blinking-teapot
 	convolutions
 	deriv
 	fragcoord

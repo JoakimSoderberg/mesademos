@@ -103,6 +103,10 @@ endif (MSVC)
 
 add_definitions(-DDEMOS_DATA_DIR=\"../data/\")
 
+if (BUILD_SHARED_LIBS AND NOT DEFINED LIBDIR)
+	set(LIBDIR lib)
+endif (BUILD_SHARED_LIBS AND NOT DEFINED LIBDIR)
+
 add_subdirectory (src)
 
 

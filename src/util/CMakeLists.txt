@@ -11,3 +11,7 @@ add_library (util
 	showbuffer.c
 	trackball.c
 )
+
+if (BUILD_SHARED_LIBS)
+	install (TARGETS util DESTINATION ${LIBDIR})
+endif (BUILD_SHARED_LIBS)

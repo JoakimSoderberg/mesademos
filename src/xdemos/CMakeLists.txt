@@ -19,6 +19,10 @@ link_libraries (
 
 add_library (pbutil pbutil.c)
 
+if (BUILD_SHARED_LIBS)
+	install (TARGETS pbutil DESTINATION ${LIBDIR})
+endif (BUILD_SHARED_LIBS)
+
 set (subdir xdemos)
 
 set (targets

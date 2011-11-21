@@ -424,6 +424,9 @@ print_limits(const char *extensions)
 #if defined(GL_ARB_draw_buffers)
       { 1, GL_MAX_DRAW_BUFFERS_ARB, "GL_MAX_DRAW_BUFFERS_ARB", "GL_ARB_draw_buffers" },
 #endif
+#if defined(GL_ARB_blend_func_extended)
+      { 1, GL_MAX_DUAL_SOURCE_DRAW_BUFFERS, "GL_MAX_DUAL_SOURCE_DRAW_BUFFERS", "GL_ARB_blend_func_extended" },
+#endif
       { 0, (GLenum) 0, NULL, NULL }
    };
    GLint i, max[2];

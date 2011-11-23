@@ -287,7 +287,7 @@ int main(int argc, char *argv[])
 
    ret = drmModeAddFB(fd,
 		      kms.mode.hdisplay, kms.mode.vdisplay,
-		      32, 32, stride, handle, &kms.fb_id);
+		      24, 32, stride, handle, &kms.fb_id);
    if (ret) {
       fprintf(stderr, "failed to create fb\n");
       goto rm_rb;

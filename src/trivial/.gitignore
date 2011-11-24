@@ -84,6 +84,8 @@ readpixels
 sub-tex
 tex-quads
 tri
+tri-2101010
+tri-2101010-dlist
 tri-alpha
 tri-alpha-tex
 tri-array-interleaved
@@ -151,6 +153,7 @@ tri-z
 tri-z-9
 tri-z-eq
 vbo-drawarrays
+vbo-drawarrays-2101010
 vbo-drawelements
 vbo-drawrange
 vbo-noninterleaved

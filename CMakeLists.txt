@@ -2,11 +2,11 @@ cmake_minimum_required (VERSION 2.8)
 
 project (mesademos)
 
+include (FindPkgConfig)
+
 find_package (OpenGL REQUIRED)
 find_package (GLUT REQUIRED)
 find_package (X11)
-
-find_library(EGL_egl_LIBRARY EGL /usr/lib)
 
 find_library (GLEW_glew_LIBRARY GLEW
 	/usr/lib
@@ -15,6 +15,13 @@ find_library (GLEW_glew_LIBRARY GLEW
 find_path (GLEW_INCLUDE_DIR GL/glew.h
       /usr/include/GL
 )
+
+if (NOT WIN32)
+	pkg_check_modules (EGL egl)
+	pkg_check_modules (GLESV1 glesv1_cm)
+	pkg_check_modules (GLESV2 glesv2)
+	pkg_check_modules (VG vg)
+endif ()
 
 if (UNIX)
 	link_libraries(m)

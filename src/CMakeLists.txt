@@ -16,16 +16,16 @@ add_subdirectory (vpglsl)
 add_subdirectory (gs)
 add_subdirectory (slang)
 
-if(EGL_egl_LIBRARY)
-  add_subdirectory(egl)
-endif(EGL_egl_LIBRARY)
+if (EGL_FOUND)
+	add_subdirectory(egl)
+endif ()
 
 if (X11_FOUND)
 	add_subdirectory (xdemos)
 endif (X11_FOUND)
 
-if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+if (WIN32)
 	add_subdirectory (wgl)
-endif (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+endif (WIN32)
 
 add_subdirectory (data)

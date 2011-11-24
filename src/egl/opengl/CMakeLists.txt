@@ -1,12 +1,12 @@
 include_directories(
 	${CMAKE_SOURCE_DIR}/src/egl/eglut
 	${CMAKE_SOURCE_DIR}/src/util
-	${EGL_INCLUDE_DIR}
+	${EGL_INCLUDE_DIRS}
 	${OPENGL_INCLUDE_PATH}
 )
 
 link_libraries (
-	${EGL_egl_LIBRARY}
+	${EGL_LIBRARIES}
 	${OPENGL_gl_LIBRARY}
 )
 

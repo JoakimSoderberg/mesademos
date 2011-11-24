@@ -124,7 +124,7 @@ init(void)
    const char *ext = (char *) glGetString(GL_EXTENSIONS);
 
    if (!strstr(ext, "GL_OES_draw_texture")) {
-      fprintf(stderr, "Sorry, this program requires GL_OES_draw_texture");
+      fprintf(stderr, "Sorry, this program requires GL_OES_draw_texture\n");
       exit(1);
    }
 

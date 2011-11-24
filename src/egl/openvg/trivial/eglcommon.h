@@ -1,9 +1,9 @@
 #ifndef EGLCOMMON_H
 #define EGLCOMMON_H
 
-typedef void (*init_func)();
+typedef void (*init_func)(void);
 typedef void (*reshape_func)(int, int);
-typedef void (*draw_func)();
+typedef void (*draw_func)(void);
 typedef int  (*key_func)(unsigned key);
 
 

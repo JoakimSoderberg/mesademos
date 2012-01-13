@@ -64,6 +64,7 @@ static GLfloat LodBias = 0.0;
 static GLboolean NearestFilter = GL_TRUE;
 static GLuint texImage, texColor, texCurrent;
 static unsigned int min_filter;
+static int Width = 600, Height = 600;
 
 static const struct
 {
@@ -213,6 +214,70 @@ myinit(void)
 }
 
 static void
+print_string(const char *s)
+{
+   while (*s) {
+      glutBitmapCharacter(GLUT_BITMAP_8_BY_13, (int) *s);
+      s++;
+   }
+}
+
+static void
+print_info(void)
+{
+   int dy = 17;
+   int x = Width-320, y = Height - dy;
+   char s[100];
+
+   glDisable(GL_TEXTURE_2D);
+   glColor3f(1, 1, 1);
+
+   glWindowPos2i(x, y);
+   sprintf(s, "MIN FILTER (f/F): %s", min_filters[min_filter].name);
+   print_string(s);
+   y -= dy;
+
+   glWindowPos2i(x, y);
+   sprintf(s, "Toggle Image (t):");
+   print_string(s);
+   y -= dy;
+
+   glWindowPos2i(x, y);
+   sprintf(s, "BASE_LEVEL (b/B): %d", BaseLevel);
+   print_string(s);
+   y -= dy;
+
+   glWindowPos2i(x, y);
+   sprintf(s, " MAX_LEVEL (m/M): %d", MaxLevel);
+   print_string(s);
+   y -= dy;
+
+   glWindowPos2i(x, y);
+   sprintf(s, "   MIN_LOD (n/N): %f", MinLod);
+   print_string(s);
+   y -= dy;
+
+   glWindowPos2i(x, y);
+   sprintf(s, "   MAX_LOD (n/N): %f", MaxLod);
+   print_string(s);
+   y -= dy;
+
+   glWindowPos2i(x, y);
+   sprintf(s, "  LOD_BIAS (l/L): %f", LodBias);
+   print_string(s);
+   y -= dy;
+
+   glWindowPos2i(x, y);
+   sprintf(s, "   RESET (space)");
+   print_string(s);
+   y -= dy;
+
+
+   glEnable(GL_TEXTURE_2D);
+}
+
+
+static void
 display(void)
 {
    GLfloat tcm = 1.0;
@@ -244,12 +309,17 @@ display(void)
    glTexCoord2f(tcm * 3000.0, 0.0);
    glVertex3f(3000.0, -1.0, -6000.0);
    glEnd();
+
+   print_info();
+
    glFlush();
 }
 
 static void
 myReshape(int w, int h)
 {
+   Width = w;
+   Height = h;
    glViewport(0, 0, w, h);
    glMatrixMode(GL_PROJECTION);
    glLoadIdentity();
@@ -358,7 +428,7 @@ main(int argc, char **argv)
 {
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
-   glutInitWindowSize(600, 600);
+   glutInitWindowSize(Width, Height);
    glutCreateWindow(argv[0]);
    glewInit();
    myinit();

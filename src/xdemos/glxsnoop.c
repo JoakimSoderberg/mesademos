@@ -227,13 +227,13 @@ event_loop(Display *dpy, Window win)
       case KeyPress:
          {
             char buffer[10];
-            int r, code;
+            int code;
             code = XLookupKeysym(&event.xkey, 0);
             if (code == XK_Left) {
             }
             else {
-               r = XLookupString(&event.xkey, buffer, sizeof(buffer),
-                                 NULL, NULL);
+               XLookupString(&event.xkey, buffer, sizeof(buffer),
+                             NULL, NULL);
                keypress(dpy, win, buffer[0]);
             }
          }

@@ -472,7 +472,7 @@ handle_event(Display *dpy, Window win, GLXContext ctx1, GLXContext ctx2,
    case KeyPress:
       {
          char buffer[10];
-         int r, code;
+         int code;
          code = XLookupKeysym(&event->xkey, 0);
          if (code == XK_Left) {
             view_roty += 5.0;
@@ -487,8 +487,8 @@ handle_event(Display *dpy, Window win, GLXContext ctx1, GLXContext ctx2,
             view_rotx -= 5.0;
          }
          else {
-            r = XLookupString(&event->xkey, buffer, sizeof(buffer),
-                              NULL, NULL);
+            XLookupString(&event->xkey, buffer, sizeof(buffer),
+                          NULL, NULL);
             if (buffer[0] == 27) {
                /* escape */
                return EXIT;

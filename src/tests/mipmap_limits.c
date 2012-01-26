@@ -258,7 +258,7 @@ print_info(void)
    y -= dy;
 
    glWindowPos2i(x, y);
-   sprintf(s, "   MAX_LOD (n/N): %f", MaxLod);
+   sprintf(s, "   MAX_LOD (x/X): %f", MaxLod);
    print_string(s);
    y -= dy;
 

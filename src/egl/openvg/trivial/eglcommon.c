@@ -10,7 +10,7 @@
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
 #include <VG/openvg.h>  /* using full OpenGL for now */
-#include <GLES/egl.h>
+#include <EGL/egl.h>
 
 
 static init_func    init = 0;
@@ -213,7 +213,7 @@ int run(int argc, char **argv,
    EGLContext egl_ctx;
    EGLDisplay egl_dpy;
    char *dpyName = NULL;
-   GLboolean printInfo = GL_FALSE;
+   EGLBoolean printInfo = EGL_FALSE;
    EGLint egl_major, egl_minor;
    int i;
    const char *s;
@@ -229,7 +229,7 @@ int run(int argc, char **argv,
          i++;
       }
       else if (strcmp(argv[i], "-info") == 0) {
-         printInfo = GL_TRUE;
+         printInfo = EGL_TRUE;
       }
    }
 

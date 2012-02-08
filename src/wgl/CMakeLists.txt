@@ -16,3 +16,5 @@ add_executable (wglinfo wglinfo.c)
 add_executable (wglcontext wglcontext.c)
 
 install (TARGETS wglthreads wgl_sharedtex_mt wglinfo DESTINATION wgl)
+
+add_subdirectory (rtotex)

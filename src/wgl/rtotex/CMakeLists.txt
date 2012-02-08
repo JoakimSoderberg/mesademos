@@ -11,7 +11,7 @@ link_libraries (
 	${GLEW_glew_LIBRARY}
 )
 
-add_executable (rtotex
+add_executable (rtotex WIN32
 	fps_counter.cpp
 	image.cpp
 	interactor.cpp

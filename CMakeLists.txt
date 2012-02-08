@@ -3,6 +3,7 @@ cmake_minimum_required (VERSION 2.8)
 project (mesademos)
 
 include (FindPkgConfig)
+include (CheckCCompilerFlag)
 
 find_package (OpenGL REQUIRED)
 find_package (GLUT REQUIRED)
@@ -107,6 +108,22 @@ if (MSVC)
 	add_definitions (-D_SCL_SECURE_NO_DEPRECATE -D_SCL_SECURE_NO_WARNINGS)
 	add_definitions (-wd4244) # conversion' conversion from 'type1' to 'type2', possible loss of data
 endif (MSVC)
+
+if (MINGW)
+	# Avoid depending on MinGW runtime DLLs
+	check_c_compiler_flag (-static-libgcc HAVE_STATIC_LIBGCC_FLAG)
+	if (HAVE_STATIC_LIBGCC_FLAG)
+		set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc")
+		set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static-libgcc")
+		set (CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -static-libgcc")
+	endif ()
+	check_c_compiler_flag (-static-libstdc++ HAVE_STATIC_LIBSTDCXX_FLAG)
+	if (HAVE_STATIC_LIBSTDCXX_FLAG)
+		set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libstdc++")
+		set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static-libstdc++")
+		set (CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -static-libstdc++")
+	endif ()
+endif ()
 
 add_definitions(-DDEMOS_DATA_DIR=\"../data/\")
 

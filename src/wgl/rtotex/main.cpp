@@ -23,12 +23,6 @@
 #include "image.h"
 #include "main.h"
 
-//link to libraries
-#pragma comment(lib, "opengl32.lib")
-#pragma comment(lib, "glu32.lib")
-#pragma comment(lib, "glut32.lib")
-#pragma comment(lib, "winmm.lib")
-
 //errorLog MUST be kept - it is used by other files
 LOG errorLog;
 WINDOW window;

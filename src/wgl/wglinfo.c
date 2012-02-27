@@ -361,6 +361,11 @@ print_limits(const char *extensions)
 #if defined(GL_ARB_blend_func_extended)
       { 1, GL_MAX_DUAL_SOURCE_DRAW_BUFFERS, "GL_MAX_DUAL_SOURCE_DRAW_BUFFERS", "GL_ARB_blend_func_extended" },
 #endif
+#if defined (GL_ARB_framebuffer_object)
+      { 1, GL_MAX_RENDERBUFFER_SIZE, "GL_MAX_RENDERBUFFER_SIZE", "GL_ARB_framebuffer_object" },
+      { 1, GL_MAX_COLOR_ATTACHMENTS, "GL_MAX_COLOR_ATTACHMENTS", "GL_ARB_framebuffer_object" },
+      { 1, GL_MAX_SAMPLES, "GL_MAX_SAMPLES", "GL_ARB_framebuffer_object" },
+#endif
       { 0, (GLenum) 0, NULL, NULL }
    };
    GLint i, max[2];

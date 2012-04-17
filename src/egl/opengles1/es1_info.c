@@ -79,16 +79,17 @@ info(EGLDisplay egl_dpy)
    const char *s;
 
    s = eglQueryString(egl_dpy, EGL_VERSION);
-   printf("EGL_VERSION = %s\n", s);
+   printf("EGL_VERSION: %s\n", s);
 
    s = eglQueryString(egl_dpy, EGL_VENDOR);
-   printf("EGL_VENDOR = %s\n", s);
+   printf("EGL_VENDOR: %s\n", s);
 
    s = eglQueryString(egl_dpy, EGL_EXTENSIONS);
-   printf("EGL_EXTENSIONS = %s\n", s);
+   printf("EGL_EXTENSIONS:\n", s);
+   print_extension_list((char *) s);
 
    s = eglQueryString(egl_dpy, EGL_CLIENT_APIS);
-   printf("EGL_CLIENT_APIS = %s\n", s);
+   printf("EGL_CLIENT_APIS: %s\n", s);
 
 const char *glGetString (int name);
 

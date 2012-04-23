@@ -40,6 +40,8 @@ SHADERUTIL_SRC = \
 endif
 
 libutil_la_SOURCES = \
+	gl_wrap.h \
+	glut_wrap.h \
 	readtex.c \
 	readtex.h \
 	showbuffer.c \

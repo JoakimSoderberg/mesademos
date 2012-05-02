@@ -206,6 +206,16 @@ if test "x$x11_enabled" != "xno"; then
     PKG_CHECK_MODULES(X11, [x11 xext], [x11_enabled=yes], [x11_enabled=no])
 fi
 
+AC_ARG_ENABLE([wayland],
+    [AS_HELP_STRING([--enable-wayland],
+        [enable support for wayland @<:@default=no@:>@])],
+    [wayland_enabled="$enableval"],
+    [wayland_enabled=no])
+
+if test "x$wayland_enabled" != "xno"; then
+    PKG_CHECK_MODULES(WAYLAND, [wayland-client wayland-egl], [wayland_enabled=yes], [wayland_enabled=no])
+fi
+
 dnl GBM is needed for EGL on KMS
 AC_ARG_ENABLE([gbm],
     [AS_HELP_STRING([--enable-gbm],
@@ -283,6 +293,9 @@ AC_SUBST([OSMESA_LIBS])
 AC_SUBST([OSMESA16_LIBS])
 AC_SUBST([OSMESA32_LIBS])
 AC_SUBST([MESA_GLAPI])
+AC_SUBST([WAYLAND_CFLAGS])
+AC_SUBST([WAYLAND_LIBS])
+
 
 AM_CONDITIONAL(HAVE_EGL, test "x$egl_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_GLESV1, test "x$glesv1_enabled" = "xyes")
@@ -296,6 +309,7 @@ AM_CONDITIONAL(HAVE_OSMESA, test "x$osmesa_enabled" = "xyes")
 AM_CONDITIONAL(HAVE_DRM, test "x$drm_enabled" = "xyes")
 AM_CONDITIONAL(BUILD_GLTRACE, false)
 AM_CONDITIONAL(HAVE_MESA_SOURCE, test "x$mesa_source_enabled" = "xyes")
+AM_CONDITIONAL(HAVE_WAYLAND, test "x$wayland_enabled" = "xyes")
 
 AC_OUTPUT([
 	Makefile

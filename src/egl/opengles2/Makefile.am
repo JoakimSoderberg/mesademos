@@ -40,6 +40,9 @@ bin_PROGRAMS = \
 	es2gears_screen \
 	es2gears_x11 \
 	es2tri
+if HAVE_WAYLAND
+bin_PROGRAMS += es2gears_wayland
+endif
 endif
 endif
 
@@ -53,3 +56,6 @@ es2gears_x11_SOURCES = es2gears.c
 es2gears_screen_LDADD = ../eglut/libeglut_screen.la
 
 es2gears_x11_LDADD = ../eglut/libeglut_x11.la
+
+es2gears_wayland_SOURCES = es2gears.c
+es2gears_wayland_LDADD = ../eglut/libeglut_wayland.la

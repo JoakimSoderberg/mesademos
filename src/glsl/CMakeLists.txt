@@ -29,6 +29,8 @@ set (targets
 	deriv
 	fragcoord
 	fsraytrace
+	geom-outlining-130
+	geom-outlining-150
 	geom-sprites
 	geom-stipple-lines
 	geom-wide-lines

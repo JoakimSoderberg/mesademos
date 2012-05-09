@@ -42,6 +42,8 @@ bin_PROGRAMS = \
 	deriv \
 	fragcoord \
 	fsraytrace \
+	geom-outlining-130 \
+	geom-outlining-150 \
 	geom-sprites \
 	geom-stipple-lines \
 	geom-wide-lines \
@@ -81,6 +83,8 @@ bump_LDADD = ../util/libutil.la
 blinking_teapot_LDADD = ../util/libutil.la
 convolutions_LDADD = ../util/libutil.la
 deriv_LDADD = ../util/libutil.la
+geom_outlining_130_LDADD = ../util/libutil.la
+geom_outlining_150_LDADD = ../util/libutil.la
 geom_sprites_LDADD = ../util/libutil.la
 geom_stipple_lines_LDADD = ../util/libutil.la
 geom_wide_lines_LDADD = ../util/libutil.la

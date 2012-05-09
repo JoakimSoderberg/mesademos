@@ -19,8 +19,8 @@
  *
  * vs shader.vert
  * fs shader.frag
- * uniform pi 3.14159
- * uniform v1 1.0 0.5 0.2 0.3
+ * uniform GL_FLOAT pi 3.14159
+ * uniform GL_FLOAT_VEC4 v1 1.0 0.5 0.2 0.3
  * texture 0 2D texture0.rgb
  * texture 1 CUBE texture1.rgb
  * texture 2 RECT texture2.rgb
@@ -547,7 +547,7 @@ ReadConfigFile(const char *filename, struct config_file *conf)
             float v1 = 0.0F, v2 = 0.0F, v3 = 0.0F, v4 = 0.0F;
             GLenum type;
 
-            k = sscanf(line + 8, "%s %s %f %f %f %f", name, typeName,
+            k = sscanf(line + 8, "%s %s %f %f %f %f", typeName, name,
                        &v1, &v2, &v3, &v4);
 
             type = TypeFromName(typeName);

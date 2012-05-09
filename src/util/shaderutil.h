@@ -7,8 +7,8 @@ struct uniform_info
 {
    const char *name;
    GLuint size;  /**< number of value[] elements: 1, 2, 3 or 4 */
-   GLenum type;  /**< GL_FLOAT, GL_FLOAT_VEC4, GL_INT, etc */
-   GLfloat value[4];
+   GLenum type;  /**< GL_FLOAT, GL_FLOAT_VEC4, GL_INT, GL_FLOAT_MAT4, etc */
+   GLfloat value[16];
    GLint location;  /**< filled in by InitUniforms() */
 };
 

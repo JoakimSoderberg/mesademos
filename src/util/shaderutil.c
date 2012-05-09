@@ -38,6 +38,7 @@ PFNGLUNIFORM1FVPROC Uniform1fv = NULL;
 PFNGLUNIFORM2FVPROC Uniform2fv = NULL;
 PFNGLUNIFORM3FVPROC Uniform3fv = NULL;
 PFNGLUNIFORM4FVPROC Uniform4fv = NULL;
+PFNGLUNIFORMMATRIX4FVPROC UniformMatrix4fv = NULL;
 PFNGLGETACTIVEATTRIBPROC GetActiveAttrib = NULL;
 PFNGLGETATTRIBLOCATIONPROC GetAttribLocation = NULL;
 
@@ -70,6 +71,7 @@ ShadersSupported(void)
       Uniform2fv = glUniform2fv;
       Uniform3fv = glUniform3fv;
       Uniform4fv = glUniform4fv;
+      UniformMatrix4fv = glUniformMatrix4fv;
       GetActiveAttrib = glGetActiveAttrib;
       GetAttribLocation = glGetAttribLocation;
       return GL_TRUE;
@@ -95,6 +97,7 @@ ShadersSupported(void)
       Uniform2fv = glUniform2fvARB;
       Uniform3fv = glUniform3fvARB;
       Uniform4fv = glUniform4fvARB;
+      UniformMatrix4fv = glUniformMatrix4fvARB;
       GetActiveAttrib = glGetActiveAttribARB;
       GetAttribLocation = glGetAttribLocationARB;
       return GL_TRUE;
@@ -267,6 +270,12 @@ SetUniformValues(GLuint program, struct uniform_info uniforms[])
       case GL_SAMPLER_3D:
       case GL_SAMPLER_CUBE:
       case GL_SAMPLER_2D_RECT_ARB:
+      case GL_SAMPLER_1D_SHADOW:
+      case GL_SAMPLER_2D_SHADOW:
+      case GL_SAMPLER_1D_ARRAY:
+      case GL_SAMPLER_2D_ARRAY:
+      case GL_SAMPLER_1D_ARRAY_SHADOW:
+      case GL_SAMPLER_2D_ARRAY_SHADOW:
          assert(uniforms[i].value[0] >= 0.0F);
          Uniform1i(uniforms[i].location,
                      (GLint) uniforms[i].value[0]);
@@ -282,6 +291,10 @@ SetUniformValues(GLuint program, struct uniform_info uniforms[])
          break;
       case GL_FLOAT_VEC4:
          Uniform4fv(uniforms[i].location, 1, uniforms[i].value);
+         break;
+      case GL_FLOAT_MAT4:
+         UniformMatrix4fv(uniforms[i].location, 1, GL_FALSE,
+                          uniforms[i].value);
          break;
       default:
          if (strncmp(uniforms[i].name, "gl_", 3) == 0) {

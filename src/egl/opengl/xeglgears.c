@@ -51,6 +51,10 @@
 static PFNGLEGLIMAGETARGETTEXTURE2DOESPROC glEGLImageTargetTexture2DOES_func;
 #endif
 
+#ifdef EGL_KHR_image
+static PFNEGLCREATEIMAGEKHRPROC eglCreateImageKHR_func;
+#endif
+
 
 #define BENCHMARK
 
@@ -403,6 +407,17 @@ egl_manager_new(EGLNativeDisplayType xdpy, const EGLint *attrib_list,
 #ifdef GL_OES_EGL_image
    glEGLImageTargetTexture2DOES_func = (PFNGLEGLIMAGETARGETTEXTURE2DOESPROC)
       eglGetProcAddress("glEGLImageTargetTexture2DOES");
+#endif
+
+#ifdef EGL_KHR_image
+   eglCreateImageKHR_func = (PFNEGLCREATEIMAGEKHRPROC)
+      eglGetProcAddress("eglCreateImageKHR");
+   if (eglCreateImageKHR_func == NULL) {
+      printf("failed to get eglCreateImageKHR\n");
+      eglTerminate(eman->dpy);
+      free(eman);
+      return NULL;
+   }
 #endif
 
    return eman;
@@ -850,10 +865,16 @@ main(int argc, char *argv[])
    case GEARS_PIXMAP:
    case GEARS_PIXMAP_TEXTURE:
       ret = egl_manager_create_pixmap(eman, eman->xwin, EGL_TRUE, NULL);
+
+#ifdef EGL_KHR_image
       if (surface_type == GEARS_PIXMAP_TEXTURE)
-	 eman->image = eglCreateImageKHR (eman->dpy, eman->ctx,
-					  EGL_NATIVE_PIXMAP_KHR,
-					  (EGLClientBuffer) eman->xpix, NULL);
+	 eman->image = eglCreateImageKHR_func(eman->dpy, eman->ctx,
+					      EGL_NATIVE_PIXMAP_KHR,
+					      (EGLClientBuffer) eman->xpix, NULL);
+#else
+      fprintf(stderr, "EGL_KHR_image not found at compile time.\n");
+#endif
+
       if (ret)
          ret = eglMakeCurrent(eman->dpy, eman->pix, eman->pix, eman->ctx);
       break;
@@ -892,9 +913,13 @@ main(int argc, char *argv[])
 				   GL_RENDERBUFFER_EXT,
 				   color_rb);
 
-      eman->image = eglCreateImageKHR(eman->dpy, eman->ctx,
-				      EGL_GL_RENDERBUFFER_KHR,
-				      (EGLClientBuffer) color_rb, NULL);
+#ifdef EGL_KHR_image
+      eman->image = eglCreateImageKHR_func(eman->dpy, eman->ctx,
+					   EGL_GL_RENDERBUFFER_KHR,
+					   (EGLClientBuffer) color_rb, NULL);
+#else
+      fprintf(stderr, "EGL_KHR_image not found at compile time.\n");
+#endif
 
       glGenRenderbuffers(1, &depth_rb);
       glBindRenderbuffer(GL_RENDERBUFFER_EXT, depth_rb);

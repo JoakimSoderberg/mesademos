@@ -239,7 +239,7 @@ int main(int argc, char *argv[])
 
    bo = gbm_surface_lock_front_buffer(gs);
    handle = gbm_bo_get_handle(bo).u32;
-   stride = gbm_bo_get_pitch(bo);
+   stride = gbm_bo_get_stride(bo);
 
    printf("handle=%d, stride=%d\n", handle, stride);
 

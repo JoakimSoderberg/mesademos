@@ -102,6 +102,7 @@ static GLfloat angle = 0.0;
 
 static GLboolean fullscreen = GL_FALSE;	/* Create a single fullscreen window */
 static GLboolean stereo = GL_FALSE;	/* Enable stereo.  */
+static GLint samples = 0;               /* Choose visual with at least N samples. */
 static GLboolean animate = GL_TRUE;	/* Animation */
 static GLfloat eyesep = 5.0;		/* Eye separation. */
 static GLfloat fix_point = 40.0;	/* Fixation point distance.  */
@@ -504,6 +505,12 @@ make_window( Display *dpy, const char *name,
    attribs[i++] = 1;
    attribs[i++] = GLX_DEPTH_SIZE;
    attribs[i++] = 1;
+   if (samples > 0) {
+      attribs[i++] = GLX_SAMPLE_BUFFERS;
+      attribs[i++] = 1;
+      attribs[i++] = GLX_SAMPLES;
+      attribs[i++] = samples;
+   }
 
    attribs[i++] = None;
 
@@ -521,6 +528,8 @@ make_window( Display *dpy, const char *name,
       printf("Error: couldn't get an RGB, Double-buffered");
       if (stereo)
          printf(", Stereo");
+      if (samples > 0)
+         printf(", Multisample");
       printf(" visual\n");
       exit(1);
    }
@@ -707,6 +716,7 @@ usage(void)
    printf("Usage:\n");
    printf("  -display <displayname>  set the display to run on\n");
    printf("  -stereo                 run in stereo mode\n");
+   printf("  -samples N              run in multisample mode with at least N samples\n");
    printf("  -fullscreen             run in fullscreen mode\n");
    printf("  -info                   display OpenGL renderer info\n");
    printf("  -geometry WxH+X+Y       window geometry\n");
@@ -735,6 +745,10 @@ main(int argc, char *argv[])
       }
       else if (strcmp(argv[i], "-stereo") == 0) {
          stereo = GL_TRUE;
+      }
+      else if (i < argc-1 && strcmp(argv[i], "-samples") == 0) {
+         samples = strtod(argv[i+1], NULL );
+         ++i;
       }
       else if (strcmp(argv[i], "-fullscreen") == 0) {
          fullscreen = GL_TRUE;

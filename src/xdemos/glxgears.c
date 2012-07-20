@@ -478,21 +478,9 @@ make_window( Display *dpy, const char *name,
              int x, int y, int width, int height,
              Window *winRet, GLXContext *ctxRet)
 {
-   int attribs[] = { GLX_RGBA,
-                     GLX_RED_SIZE, 1,
-                     GLX_GREEN_SIZE, 1,
-                     GLX_BLUE_SIZE, 1,
-                     GLX_DOUBLEBUFFER,
-                     GLX_DEPTH_SIZE, 1,
-                     None };
-   int stereoAttribs[] = { GLX_RGBA,
-                           GLX_RED_SIZE, 1,
-                           GLX_GREEN_SIZE, 1,
-                           GLX_BLUE_SIZE, 1,
-                           GLX_DOUBLEBUFFER,
-                           GLX_DEPTH_SIZE, 1,
-                           GLX_STEREO,
-                           None };
+   int attribs[64];
+   int i = 0;
+
    int scrnum;
    XSetWindowAttributes attr;
    unsigned long mask;
@@ -500,6 +488,24 @@ make_window( Display *dpy, const char *name,
    Window win;
    GLXContext ctx;
    XVisualInfo *visinfo;
+
+   /* Singleton attributes. */
+   attribs[i++] = GLX_RGBA;
+   attribs[i++] = GLX_DOUBLEBUFFER;
+   if (stereo)
+      attribs[i++] = GLX_STEREO;
+
+   /* Key/value attributes. */
+   attribs[i++] = GLX_RED_SIZE;
+   attribs[i++] = 1;
+   attribs[i++] = GLX_GREEN_SIZE;
+   attribs[i++] = 1;
+   attribs[i++] = GLX_BLUE_SIZE;
+   attribs[i++] = 1;
+   attribs[i++] = GLX_DEPTH_SIZE;
+   attribs[i++] = 1;
+
+   attribs[i++] = None;
 
    scrnum = DefaultScreen( dpy );
    root = RootWindow( dpy, scrnum );
@@ -510,16 +516,12 @@ make_window( Display *dpy, const char *name,
       height = DisplayHeight( dpy, scrnum );
    }
 
-   if (stereo)
-      visinfo = glXChooseVisual( dpy, scrnum, stereoAttribs );
-   else
-      visinfo = glXChooseVisual( dpy, scrnum, attribs );
+   visinfo = glXChooseVisual(dpy, scrnum, attribs);
    if (!visinfo) {
-      if (stereo) {
-         printf("Error: couldn't get an RGB, "
-                "Double-buffered, Stereo visual\n");
-      } else
-         printf("Error: couldn't get an RGB, Double-buffered visual\n");
+      printf("Error: couldn't get an RGB, Double-buffered");
+      if (stereo)
+         printf(", Stereo");
+      printf(" visual\n");
       exit(1);
    }
 

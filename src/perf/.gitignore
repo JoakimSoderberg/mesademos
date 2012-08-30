@@ -3,6 +3,7 @@ drawoverhead
 fbobind
 fill
 genmipmap
+glslstateschange
 readpixels
 swapbuffers
 teximage

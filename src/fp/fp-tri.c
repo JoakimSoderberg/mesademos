@@ -215,7 +215,7 @@ static void Key(unsigned char key, int x, int y)
     glutPostRedisplay();
 }
 
-static void Display(void)
+static void Draw(void)
 {
    glClear(GL_COLOR_BUFFER_BIT);
 
@@ -255,7 +255,7 @@ int main(int argc, char **argv)
    glewInit();
    glutReshapeFunc(Reshape);
    glutKeyboardFunc(Key);
-   glutDisplayFunc(Display);
+   glutDisplayFunc(Draw);
    Init();
 #ifndef WIN32
    if (show_fps) {

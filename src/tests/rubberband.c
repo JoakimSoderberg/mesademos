@@ -67,6 +67,9 @@ DrawRect(const struct rect *r)
    glDisable(GL_COLOR_LOGIC_OP);
    glDisable(GL_BLEND);
 
+   /* Need this to ensure the front buffer drawing is actually displayed */
+   glFlush();
+
    glDrawBuffer(GL_BACK);
 }
 

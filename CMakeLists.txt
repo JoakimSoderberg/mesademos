@@ -18,6 +18,7 @@ find_path (GLEW_INCLUDE_DIR GL/glew.h
 )
 
 if (NOT WIN32)
+	pkg_check_modules (GLEW REQUIRED glew>=1.5.4)
 	pkg_check_modules (EGL egl)
 	pkg_check_modules (GLESV1 glesv1_cm)
 	pkg_check_modules (GLESV2 glesv2)

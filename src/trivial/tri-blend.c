@@ -52,7 +52,7 @@ static void init(void)
 {
    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
    glShadeModel (GL_FLAT);
-   glClearColor (1.0, 0.0, 0.0, 0.0);
+   glClearColor (1.0, 0.0, 0.0, 1.0);
 }
 
 static void drawLeftTriangle(void)

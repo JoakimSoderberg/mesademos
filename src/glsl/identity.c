@@ -18,13 +18,12 @@ static GLuint fragShader;
 static GLuint vertShader;
 static GLuint program;
 static GLint win = 0;
-static int w,h;
 
 
 static void
 Redisplay(void)
 {
-   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   glClear(GL_COLOR_BUFFER_BIT);
 
    glBegin(GL_TRIANGLES);
    glVertex3f(-0.9, -0.9, 0.0);
@@ -44,8 +43,6 @@ Reshape(int width, int height)
    glLoadIdentity();
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
-   w = width;
-   h = height;
 }
 
 
@@ -96,7 +93,6 @@ Init(void)
    assert(glGetError() == 0);
 
    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-   glEnable(GL_DEPTH_TEST);
 
    printf("GL_RENDERER = %s\n",(const char *) glGetString(GL_RENDERER));
 
@@ -113,7 +109,7 @@ main(int argc, char *argv[])
 {
    glutInit(&argc, argv);
    glutInitWindowSize(200, 200);
-   glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
+   glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
    win = glutCreateWindow(argv[0]);
    glewInit();
    glutReshapeFunc(Reshape);

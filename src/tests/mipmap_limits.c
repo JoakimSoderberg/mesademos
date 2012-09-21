@@ -287,6 +287,8 @@ display(void)
       ("BASE_LEVEL=%d  MAX_LEVEL=%d  MIN_LOD=%.2g  MAX_LOD=%.2g  Bias=%.2g  Filter=%s/%s\n",
        BaseLevel, MaxLevel, MinLod, MaxLod, LodBias, min_filters[min_filter].name,
        NearestFilter ? "NEAREST" : "LINEAR");
+   fflush(stdout);
+
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, BaseLevel);
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, MaxLevel);
 
@@ -342,6 +344,7 @@ usage(void)
    printf("  g      toggle nearest/linear magnification filter\n");
    printf("  t      toggle texture color/image\n");
    printf("  SPACE  reset values\n");
+   fflush(stdout);
 }
 
 static void

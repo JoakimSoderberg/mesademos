@@ -375,6 +375,7 @@ static void key(unsigned char k, int x, int y)
       case 27:
          exit(0);
    }
+   fflush(stdout);
    glutPostRedisplay();
 }
 
@@ -590,6 +591,7 @@ static void usage(void)
    printf("  f - toggle texture filter mode\n");
    printf("  m - toggle texgen reflection mode\n");
    printf("  z/Z - change viewing distance\n");
+   fflush(stdout);
 }
 
 

@@ -34,6 +34,7 @@ if HAVE_GLUT
 bin_PROGRAMS = \
 	clear-color \
 	clear-fbo \
+	clear-fbo-scissor \
 	clear-fbo-tex \
 	clear-random \
 	clear-repeat \
@@ -53,6 +54,7 @@ bin_PROGRAMS = \
 	draw2arrays \
 	drawarrays \
 	drawelements \
+	drawelements-large \
 	drawrange \
 	flat-clip \
 	fs-tri \
@@ -112,6 +114,8 @@ bin_PROGRAMS = \
 	quad-unfilled-clip \
 	quad-unfilled-stipple \
 	readpixels \
+	sub-tex \
+	tex-quads \
 	tri-2101010 \
 	tri-2101010-dlist \
 	tri-alpha \
@@ -152,6 +156,7 @@ bin_PROGRAMS = \
 	tri-mask-tri \
 	tri-multitex-vbo \
 	tri-orig \
+	tri-point-line-clipped \
 	tri-query \
 	tri-repeat \
 	tri-scissor-tri \
@@ -185,7 +190,9 @@ bin_PROGRAMS = \
 	vbo-drawelements \
 	vbo-drawrange \
 	vbo-noninterleaved \
+	vbo-tri \
 	vp-array \
+	vp-array-hf \
 	vp-array-int \
 	vp-clip \
 	vp-line-clip \

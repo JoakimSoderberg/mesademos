@@ -105,6 +105,7 @@ Draw(void)
 
       printf("Pixel(0,0) = %d, %d, %d, %d\n",
              buffer[0], buffer[1], buffer[2], buffer[3]);
+      fflush(stdout);
 
       /* draw to window */
       glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);

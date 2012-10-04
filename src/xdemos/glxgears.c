@@ -517,12 +517,6 @@ make_window( Display *dpy, const char *name,
    scrnum = DefaultScreen( dpy );
    root = RootWindow( dpy, scrnum );
 
-   if (fullscreen) {
-      x = 0; y = 0;
-      width = DisplayWidth( dpy, scrnum );
-      height = DisplayHeight( dpy, scrnum );
-   }
-
    visinfo = glXChooseVisual(dpy, scrnum, attribs);
    if (!visinfo) {
       printf("Error: couldn't get an RGB, Double-buffered");
@@ -768,6 +762,14 @@ main(int argc, char *argv[])
       printf("Error: couldn't open display %s\n",
 	     dpyName ? dpyName : getenv("DISPLAY"));
       return -1;
+   }
+
+   if (fullscreen) {
+      int scrnum = DefaultScreen(dpy);
+
+      x = 0; y = 0;
+      winWidth = DisplayWidth(dpy, scrnum);
+      winHeight = DisplayHeight(dpy, scrnum);
    }
 
    make_window(dpy, "glxgears", x, y, winWidth, winHeight, &win, &ctx);

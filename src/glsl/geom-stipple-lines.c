@@ -20,7 +20,7 @@ static GLuint VertShader, GeomShader, FragShader, Program;
 static GLboolean Anim = GL_TRUE;
 static GLboolean UseGeomShader = GL_TRUE;
 static GLfloat Xrot = 0, Yrot = 0;
-static int uViewportSize = -1, uStippleTex = -1, uStippleFactor;
+static int uViewportSize = -1, uStippleFactor = -1, uStipplePattern = -1;
 static const int NumPoints = 50;
 static float Points[100][3], Colors[100][3];
 
@@ -39,24 +39,27 @@ CheckError(int line)
 }
 
 
-static GLuint
-MakeStippleTexture(GLushort pattern)
+/**
+ * Set stipple factor and pattern for geometry shader.
+ *
+ * We convert the 16-bit stipple pattern into an array of 16 float values
+ * then pass the array as a uniform variable.
+ *
+ * Note: With GLSL 1.30 or later the stipple pattern could be implemented
+ * as an ordinary integer since GLSL 1.30 has true integer types and bit
+ * shifts and bit masks.
+ *
+ */
+static void
+SetStippleUniform(GLint factor, GLushort pattern)
 {
-   GLuint tex, i;
-   GLubyte image[16];
-
+   GLfloat p[16];
+   int i;
    for (i = 0; i < 16; i++) {
-      image[i] = (pattern & (1 << i)) ? 0xff : 0;
+      p[i] = (pattern & (1 << i)) ? 1.0f : 0.0f;
    }
-
-   glGenTextures(1, &tex);
-   glBindTexture(GL_TEXTURE_1D, tex);
-   glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-   glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-   glTexImage1D(GL_TEXTURE_1D, 0, GL_LUMINANCE, 16, 0,
-                GL_LUMINANCE, GL_UNSIGNED_BYTE, image);
-
-   return tex;
+   glUniform1fv(uStipplePattern, 16, p);
+   glUniform1f(uStippleFactor, factor);
 }
 
 
@@ -188,18 +191,16 @@ MakePoints(void)
 static void
 Init(void)
 {
-   GLuint tex;
-
    static const char *fragShaderText =
-      "uniform sampler1D StippleTex; \n"
+      "uniform float StipplePattern[16]; \n"
       "varying float stippleCoord; \n"
       "void main() \n"
       "{ \n"
-      "   // sample the stipple pattern and discard if value is zero \n"
+      "   // check the stipple pattern and discard if value is zero \n"
       "   // TODO: we should really undo the perspective interpolation here \n"
       "   // so that it's linear. \n"
-      "   vec4 stip = texture1D(StippleTex, stippleCoord); \n"
-      "   if (stip.x == 0.0) \n"
+      "   float stip = StipplePattern[int(fract(stippleCoord) * 16.0)]; \n"
+      "   if (stip == 0.0) \n"
       "      discard; \n"
       "   gl_FragColor = gl_Color; \n"
       "} \n";
@@ -224,7 +225,6 @@ Init(void)
       "   vec2 p0 = pos0.xy / pos0.w * ViewportSize; \n"
       "   vec2 p1 = pos1.xy / pos1.w * ViewportSize; \n"
       "   float len = length(p0.xy - p1.xy); \n"
-      "   len /= StippleFactor; \n"
       "   // Emit first vertex \n"
       "   gl_FrontColor = gl_FrontColorIn[0]; \n"
       "   gl_Position = pos0; \n"
@@ -233,7 +233,7 @@ Init(void)
       "   // Emit second vertex \n"
       "   gl_FrontColor = gl_FrontColorIn[1]; \n"
       "   gl_Position = pos1; \n"
-      "   stippleCoord = len / 32.0; // Note: not 16, see above \n"
+      "   stippleCoord = len / StippleFactor / 32.0; // Note: not 16, see above \n"
       "   EmitVertex(); \n"
       "} \n";
 
@@ -281,10 +281,9 @@ Init(void)
    glUseProgram(Program);
 
    uViewportSize = glGetUniformLocation(Program, "ViewportSize");
-   uStippleTex = glGetUniformLocation(Program, "StippleTex");
    uStippleFactor = glGetUniformLocation(Program, "StippleFactor");
+   uStipplePattern = glGetUniformLocation(Program, "StipplePattern");
 
-   glUniform1i(uStippleTex, 0); /* texture unit 0 */
    glUniform1f(uStippleFactor, StippleFactor);
 
    glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
@@ -298,7 +297,7 @@ Init(void)
 
 
    glLineStipple(StippleFactor, StipplePattern);
-   tex = MakeStippleTexture(StipplePattern);
+   SetStippleUniform(StippleFactor, StipplePattern);
 
    MakePoints();
 }

@@ -17,7 +17,7 @@ find_path (GLEW_INCLUDE_DIR GL/glew.h
       /usr/include/GL
 )
 
-if (NOT WIN32)
+if (PKG_CONFIG_FOUND)
 	pkg_check_modules (GLEW REQUIRED glew>=1.5.4)
 	pkg_check_modules (EGL egl)
 	pkg_check_modules (GLESV1 glesv1_cm)

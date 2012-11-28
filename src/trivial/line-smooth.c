@@ -36,6 +36,7 @@
 
 GLenum doubleBuffer;
 GLboolean smooth = GL_TRUE;
+GLboolean flat = GL_TRUE;
 GLfloat width = 1.0;
 
 
@@ -68,6 +69,9 @@ static void Reshape(int width, int height)
 static void Key(unsigned char key, int x, int y)
 {
    switch (key) {
+   case 'f':
+      flat = !flat;
+      break;
    case 'w':
       width -= 0.5;
       if (width < 0.5)
@@ -84,7 +88,7 @@ static void Key(unsigned char key, int x, int y)
    default:
       return;
    }
-   printf("LineWidth: %g\n", width);
+   printf("LineWidth: %g  FlatShade: %d\n", width, flat);
    glutPostRedisplay();
 }
 
@@ -103,14 +107,16 @@ static void Draw(void)
       glEnable(GL_LINE_SMOOTH);
    }
 
-   glColor3f(1, 1, 1);
+   glShadeModel(flat ? GL_FLAT : GL_SMOOTH);
 
    glBegin(GL_LINES);
    for (a = 0; a < 3.14159; a += 0.2) {
       float x = .9 * cos(a);
       float y = .9 * sin(a);
 
+      glColor3f(1, 0, 1);
       glVertex2f(-x, -y);
+      glColor3f(1, 1, 1);
       glVertex2f( x,  y);
    }
    glEnd();

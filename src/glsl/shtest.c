@@ -580,7 +580,7 @@ ReadConfigFile(const char *filename, struct config_file *conf)
 static void
 Init(void)
 {
-   GLdouble vertTime, fragTime, linkTime;
+   GLdouble vertTime = 0.0, fragTime = 0.0, linkTime = 0.0;
    struct config_file config;
 
    memset(&config, 0, sizeof(config));
@@ -588,29 +588,23 @@ Init(void)
    if (ConfigFile)
       ReadConfigFile(ConfigFile, &config);
 
-   if (!VertShaderFile) {
-      fprintf(stderr, "Error: no vertex shader\n");
-      exit(1);
-   }
-
-   if (!FragShaderFile) {
-      fprintf(stderr, "Error: no fragment shader\n");
-      exit(1);
-   }
-
    if (!ShadersSupported())
       exit(1);
 
-   vertShader = CompileShaderFile(GL_VERTEX_SHADER, VertShaderFile);
-   vertTime = GetShaderCompileTime();
-   fragShader = CompileShaderFile(GL_FRAGMENT_SHADER, FragShaderFile);
-   fragTime = GetShaderCompileTime();
+   if (VertShaderFile) {
+      printf("Read vert shader %s\n", VertShaderFile);
+      vertShader = CompileShaderFile(GL_VERTEX_SHADER, VertShaderFile);
+      vertTime = GetShaderCompileTime();
+   }
+
+   if (FragShaderFile) {
+      printf("Read frag shader %s\n", FragShaderFile);
+      fragShader = CompileShaderFile(GL_FRAGMENT_SHADER, FragShaderFile);
+      fragTime = GetShaderCompileTime();
+   }
 
    Program = LinkShaders(vertShader, fragShader);
    linkTime = GetShaderLinkTime();
-
-   printf("Read vert shader %s\n", VertShaderFile);
-   printf("Read frag shader %s\n", FragShaderFile);
 
    printf("Time to compile vertex shader: %fs\n", vertTime);
    printf("Time to compile fragment shader: %fs\n", fragTime);
